@@ -1,25 +1,72 @@
 
 public class Channel {
-	public sensorType t;
-	public boolean enabled;
 	
-	public Channel(sensorType t, boolean enabled){
-		
-	}
+	/**
+	 * The sensor that is attached to this channel.
+	 */
+	protected SensorType t;
+	/**
+	 * The sensors state, if it is enabled or not.
+	 */
+	private boolean enabled;
 	
+	/**
+	 * Returns true if the channel is enabled.
+	 * @return true if channel is enabled. False if channel is disabled.
+	 */
 	public boolean isEnabled(){
 		return enabled;
 	}
 	
+	/**
+	 * Enables the channel.
+	 * @return true if the channel was disabled originally. False if the channel was already on.
+	 */
 	public boolean enable(){
-		return false;
+		boolean old = enabled;
+		enabled = true;
+		return old != enabled;
 	}
 	
+	/**
+	 * Disables the channel.
+	 * @return true if the channel was enabled originally. False if the channel was already off.
+	 */
 	public boolean disable(){
-		return false;
+		boolean old = enabled;
+		enabled = false;
+		return old != enabled;
 	}
 	
-	public boolean changeSensor(sensorType type){
-		return false;
+	/**
+	 * Attaches a sensor to the channel.
+	 * @param type - the new sensor type.
+	 * @return True if the new sensor is different from previous sensor.
+	 */
+	public boolean setSensor(SensorType type){
+		if(type == null) type = SensorType.NONE;
+		SensorType old = t;
+		t = type;
+		return old != t;
 	}
+	
+	public Channel() {
+		t = SensorType.NONE;
+		enabled = false;
+	}
+	
+	public Channel(boolean enabled) {
+		this.enabled = enabled;
+	}
+	
+	public Channel(SensorType t) {
+		this.t = t;
+		enabled = false;
+	}
+	
+	public Channel(SensorType t, boolean enabled){
+		this.t = t;
+		this.enabled = enabled;
+	}
+	
 }
