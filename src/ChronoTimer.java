@@ -23,7 +23,7 @@ public class ChronoTimer {
 	public boolean toggleChanel(int ch){
 		return false;
 	}
-	public boolean connect(sensorType t, int ch){
+	public boolean connect(SensorType t, int ch){
 		return false;
 	}
 	public boolean disconnect(int ch){
