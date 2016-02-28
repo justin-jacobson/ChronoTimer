@@ -188,23 +188,22 @@ public class CommandLineHandler {
 			}
 		});
 		
-		addCommand(new Command("power", "", "Toggles the power on/off for the Chrono timer.", 0, 1, "pow") {
+		addCommand(new Command("power", "[on/off]", "Toggles the power on/off for the Chrono timer.", 0, 1, "pow") {
 			public boolean execute(PrintStream stream, ChronoTimer timer, String[] args) {
 				if(args.length == 0) {
-					if(timer.tooglePower())
+					if(timer.togglePower())
 						stream.println("Chronotimer has powered on.");
 					else
 						stream.println("Chronotimer has powered off.");
 					return true;
 				} else if(args.length == 1) {
 					if(args[0].equalsIgnoreCase("on")) {
-						//Set timers power to on here.
+						timer.setPower(true);
 						return true;
 					} else if(args[0].equalsIgnoreCase("off")) {
-						//Set timers power to off here.
+						timer.setPower(false);
 						return true;
 					}
-					return false;
 				}
 				return false;
 			}
@@ -266,7 +265,7 @@ public class CommandLineHandler {
 			}
 		});
 		
-		addCommand(new Command("swap", "", "Triggers a certain channel.", 0, 0) {
+		addCommand(new Command("swap", "", "Swaps the front two racers positions in the current run.", 0, 0) {
 			public boolean execute(PrintStream stream, ChronoTimer timer, String[] args) {
 				timer.swap();
 				return true;

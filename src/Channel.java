@@ -2,14 +2,24 @@
 public class Channel {
 	
 	/**
+	 * The channels id.
+	 */
+	public final int id;
+	
+	/**
+	 * The ChronoTimer that this channel is owned by.
+	 */
+	public final ChronoTimer timer;
+	
+	/**
 	 * The sensor that is attached to this channel.
 	 */
 	protected SensorType t;
+	
 	/**
 	 * The sensors state, if it is enabled or not.
 	 */
 	private boolean enabled;
-	private Racer target;
 	
 	/**
 	 * Returns true if the channel is enabled.
@@ -39,6 +49,11 @@ public class Channel {
 		return old != enabled;
 	}
 	
+	public boolean toggle() {
+		enabled = !enabled;
+		return true;
+	}
+	
 	/**
 	 * Attaches a sensor to the channel.
 	 * @param type - the new sensor type.
@@ -51,29 +66,35 @@ public class Channel {
 		return old != t;
 	}
 	
-	public Channel() {
+	public boolean trigger() {
+		return timer.trigger(id);
+	}
+	
+	public Channel(ChronoTimer timer, int id) {
+		this.id = id;
+		this.timer = timer;
 		t = SensorType.NONE;
 		enabled = false;
 	}
 	
-	public Channel(boolean enabled) {
+	public Channel(ChronoTimer timer, int id, boolean enabled) {
+		this.id = id;
+		this.timer = timer;
 		this.enabled = enabled;
 	}
 	
-	public Channel(SensorType t) {
+	public Channel(ChronoTimer timer, int id, SensorType t) {
+		this.id = id;
+		this.timer = timer;
 		this.t = t;
 		enabled = false;
 	}
 	
-	public Channel(SensorType t, boolean enabled){
+	public Channel(ChronoTimer timer, int id, SensorType t, boolean enabled) {
+		this.id = id;
+		this.timer = timer;
 		this.t = t;
 		this.enabled = enabled;
-	}
-	
-	public boolean trigger(int n){
-		if(target.ended) return false;
-		target.setTime(n);
-		return true;
 	}
 	
 }
