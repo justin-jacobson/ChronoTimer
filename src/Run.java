@@ -21,7 +21,11 @@ public class Run {
 		this.front=-1;
 		this.finished=false;
 	}
-	
+	/**
+	 * This create a list of racer's records and return String
+	 * @return String of racer's record list
+	 * 
+	 */
 	public String toString(){
 		String result="";
 		Iterator<Racer> t=racers.iterator();
@@ -31,8 +35,8 @@ public class Run {
 		return result;
 	}
 	
-	public void setEvent(EventType e){
-		this.e=e;
+	public void setEvent(EventType event){
+		this.e=event;
 	}
 	
 	public void addRacer(){

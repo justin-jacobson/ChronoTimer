@@ -9,6 +9,7 @@ public class Channel {
 	 * The sensors state, if it is enabled or not.
 	 */
 	private boolean enabled;
+	private Racer target;
 	
 	/**
 	 * Returns true if the channel is enabled.
@@ -67,6 +68,12 @@ public class Channel {
 	public Channel(SensorType t, boolean enabled){
 		this.t = t;
 		this.enabled = enabled;
+	}
+	
+	public boolean trigger(int n){
+		if(target.ended) return false;
+		target.setTime(n);
+		return true;
 	}
 	
 }
