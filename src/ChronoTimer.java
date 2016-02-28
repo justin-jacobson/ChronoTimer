@@ -60,6 +60,8 @@ public class ChronoTimer {
 	public boolean trigger(int ch){
 		return false;
 	}
+	
+	//Gun: I need hlep at here!
 	public void doNotFin(){
 		
 	}
@@ -87,9 +89,9 @@ public class ChronoTimer {
 	public boolean swap(){
 		return false;
 	}
-	
+	//print out specific run
 	public String print(int run){
-		return "";
+		return runs.get(run).toString();
 	}
 	
 	private boolean setToDefault(){

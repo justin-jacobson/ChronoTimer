@@ -2,11 +2,15 @@
 public class TimeManager {
 	public static long system_time;
 	
-	public TimeManager(){
+	public static void setTime(String time){
 		
 	}
 	
-	public void setTime(String time){
-		
+	public static String formatTime(int input){
+		return "";
+	}
+	
+	public static int getRelativeTime(){
+		return 0;
 	}
 }
