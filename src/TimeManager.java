@@ -1,4 +1,4 @@
-
+import java.util.concurrent.*;
 public class TimeManager {
 	private static long system_time;
 	/**
@@ -7,11 +7,23 @@ public class TimeManager {
 	 * @param time
 	 */
 	public static void setTime(String time){
+		String format[] = time.split(":");
+		format[0] = format[0].substring(5);
 		
+		system_time = intoMillisecs(format);
+	}
+	
+	private static long intoMillisecs(String[] unformatted) {
+		long hrs, mins, secs; 
+		
+		hrs = TimeUnit.MILLISECONDS.convert(Long.parseLong(unformatted[0]), TimeUnit.HOURS);
+		mins = TimeUnit.MILLISECONDS.convert(Long.parseLong(unformatted[1]), TimeUnit.MINUTES);
+		secs = TimeUnit.MILLISECONDS.convert(Long.parseLong(unformatted[2]), TimeUnit.SECONDS);
+		return (hrs + mins + secs);
 	}
 	/**
 	 * 
-	 * @return (long)system_time
+	 * @return (long)system_time : must return relative time
 	 */
 	public static long getTime(){
 		return system_time;
