@@ -15,11 +15,11 @@ public class ChronoTimer {
 	/**
 	 * Array holding all the channels that belong to this chrono timer.
 	 */
-	private Channel[] channels;
+	private TChannel[] channels;
 	/**
 	 * List containing all the runs.
 	 */
-	private List<Run> runs;
+	private List<TRun> runs;
 	/**
 	 * The index of the current/latest run.
 	 */
@@ -28,12 +28,16 @@ public class ChronoTimer {
 	public ChronoTimer(){ 
 		power = false;
 		
-		channels = new Channel[CH_MAX];
+		channels = new TChannel[CH_MAX];
 		for(int i=0; i<CH_MAX; i++)
-			channels[i] = new Channel(this,i);
+			channels[i] = new TChannel(this,i);
 		
-		runs = new ArrayList<Run>();
-		runs.add(new Run()); // Always starts at run 1 by default.
+		runs = new ArrayList<TRun>();
+		runs.add(new TRun()); // Always starts at run 1 by default.
+	}
+	
+	public boolean isOn() {
+		return power;
 	}
 	
 	/**
@@ -65,7 +69,7 @@ public class ChronoTimer {
 			channels[i].disable();
 		}
 		runs.clear();
-		runs.add(new Run());
+		runs.add(new TRun());
 		current_run = 0;
 		// Reset time?
 	}
@@ -133,7 +137,7 @@ public class ChronoTimer {
 		if(!power) return false;
 		//if "runs" is not empty and last runs was not finished >> false
 		if(!runs.isEmpty() && !runs.get(current_run).finished) return false;
-		runs.add(new Run());
+		runs.add(new TRun());
 		current_run++;
 		return true;
 	}
