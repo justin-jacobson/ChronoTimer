@@ -1,4 +1,8 @@
+
 import java.util.concurrent.*;
+import java.util.concurrent.TimeUnit;
+
+
 public class TimeManager {
 	private static long system_time;
 	/**
@@ -9,24 +13,20 @@ public class TimeManager {
 	public static void setTime(String time){
 		String format[] = time.split(":");
 		format[0] = format[0].substring(5);
-		
+
 		system_time = intoMillisecs(format);
 	}
-	
+
 	private static long intoMillisecs(String[] unformatted) {
-		long hrs, mins, secs; 
-		
+		long hrs, mins, secs;
+
 		hrs = TimeUnit.MILLISECONDS.convert(Long.parseLong(unformatted[0]), TimeUnit.HOURS);
 		mins = TimeUnit.MILLISECONDS.convert(Long.parseLong(unformatted[1]), TimeUnit.MINUTES);
 		secs = TimeUnit.MILLISECONDS.convert(Long.parseLong(unformatted[2]), TimeUnit.SECONDS);
 		return (hrs + mins + secs);
 	}
-	/**
-	 * 
-	 * @return (long)system_time : must return relative time
-	 */
 	public static long getTime(){
-		return system_time;
+		return subtractTime(System.currentTimeMillis(),system_time);
 	}
 	/**
 	 * get absolute time and return into "hour:min:sec" string format.
@@ -34,10 +34,13 @@ public class TimeManager {
 	 * @return "hour:min:sec"
 	 */
 	public static String formatTime(long input){
-		return "";
+		return String.format("%d:%d:%d",
+					TimeUnit.MILLISECONDS.toHours(input),
+					TimeUnit.MILLISECONDS.toMinutes(input) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(input)),
+					TimeUnit.MILLISECONDS.toSeconds(input) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(input)));
 	}
 	public static long subtractTime(long first, long second){
 		return first-second;
 	}
-	
+
 }
