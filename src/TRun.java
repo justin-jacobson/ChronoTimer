@@ -5,6 +5,7 @@ import java.util.List;
 
 public class TRun implements Run {
 	
+	protected final int id;
 	protected final long start;
 	protected EventType e;
 	protected LinkedList<TRacer> racers;
@@ -12,7 +13,8 @@ public class TRun implements Run {
 	private int front;
 	protected boolean finished;
 	
-	public TRun(){
+	public TRun(int id){
+		this.id = id;
 		start = System.currentTimeMillis();
 		e=EventType.IND;
 		racers=new LinkedList<TRacer>();
@@ -21,7 +23,8 @@ public class TRun implements Run {
 		finished=false;
 	}
 	
-	public TRun(EventType t){
+	public TRun(int id, EventType t){
+		this.id = id;
 		start = System.currentTimeMillis();
 		e=t;
 		racers=new LinkedList<TRacer>();
@@ -69,6 +72,11 @@ public class TRun implements Run {
 	@Override
 	public Racer getLast() {
 		return racers.getLast();
+	}
+
+	@Override
+	public int getID() {
+		return id;
 	}
 	
 }

@@ -1,12 +1,9 @@
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
-public class TChronoTimer {
-	
-	/**
-	 * The maximum amount of channels for any ChronoTimer.
-	 */
-	public static final int CH_MAX = 12;
+public class TChronoTimer implements ChronoTimer {
 	
 	/**
 	 * The current power state of the chrono timer.
@@ -15,11 +12,17 @@ public class TChronoTimer {
 	/**
 	 * Array holding all the channels that belong to this chrono timer.
 	 */
-	private TChannel[] channels;
+	private final TChannel[] channels;
+	
+	private final List<Channel> safe_channels;
+	
 	/**
 	 * List containing all the runs.
 	 */
-	private List<TRun> runs;
+	private final List<TRun> runs;
+	
+	private final List<Run> safe_runs;
+	
 	/**
 	 * The index of the current/latest run.
 	 */
@@ -28,12 +31,14 @@ public class TChronoTimer {
 	public TChronoTimer(){ 
 		power = false;
 		
-		channels = new TChannel[CH_MAX];
-		for(int i=0; i<CH_MAX; i++)
+		channels = new TChannel[ChronoTimer.MAXIMUM_CHANNELS];
+		safe_channels = Collections.unmodifiableList(Arrays.asList(channels));
+		for(int i=0; i<ChronoTimer.MAXIMUM_CHANNELS; i++)
 			channels[i] = new TChannel(this,i);
 		
 		runs = new ArrayList<TRun>();
-		runs.add(new TRun()); // Always starts at run 1 by default.
+		safe_runs = Collections.unmodifiableList(runs);
+		runs.add(new TRun(1)); // Always starts at run 1 by default.
 	}
 	
 	public boolean isOn() {
@@ -63,15 +68,16 @@ public class TChronoTimer {
 	/**
 	 * Resets the chrono timer to default settings and clears all runs.
 	 */
-	public void reset(){
-		for(int i=0; i<CH_MAX; i++) {
+	public boolean reset() {
+		for(int i=0; i<ChronoTimer.MAXIMUM_CHANNELS; i++) {
 			channels[i].setSensor(SensorType.NONE);
 			channels[i].disable();
 		}
 		runs.clear();
-		runs.add(new TRun());
-		current_run = 0;
+		runs.add(new TRun(1));
+		current_run = 1;
 		// Reset time?
+		return true;
 	}
 	
 	/**
@@ -85,61 +91,14 @@ public class TChronoTimer {
 	}
 	
 	/**
-	 * Connects a sensor to the specified channel. This method overwrites the old channels sensor and disables it.
-	 * @param t - The SensorType the channel should be connected to.
-	 * @param ch - The channel to connect the sensor to.
-	 * @return True if operation was successful.
-	 */
-	public boolean connect(SensorType t, int ch){
-		if(!power || ch < 0 || ch > CH_MAX-1) return false;
-		channels[ch].setSensor(t);
-		channels[ch].disable();
-		return true;
-	}
-	
-	/**
-	 * Disconnects the specified channel and disables it.
-	 * @param ch - The specified channel.
-	 * @return True if operation was successful.
-	 */
-	public boolean disconnect(int ch){
-		if(!power || ch < 0 || ch > CH_MAX-1) return false;
-		channels[ch].setSensor(SensorType.NONE);
-		channels[ch].disable();
-		return true;
-	}
-	
-	/**
-	 * Triggers the given channel.
-	 * @param ch - The channel that should be triggered.
-	 * @return True if the operation was successful.
-	 */
-	public boolean trigger(int ch){
-		if(!power || runs.get(current_run).finished || ch < 0 || ch > CH_MAX-1 || !channels[ch].isEnabled()) return false;
-		
-		//Implement trigger here.
-		
-		return true;
-	}
-	
-	/**
-	 * Sets the next racer to finish to not finish and leave the race.
-	 */
-	public void doNotFin(){
-		runs.get(current_run).racers.getLast().ended=true;
-	}
-	
-	/**
 	 * Creates a new run.
 	 * @return True if operation was successful, otherwise false if the chrono timer is off or the current race has not ended.
 	 */
-	public boolean newRun(){
-		if(!power) return false;
-		//if "runs" is not empty and last runs was not finished >> false
-		if(!runs.isEmpty() && !runs.get(current_run).finished) return false;
-		runs.add(new TRun());
-		current_run++;
-		return true;
+	public Run newRun(){
+		if(!power || !runs.isEmpty() && !runs.get(current_run).finished) return null;
+		TRun result = new TRun(++current_run);
+		runs.add(result);
+		return result;
 	}
 	
 	/**
@@ -157,13 +116,30 @@ public class TChronoTimer {
 	public boolean swap(){
 		return false;
 	}
-	
-	/**
-	 * Print out specific run into standard out format.
-	 * @param run
-	 * @return racer's records in run. start, end, and a lap time each line.
-	 */
-	public String print(int run){
-		return runs.get(run).toString();
+
+	@Override
+	public List<Channel> getChannels() {
+		return safe_channels;
+	}
+
+	@Override
+	public List<Run> getRuns() {
+		return safe_runs;
+	}
+
+	@Override
+	public boolean trigger(Channel c) {
+		if(!power || c == null || !c.isEnabled()) return false;
+		//TODO Implement trigger here.
+		return true;
+	}
+
+	@Override
+	public boolean doNotFinish() {
+		if(!power || runs.get(current_run).finished) return false;
+		TRun run = runs.get(current_run);
+		if(run.finished || run.getRacers().isEmpty()) return false;
+		run.racers.getLast().ended = true;
+		return true;
 	}
 }

@@ -2,7 +2,10 @@
 public interface Channel {
 	
 	public int getID();
+	
 	public SensorType getSensorType();
+	public void SetSensorType(SensorType s);
+	
 	public boolean isEnabled();
 	public boolean setEnabled(boolean e);
 	

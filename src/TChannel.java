@@ -94,5 +94,11 @@ public class TChannel implements Channel {
 		enabled = e;
 		return old == enabled;
 	}
+
+	@Override
+	public void SetSensorType(SensorType s) {
+		if(s == null) s = SensorType.NONE;
+		t = s;
+	}
 	
 }

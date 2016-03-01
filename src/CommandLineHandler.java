@@ -155,7 +155,7 @@ public class CommandLineHandler {
 		scommands = new HashSet<Command>();
 		
 		addCommand(new Command("help","[command]...","Lists given or all commands.","?") {
-			public boolean execute(PrintStream stream, TChronoTimer timer, String[] args) {
+			public boolean execute(PrintStream stream, ChronoTimer timer, String[] args) {
 				Collection<Command> cm;
 				if(args.length == 0) {
 					cm = scommands;
@@ -182,14 +182,14 @@ public class CommandLineHandler {
 		});
 		
 		addCommand(new Command("quit", "", "Quits the entire simulator.", 0, 0, "exit", "q", "stop") {
-			public boolean execute(PrintStream stream, TChronoTimer timer, String[] args) {
+			public boolean execute(PrintStream stream, ChronoTimer timer, String[] args) {
 				getSingleton().keepRunning = false;
 				return true;
 			}
 		});
 		
 		addCommand(new Command("power", "[on/off]", "Toggles the power on/off for the Chrono timer.", 0, 1, "pow") {
-			public boolean execute(PrintStream stream, TChronoTimer timer, String[] args) {
+			public boolean execute(PrintStream stream, ChronoTimer timer, String[] args) {
 				if(args.length == 0) {
 					if(timer.togglePower())
 						stream.println("Chronotimer has powered on.");
@@ -210,21 +210,21 @@ public class CommandLineHandler {
 		});
 		
 		addCommand(new Command("on", "", "Turns the chrono timer on.", 0, 0) {
-			public boolean execute(PrintStream stream, TChronoTimer timer, String[] args) {
+			public boolean execute(PrintStream stream, ChronoTimer timer, String[] args) {
 				getSingleton().executeCommand("power on");
 				return true;
 			}
 		});
 		
 		addCommand(new Command("off", "", "Turns the chrono timer off.", 0, 0) {
-			public boolean execute(PrintStream stream, TChronoTimer timer, String[] args) {
+			public boolean execute(PrintStream stream, ChronoTimer timer, String[] args) {
 				getSingleton().executeCommand("power off");
 				return true;
 			}
 		});
 		
 		addCommand(new Command("time", "", "Sets the current time.", 1, 1, "settime") {
-			public boolean execute(PrintStream stream, TChronoTimer timer, String[] args) {
+			public boolean execute(PrintStream stream, ChronoTimer timer, String[] args) {
 				//Requires TimeManager to be implemented.
 				stream.println("Time is not implemented yet.");
 				return true;
@@ -232,7 +232,7 @@ public class CommandLineHandler {
 		});
 		
 		addCommand(new Command("reset", "", "Resets the chrono timer back to initial state.", 0, 0) {
-			public boolean execute(PrintStream stream, TChronoTimer timer, String[] args) {
+			public boolean execute(PrintStream stream, ChronoTimer timer, String[] args) {
 				timer.reset();
 				stream.println("Chronotimer has been reset.");
 				return true;
@@ -240,7 +240,7 @@ public class CommandLineHandler {
 		});
 		
 		addCommand(new Command("num", "<number>", "Sets <number> as the next competetor to start.", 1, 1, "queue") {
-			public boolean execute(PrintStream stream, TChronoTimer timer, String[] args) {
+			public boolean execute(PrintStream stream, ChronoTimer timer, String[] args) {
 				try {
 					int number = Integer.parseInt(args[0]);
 				} catch(NumberFormatException e) {
@@ -253,7 +253,7 @@ public class CommandLineHandler {
 		});
 		
 		addCommand(new Command("clear", "<number>", "Clear <number> as the next competetor.", 1, 1, "clr", "dequeue") {
-			public boolean execute(PrintStream stream, TChronoTimer timer, String[] args) {
+			public boolean execute(PrintStream stream, ChronoTimer timer, String[] args) {
 				try {
 					int number = Integer.parseInt(args[0]);
 				} catch(NumberFormatException e) {
@@ -266,21 +266,21 @@ public class CommandLineHandler {
 		});
 		
 		addCommand(new Command("swap", "", "Swaps the front two racers positions in the current run.", 0, 0) {
-			public boolean execute(PrintStream stream, TChronoTimer timer, String[] args) {
+			public boolean execute(PrintStream stream, ChronoTimer timer, String[] args) {
 				timer.swap();
 				return true;
 			}
 		});
 		
 		addCommand(new Command("dnf", "", "The next competetor to finish will not finish.", 0, 0) {
-			public boolean execute(PrintStream stream, TChronoTimer timer, String[] args) {
-				timer.doNotFin();
+			public boolean execute(PrintStream stream, ChronoTimer timer, String[] args) {
+				timer.doNotFinish();
 				return true;
 			}
 		});
 		
 		addCommand(new Command("trigger", "<channel>", "Triggers a certain channel.", 1, 1, "trig") {
-			public boolean execute(PrintStream stream, TChronoTimer timer, String[] args) {
+			public boolean execute(PrintStream stream, ChronoTimer timer, String[] args) {
 				//Implement when we have API for chronotimer written.
 				stream.println("Trigger is not implemented yet.");
 				return true;
@@ -288,19 +288,19 @@ public class CommandLineHandler {
 		});
 		
 		addCommand(new Command("start", "", "Triggers the first channel.") {
-			public boolean execute(PrintStream stream, TChronoTimer timer, String[] args) {
+			public boolean execute(PrintStream stream, ChronoTimer timer, String[] args) {
 				return getSingleton().executeCommand("trigger 1");
 			}
 		});
 		
 		addCommand(new Command("finish", "", "Triggers the second channel.") {
-			public boolean execute(PrintStream stream, TChronoTimer timer, String[] args) {
+			public boolean execute(PrintStream stream, ChronoTimer timer, String[] args) {
 				return getSingleton().executeCommand("trigger 2");
 			}
 		});
 		
 		addCommand(new Command("connect", "<sensor> <channel>", "Connects a specific sensor to a specific channel.", 2, 2, "conn") {
-			public boolean execute(PrintStream stream, TChronoTimer timer, String[] args) {
+			public boolean execute(PrintStream stream, ChronoTimer timer, String[] args) {
 				//Implement when we have API for chronotimer written.
 				stream.println("Connect is not implemented yet.");
 				return true;
@@ -308,7 +308,7 @@ public class CommandLineHandler {
 		});
 		
 		addCommand(new Command("disconnect", "<channel>", "Disconnects a sensor from channel <channel>.", 1, 1, "disc") {
-			public boolean execute(PrintStream stream, TChronoTimer timer, String[] args) {
+			public boolean execute(PrintStream stream, ChronoTimer timer, String[] args) {
 				//Implement when we have API for chronotimer written.
 				stream.println("Disconnect is not implemented yet.");
 				return true;
@@ -316,7 +316,7 @@ public class CommandLineHandler {
 		});
 		
 		addCommand(new Command("event", "<type>", "Sets the current run with the given event type.", 1, 1) {
-			public boolean execute(PrintStream stream, TChronoTimer timer, String[] args) {
+			public boolean execute(PrintStream stream, ChronoTimer timer, String[] args) {
 				//Implement when we have API for chronotimer written.
 				stream.println("Event is not implemented yet.");
 				return true;
@@ -324,7 +324,7 @@ public class CommandLineHandler {
 		});
 		
 		addCommand(new Command("newrun", "", "Creates a new run.(Must end a run first)", 0, 0) {
-			public boolean execute(PrintStream stream, TChronoTimer timer, String[] args) {
+			public boolean execute(PrintStream stream, ChronoTimer timer, String[] args) {
 				//Implement when we have API for chronotimer written.
 				stream.println("Newrun is not implemented yet.");
 				return true;
@@ -332,7 +332,7 @@ public class CommandLineHandler {
 		});
 		
 		addCommand(new Command("endrun", "", "Done with the current run.", 0, 0) {
-			public boolean execute(PrintStream stream, TChronoTimer timer, String[] args) {
+			public boolean execute(PrintStream stream, ChronoTimer timer, String[] args) {
 				//Implement when we have API for chronotimer written.
 				stream.println("Endrun is not implemented yet.");
 				return true;
@@ -340,7 +340,7 @@ public class CommandLineHandler {
 		});
 		
 		addCommand(new Command("print", "<run>", "Prints the given run.", 1, 1) {
-			public boolean execute(PrintStream stream, TChronoTimer timer, String[] args) {
+			public boolean execute(PrintStream stream, ChronoTimer timer, String[] args) {
 				try {
 					int number = Integer.parseInt(args[0]);
 				} catch(NumberFormatException e) {
@@ -353,7 +353,7 @@ public class CommandLineHandler {
 		});
 		
 		addCommand(new Command("export", "<run>", "Exports the given run.", 1, 1) {
-			public boolean execute(PrintStream stream, TChronoTimer timer, String[] args) {
+			public boolean execute(PrintStream stream, ChronoTimer timer, String[] args) {
 				try {
 					int number = Integer.parseInt(args[0]);
 				} catch(NumberFormatException e) {
