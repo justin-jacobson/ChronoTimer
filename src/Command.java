@@ -17,9 +17,9 @@ public abstract class Command {
 	 * @param args - The list of arguments thrown with the command.
 	 * @return true if the command had proper arguments, false if arguments were improper and could not execute.
 	 */
-	public abstract boolean execute(PrintStream stream, ChronoTimer timer, String[] args);
+	public abstract boolean execute(PrintStream stream, TChronoTimer timer, String[] args);
 	
-	public boolean run(PrintStream stream, ChronoTimer timer, String[] args) {
+	public boolean run(PrintStream stream, TChronoTimer timer, String[] args) {
 		boolean result;
 		if(args.length > maximum_args || args.length < minimum_args || !(result = execute(stream, timer, args))) {
 			stream.println("Wrong syntax, " + this + " | " + usage);
