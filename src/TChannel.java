@@ -9,7 +9,7 @@ public class TChannel implements Channel {
 	/**
 	 * The ChronoTimer that this channel is owned by.
 	 */
-	public final ChronoTimer timer;
+	public final TChronoTimer timer;
 	
 	/**
 	 * The sensor that is attached to this channel.
@@ -50,27 +50,27 @@ public class TChannel implements Channel {
 		return timer.trigger(id);
 	}
 	
-	public TChannel(ChronoTimer timer, int id) {
+	public TChannel(TChronoTimer timer, int id) {
 		this.id = id;
 		this.timer = timer;
 		t = SensorType.NONE;
 		enabled = false;
 	}
 	
-	public TChannel(ChronoTimer timer, int id, boolean enabled) {
+	public TChannel(TChronoTimer timer, int id, boolean enabled) {
 		this.id = id;
 		this.timer = timer;
 		this.enabled = enabled;
 	}
 	
-	public TChannel(ChronoTimer timer, int id, SensorType t) {
+	public TChannel(TChronoTimer timer, int id, SensorType t) {
 		this.id = id;
 		this.timer = timer;
 		this.t = t;
 		enabled = false;
 	}
 	
-	public TChannel(ChronoTimer timer, int id, SensorType t, boolean enabled) {
+	public TChannel(TChronoTimer timer, int id, SensorType t, boolean enabled) {
 		this.id = id;
 		this.timer = timer;
 		this.t = t;
