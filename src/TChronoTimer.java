@@ -130,12 +130,17 @@ public class TChronoTimer implements ChronoTimer {
 	@Override
 	public boolean trigger(Channel c) {
 		if(!power || c == null || !c.isEnabled()||this.getLatestRun().isFinished()) return false;
-		//TODO Implement trigger here.
-		TRun cur=(TRun)this.getLatestRun();
+		TRun cur = (TRun)getLatestRun();
 		if((c.getID()%2)==1){
-			
+			TRacer racer = cur.toStart.pop();
+			if(racer == null) return false;
+			racer.start = TimeManager.getTime();
+			cur.toEnd.addLast(racer);
 		}else{
-			
+			TRacer racer = cur.toEnd.pop();
+			if(racer == null) return false;
+			racer.finish = TimeManager.getTime();
+			racer.ended = true;
 		}
 		return true;
 	}

@@ -8,22 +8,22 @@ public class TRun implements Run {
 	private final ChronoTimer timer;
 	protected final int id;
 	protected EventType e;
-	protected LinkedList<TRacer> racers;
+	protected LinkedList<TRacer> racers, toStart, toEnd;
 	protected List<Racer> safe_racers;
 	protected boolean finished;
-	private boolean started;
 	
-	private TRacer front;
-	private TRacer back;
+	protected int front;
+	protected int back;
 	
 	public TRun(ChronoTimer timer, int id){
 		this.timer=timer;
 		this.id = id;
 		e=EventType.IND;
 		racers=new LinkedList<TRacer>();
+		toStart = new LinkedList<TRacer>();
+		toEnd = new LinkedList<TRacer>();
 		safe_racers = Collections.unmodifiableList(racers);
 		finished=false;
-		started=false;
 	}
 	
 	public TRun(ChronoTimer timer,int id, EventType t){
@@ -31,6 +31,8 @@ public class TRun implements Run {
 		this.id = id;
 		e=t;
 		racers=new LinkedList<TRacer>();
+		toStart = new LinkedList<TRacer>();
+		toEnd = new LinkedList<TRacer>();
 		safe_racers = Collections.unmodifiableList(racers);
 		finished=false;
 	}
@@ -52,17 +54,26 @@ public class TRun implements Run {
 		this.e=event;
 	}
 	
+	public boolean hasStarted() {
+		if(finished) return true;
+		if(racers.isEmpty()) return false;
+		return racers.getFirst().start != -1;
+	}
+	
 	public Racer addRacer(int id){
 		if(!timer.isOn()&&finished) return null;
 		TRacer newRacer=new TRacer(id);
 		racers.addFirst(newRacer);
+		toStart.addFirst(newRacer);
 		return newRacer;
 	}
 	
 	public boolean removeRacer(int target){
 		if(!timer.isOn()&&finished) return false;
-		return racers.remove(target)!=null;
-		
+		boolean result = racers.remove(target)!=null;
+		if(result)
+			toStart.remove(target);
+		return result;
 	}
 
 	@Override
