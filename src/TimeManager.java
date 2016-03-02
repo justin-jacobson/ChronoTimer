@@ -1,5 +1,4 @@
 
-import java.util.concurrent.*;
 import java.util.concurrent.TimeUnit;
 
 
@@ -34,10 +33,11 @@ public class TimeManager {
 	 * @return "hour:min:sec"
 	 */
 	public static String formatTime(long input){
-		return String.format("%d:%d:%d",
+		return String.format("%d:%d:%d.%d",
 					TimeUnit.MILLISECONDS.toHours(input),
 					TimeUnit.MILLISECONDS.toMinutes(input) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(input)),
-					TimeUnit.MILLISECONDS.toSeconds(input) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(input)));
+					TimeUnit.MILLISECONDS.toSeconds(input) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(input)),
+					TimeUnit.MILLISECONDS.toMillis(input) - TimeUnit.SECONDS.toMillis(TimeUnit.MILLISECONDS.toSeconds(input)));
 	}
 	public static long subtractTime(long first, long second){
 		return first-second;
