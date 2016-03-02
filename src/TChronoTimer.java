@@ -38,7 +38,7 @@ public class TChronoTimer implements ChronoTimer {
 		
 		runs = new ArrayList<TRun>();
 		safe_runs = Collections.unmodifiableList(runs);
-		runs.add(new TRun(1)); // Always starts at run 1 by default.
+		runs.add(new TRun(this, 1)); // Always starts at run 1 by default.
 	}
 	
 	public boolean isOn() {
@@ -74,7 +74,7 @@ public class TChronoTimer implements ChronoTimer {
 			channels[i].disable();
 		}
 		runs.clear();
-		runs.add(new TRun(1));
+		runs.add(new TRun(this, 1));
 		current_run = 1;
 		// Reset time?
 		return true;
@@ -96,7 +96,7 @@ public class TChronoTimer implements ChronoTimer {
 	 */
 	public Run newRun(){
 		if(!power || !runs.isEmpty() && !runs.get(current_run).finished) return null;
-		TRun result = new TRun(++current_run);
+		TRun result = new TRun(this, ++current_run);
 		runs.add(result);
 		return result;
 	}

@@ -78,7 +78,7 @@ public class CommandLineHandler {
 	/**
 	 * The chronotimer being simulated.
 	 */
-	private final TChronoTimer timer;
+	private final ChronoTimer timer;
 	/**
 	 * The stream that all output should be sent to.
 	 */
@@ -142,7 +142,7 @@ public class CommandLineHandler {
 		
 	}
 	
-	public CommandLineHandler(TChronoTimer t, PrintStream s) {
+	public CommandLineHandler(ChronoTimer t, PrintStream s) {
 		timer = t;
 		scan = new Scanner(System.in);
 		stream = s;

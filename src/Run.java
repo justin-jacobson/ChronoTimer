@@ -8,5 +8,7 @@ public interface Run {
 	public List<Racer> getRacers();
 	public Racer getLast();
 	public boolean isFinished();
+	public Racer addRacer();
+	public boolean removeRacer(int target);
 	
 }

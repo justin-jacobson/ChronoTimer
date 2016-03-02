@@ -5,6 +5,7 @@ import java.util.List;
 
 public class TRun implements Run {
 	
+	private final ChronoTimer timer;
 	protected final int id;
 	protected final long start;
 	protected EventType e;
@@ -13,7 +14,9 @@ public class TRun implements Run {
 	private int front;
 	protected boolean finished;
 	
-	public TRun(int id){
+	
+	public TRun(ChronoTimer timer, int id){
+		this.timer=timer;
 		this.id = id;
 		start = System.currentTimeMillis();
 		e=EventType.IND;
@@ -23,7 +26,8 @@ public class TRun implements Run {
 		finished=false;
 	}
 	
-	public TRun(int id, EventType t){
+	public TRun(ChronoTimer timer,int id, EventType t){
+		this.timer=timer;
 		this.id = id;
 		start = System.currentTimeMillis();
 		e=t;
@@ -50,8 +54,17 @@ public class TRun implements Run {
 		this.e=event;
 	}
 	
-	public void addRacer(){
-		racers.add(new TRacer(++front));
+	public Racer addRacer(){
+		if(!timer.isOn()&&finished) return null;
+		TRacer newRacer=new TRacer(++front);
+		racers.addFirst(newRacer);
+		return newRacer;
+	}
+	
+	public boolean removeRacer(int target){
+		if(!timer.isOn()&&finished) return false;
+		return racers.remove(target)!=null;
+		
 	}
 
 	@Override
