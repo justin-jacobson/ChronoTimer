@@ -28,14 +28,14 @@ public class TRacer implements Racer {
 	public boolean didNotFinish() {
 		return ended && finish == -1;
 	}
-
+	
 	@Override
 	public long getStartTime() {
 		return start;
 	}
 
 	@Override
-	public long getEndTime() {
+	public long getFinishTime() {
 		return finish;
 	}
 }

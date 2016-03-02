@@ -7,33 +7,31 @@ public class TRun implements Run {
 	
 	private final ChronoTimer timer;
 	protected final int id;
-	protected final long start;
 	protected EventType e;
 	protected LinkedList<TRacer> racers;
 	protected List<Racer> safe_racers;
-	private int front;
 	protected boolean finished;
+	private boolean started;
 	
+	private TRacer front;
+	private TRacer back;
 	
 	public TRun(ChronoTimer timer, int id){
 		this.timer=timer;
 		this.id = id;
-		start = System.currentTimeMillis();
 		e=EventType.IND;
 		racers=new LinkedList<TRacer>();
 		safe_racers = Collections.unmodifiableList(racers);
-		front=-1;
 		finished=false;
+		started=false;
 	}
 	
 	public TRun(ChronoTimer timer,int id, EventType t){
 		this.timer=timer;
 		this.id = id;
-		start = System.currentTimeMillis();
 		e=t;
 		racers=new LinkedList<TRacer>();
 		safe_racers = Collections.unmodifiableList(racers);
-		front=-1;
 		finished=false;
 	}
 	/**
@@ -54,9 +52,9 @@ public class TRun implements Run {
 		this.e=event;
 	}
 	
-	public Racer addRacer(){
+	public Racer addRacer(int id){
 		if(!timer.isOn()&&finished) return null;
-		TRacer newRacer=new TRacer(++front);
+		TRacer newRacer=new TRacer(id);
 		racers.addFirst(newRacer);
 		return newRacer;
 	}

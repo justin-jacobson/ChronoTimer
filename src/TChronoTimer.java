@@ -34,7 +34,7 @@ public class TChronoTimer implements ChronoTimer {
 		channels = new TChannel[ChronoTimer.MAXIMUM_CHANNELS];
 		safe_channels = Collections.unmodifiableList(Arrays.asList(channels));
 		for(int i=0; i<ChronoTimer.MAXIMUM_CHANNELS; i++)
-			channels[i] = new TChannel(this,i);
+			channels[i] = new TChannel(this,i+1);
 		
 		runs = new ArrayList<TRun>();
 		safe_runs = Collections.unmodifiableList(runs);
@@ -129,8 +129,14 @@ public class TChronoTimer implements ChronoTimer {
 
 	@Override
 	public boolean trigger(Channel c) {
-		if(!power || c == null || !c.isEnabled()) return false;
+		if(!power || c == null || !c.isEnabled()||this.getLatestRun().isFinished()) return false;
 		//TODO Implement trigger here.
+		TRun cur=(TRun)this.getLatestRun();
+		if((c.getID()%2)==1){
+			
+		}else{
+			
+		}
 		return true;
 	}
 

@@ -5,11 +5,11 @@ public interface Racer {
 	public boolean didNotFinish();
 	
 	public long getStartTime();
-	public long getEndTime();
+	public long getFinishTime();
 	
 	public default long getElapsedTime() {
 		if(didNotFinish()) return -1;
-		return getEndTime() - getStartTime();
+		return getFinishTime() - getStartTime();
 	}
 	
 	
