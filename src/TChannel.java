@@ -92,11 +92,12 @@ public class TChannel implements Channel {
 		if (!timer.isOn()) return false;
 		boolean old = enabled;
 		enabled = e;
-		return old == enabled;
+		return old != enabled;
 	}
 
 	@Override
 	public void SetSensorType(SensorType s) {
+		if (!timer.isOn()) return;
 		if(s == null) s = SensorType.NONE;
 		t = s;
 	}
