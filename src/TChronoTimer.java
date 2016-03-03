@@ -96,7 +96,7 @@ public class TChronoTimer implements ChronoTimer {
 	 */
 	public Run newRun(){
 		if(!power || !runs.isEmpty() && !runs.get(current_run).finished) return null;
-		TRun result = new TRun(this, ++current_run);
+		TRun result = new TRun(this, ++current_run + 1);
 		runs.add(result);
 		return result;
 	}
@@ -109,6 +109,9 @@ public class TChronoTimer implements ChronoTimer {
 		if(!power || runs.get(current_run).finished) return false;
 		//Gun Q: is there something to check before make it finish?
 		runs.get(current_run).finished=true;
+		for(TRacer r : runs.get(current_run).toEnd) {
+			r.ended = true;
+		}
 		return true;
 	}
 	
@@ -132,13 +135,13 @@ public class TChronoTimer implements ChronoTimer {
 		if(!power || c == null || !c.isEnabled()||this.getLatestRun().isFinished()) return false;
 		TRun cur = (TRun)getLatestRun();
 		if((c.getID()%2)==1){
+			if(cur.toStart.isEmpty()) return false;
 			TRacer racer = cur.toStart.pop();
-			if(racer == null) return false;
 			racer.start = TimeManager.getTime();
 			cur.toEnd.addLast(racer);
 		}else{
+			if(cur.toEnd.isEmpty()) return false;
 			TRacer racer = cur.toEnd.pop();
-			if(racer == null) return false;
 			racer.finish = TimeManager.getTime();
 			racer.ended = true;
 		}
@@ -150,7 +153,24 @@ public class TChronoTimer implements ChronoTimer {
 		if(!power || runs.get(current_run).finished) return false;
 		TRun run = runs.get(current_run);
 		if(run.finished || run.getRacers().isEmpty()) return false;
-		run.racers.getLast().ended = true;
+		TRacer r = run.toEnd.getFirst();
+		if(r == null) {
+			r = run.toStart.getFirst();
+			if(r == null) return false;
+		}
+		r.ended = true;
 		return true;
+	}
+
+	@Override
+	public boolean setEvent(EventType event) {
+		if(!power || event == null) return false;
+		runs.get(current_run).setEventType(event);
+		return true;
+	}
+
+	@Override
+	public Run getLatestRun() {
+		return runs.get(current_run);
 	}
 }

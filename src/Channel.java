@@ -17,6 +17,13 @@ public interface Channel {
 		return setEnabled(false);
 	}
 	
+	public default boolean toggle() {
+		if(isEnabled())
+			return disable();
+		else
+			return enable();
+	}
+	
 	/**
 	 * Triggers this channel.
 	 * @return

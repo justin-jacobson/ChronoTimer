@@ -28,12 +28,12 @@ public interface ChronoTimer {
 		return true;
 	}
 	
+	public boolean setEvent(EventType event);
+	
 	public List<Channel> getChannels();
 	public List<Run> getRuns();
 	
-	public default Run getLatestRun() {
-		return getRuns().get(getRuns().size()-1);
-	}
+	public Run getLatestRun();
 	
 	public Run newRun();
 	public boolean endRun();
@@ -43,8 +43,8 @@ public interface ChronoTimer {
 	public boolean trigger(Channel c);
 	
 	public default boolean trigger(int c) {
-		if(c < 0 || c > MAXIMUM_CHANNELS) return false;
-		return getChannels().get(c).trigger();
+		if(c < 1 || c > MAXIMUM_CHANNELS) return false;
+		return trigger(getChannels().get(c-1));
 	}
 	
 	public default boolean connect(SensorType s, Channel c) {
@@ -56,8 +56,8 @@ public interface ChronoTimer {
 	}
 	
 	public default boolean connect(SensorType s, int c) {
-		if(c < 0 || c > MAXIMUM_CHANNELS) return false;
-		return connect(s,getChannels().get(c));
+		if(c < 1 || c > MAXIMUM_CHANNELS) return false;
+		return connect(s,getChannels().get(c-1));
 	}
 	
 	public default boolean disconnect(Channel c) {
@@ -68,8 +68,8 @@ public interface ChronoTimer {
 	}
 	
 	public default boolean disconnect(int c) {
-		if(c < 0 || c > MAXIMUM_CHANNELS) return false;
-		return disconnect(getChannels().get(c));
+		if(c < 1 || c > MAXIMUM_CHANNELS) return false;
+		return disconnect(getChannels().get(c-1));
 	}
 	
 	public boolean doNotFinish();

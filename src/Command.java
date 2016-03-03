@@ -22,7 +22,7 @@ public abstract class Command {
 	public boolean run(PrintStream stream, ChronoTimer timer, String[] args) {
 		boolean result;
 		if(args.length > maximum_args || args.length < minimum_args || !(result = execute(stream, timer, args))) {
-			stream.println("Wrong syntax, " + this + " | " + usage);
+			stream.println("Wrong syntax, " + args.length + " " + this + " " + usage);
 			return false;
 		}
 		return result;

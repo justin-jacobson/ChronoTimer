@@ -11,12 +11,18 @@ public class TimeManager {
 	 */
 	public static void setTime(String time){
 		String format[] = time.split(":");
-		format[0] = format[0].substring(5);
-
-		system_time = intoMillisecs(format);
+		if(time.contains("."))
+			format[2] = format[2].substring(0,format[2].indexOf("."));
+		system_time = System.currentTimeMillis() - intoMillisecs(format);
 	}
-
-	private static long intoMillisecs(String[] unformatted) {
+	
+	public static long intoMillisecs(String unformatted) {
+		String[] s = unformatted.split(":");
+		s[s.length-1] = s[s.length-1].substring(0, s[s.length-1].indexOf("."));
+		return intoMillisecs(s);
+	}
+	
+	public static long intoMillisecs(String[] unformatted) {
 		long hrs, mins, secs;
 
 		hrs = TimeUnit.MILLISECONDS.convert(Long.parseLong(unformatted[0]), TimeUnit.HOURS);
@@ -33,6 +39,7 @@ public class TimeManager {
 	 * @return "hour:min:sec"
 	 */
 	public static String formatTime(long input){
+		if(input < 0) return "NOT RECORDED";
 		return String.format("%d:%d:%d.%d",
 					TimeUnit.MILLISECONDS.toHours(input),
 					TimeUnit.MILLISECONDS.toMinutes(input) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(input)),
