@@ -1,9 +1,14 @@
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.PrintStream;
+import java.util.AbstractMap;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.concurrent.TimeUnit;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -120,6 +125,46 @@ public class CommandLineHandler {
 		return true;
 	}
 	
+	public void executeFile(String path) {
+		executeFile(new File(path));
+	}
+	
+	public void executeFile(File f) {
+		if(f == null || !f.exists() || !f.isFile()) return;
+		Scanner in;
+		try {
+			in = new Scanner(f);
+		} catch (FileNotFoundException e) {
+			System.out.println("File not found!");
+			return;
+		}
+		String line;
+		Entry<Long,String> delayedCommand;
+		line = in.nextLine();
+		executeCommand(extractCommandFileLine(line).getValue());
+		while(in.hasNext()) {
+			line = in.nextLine();
+			delayedCommand = extractCommandFileLine(line);
+			if(delayedCommand == null) break;
+			try {
+				if(delayedCommand.getKey() - TimeManager.getTime() > 0) {
+					TimeUnit.MILLISECONDS.sleep(delayedCommand.getKey() - TimeManager.getTime());
+				}
+			} catch (InterruptedException e) {
+				System.out.println("Failed to wait due to Interruption.");
+			}
+			executeCommand(delayedCommand.getValue());
+		}
+		in.close();
+	}
+	
+	private Entry<Long,String> extractCommandFileLine(String line) {
+		String stime = line.substring(0,line.indexOf("	"));
+		String command = line.substring(line.indexOf("	"),line.length()).replace("	", "");
+		long time = TimeManager.intoMillisecs(stime);
+		return new AbstractMap.SimpleEntry<Long,String>(time,command);
+	}
+	
 	/**
 	 * The main CLI loop. It blocks waiting for input from the user then executes the given command until it should quit.
 	 * @param s - The stream it should send all output to.
@@ -198,10 +243,16 @@ public class CommandLineHandler {
 					return true;
 				} else if(args.length == 1) {
 					if(args[0].equalsIgnoreCase("on")) {
-						timer.setPower(true);
+						if(!timer.setPower(true))
+							stream.println("Timer was already on.");
+						else
+							stream.println("Timer has turned on.");
 						return true;
 					} else if(args[0].equalsIgnoreCase("off")) {
-						timer.setPower(false);
+						if(!timer.setPower(false))
+							stream.println("Timer was already off.");
+						else
+							stream.println("Timer has turned off.");
 						return true;
 					}
 				}
@@ -225,8 +276,8 @@ public class CommandLineHandler {
 		
 		addCommand(new Command("time", "", "Sets the current time.", 1, 1, "settime") {
 			public boolean execute(PrintStream stream, ChronoTimer timer, String[] args) {
-				//Requires TimeManager to be implemented.
-				stream.println("Time is not implemented yet.");
+				TimeManager.setTime(args[0]);
+				System.out.println("Set time to " + args[0]);
 				return true;
 			}
 		});
@@ -243,11 +294,13 @@ public class CommandLineHandler {
 			public boolean execute(PrintStream stream, ChronoTimer timer, String[] args) {
 				try {
 					int number = Integer.parseInt(args[0]);
+					if(timer.getLatestRun().addRacer(number) != null)
+						stream.println("Successfully added racer " + number);
+					else
+						stream.println("Failed to add racer " + number);
 				} catch(NumberFormatException e) {
 					return false;
 				}
-				//Implement when we have API for chronotimer written.
-				stream.println("Num is not implemented yet.");
 				return true;
 			}
 		});
@@ -256,11 +309,13 @@ public class CommandLineHandler {
 			public boolean execute(PrintStream stream, ChronoTimer timer, String[] args) {
 				try {
 					int number = Integer.parseInt(args[0]);
+					if(timer.getLatestRun().removeRacer(number))
+						stream.println("Successfully removed racer " + number);
+					else
+						stream.println("Failed to remove racer " + number);
 				} catch(NumberFormatException e) {
 					return false;
 				}
-				//Implement when we have API for chronotimer written.
-				stream.println("Clear is not implemented yet.");
 				return true;
 			}
 		});
@@ -281,8 +336,15 @@ public class CommandLineHandler {
 		
 		addCommand(new Command("trigger", "<channel>", "Triggers a certain channel.", 1, 1, "trig") {
 			public boolean execute(PrintStream stream, ChronoTimer timer, String[] args) {
-				//Implement when we have API for chronotimer written.
-				stream.println("Trigger is not implemented yet.");
+				try {
+					int number = Integer.parseInt(args[0]);
+					if(!timer.trigger(number))
+						stream.println("Failed to trigger channel " + number);
+					else
+						stream.println("Successfully triggered channel " + number);
+				} catch(NumberFormatException e) {
+					return false;
+				}
 				return true;
 			}
 		});
@@ -299,55 +361,139 @@ public class CommandLineHandler {
 			}
 		});
 		
+		addCommand(new Command("toggle", "<channel>", "Connects a specific sensor to a specific channel.", 1, 1, "togg") {
+			public boolean execute(PrintStream stream, ChronoTimer timer, String[] args) {
+				try {
+					int c = Integer.parseInt(args[0]);
+					if(c < 1 || c > ChronoTimer.MAXIMUM_CHANNELS) {
+						stream.println("Invalid channel id, must be from 1-12");
+					}
+					Channel ch = timer.getChannels().get(c-1);
+					if(!ch.toggle())
+						stream.println("Failed to toggle channel " + ch.getID());
+					else {
+						if(ch.isEnabled())
+							stream.println("Channel " + ch.getID() + " is now enabled.");
+						else
+							stream.println("Channel " + ch.getID() + " is now disabled.");
+					}
+				} catch(NumberFormatException e) {
+					stream.println("Channel id must be a number.");
+					return false;
+				}
+				return true;
+			}
+		});
+		
 		addCommand(new Command("connect", "<sensor> <channel>", "Connects a specific sensor to a specific channel.", 2, 2, "conn") {
 			public boolean execute(PrintStream stream, ChronoTimer timer, String[] args) {
-				//Implement when we have API for chronotimer written.
-				stream.println("Connect is not implemented yet.");
+				SensorType s = SensorType.valueOf(args[0]);
+				if(s == null) {
+					stream.println("No sensor called " + args[0]);
+					return true;
+				}
+				try {
+					int c = Integer.parseInt(args[1]);
+					if(c < 0 || c > ChronoTimer.MAXIMUM_CHANNELS) {
+						stream.println("Invalid channel id!");
+					}
+					if(timer.connect(s, c))
+						stream.println("Connected " + s + " sensor to channel " + c);
+					else
+						stream.println("Failed to connect channel " + c);
+				} catch(NumberFormatException e) {
+					stream.println("Channel id must be a number.");
+					return false;
+				}
 				return true;
 			}
 		});
 		
 		addCommand(new Command("disconnect", "<channel>", "Disconnects a sensor from channel <channel>.", 1, 1, "disc") {
 			public boolean execute(PrintStream stream, ChronoTimer timer, String[] args) {
-				//Implement when we have API for chronotimer written.
-				stream.println("Disconnect is not implemented yet.");
+				try {
+					int c = Integer.parseInt(args[0]);
+					if(c < 0 || c > ChronoTimer.MAXIMUM_CHANNELS) {
+						stream.println("Invalid channel id!");
+					}
+					if(!timer.disconnect(c))
+						stream.println("Failed to disconnect channel " + c);
+				} catch(NumberFormatException e) {
+					return false;
+				}
 				return true;
 			}
 		});
 		
 		addCommand(new Command("event", "<type>", "Sets the current run with the given event type.", 1, 1) {
 			public boolean execute(PrintStream stream, ChronoTimer timer, String[] args) {
-				//Implement when we have API for chronotimer written.
-				stream.println("Event is not implemented yet.");
+				EventType event;
+				try {
+					event = EventType.valueOf(args[0].toUpperCase());
+				} catch(IllegalArgumentException e) {
+					stream.println("No event type called " + args[0]);
+					return true;
+				}
+				if(timer.setEvent(event))
+					stream.println("Successfully set event to " + event);
+				else
+					stream.println("Failed to set event to " + event);
 				return true;
 			}
 		});
 		
 		addCommand(new Command("newrun", "", "Creates a new run.(Must end a run first)", 0, 0) {
 			public boolean execute(PrintStream stream, ChronoTimer timer, String[] args) {
-				//Implement when we have API for chronotimer written.
-				stream.println("Newrun is not implemented yet.");
+				Run run = timer.newRun();
+				if(run != null)
+					stream.println("Successfully created new run " + run.getID());
+				else
+					stream.println("Failed to create new run!");
 				return true;
 			}
 		});
 		
 		addCommand(new Command("endrun", "", "Done with the current run.", 0, 0) {
 			public boolean execute(PrintStream stream, ChronoTimer timer, String[] args) {
-				//Implement when we have API for chronotimer written.
-				stream.println("Endrun is not implemented yet.");
+				if(timer.endRun())
+					stream.println("Ended run " + timer.getLatestRun().getID());
+				else
+					stream.println("Failed to end run!");
 				return true;
 			}
 		});
 		
-		addCommand(new Command("print", "<run>", "Prints the given run.", 1, 1) {
+		addCommand(new Command("print", "[run]", "Prints the given run.", 0, 1) {
 			public boolean execute(PrintStream stream, ChronoTimer timer, String[] args) {
 				try {
-					int number = Integer.parseInt(args[0]);
+					int rid;
+					if(args.length == 1)
+						rid = Integer.parseInt(args[0])-1;
+					else
+						rid = timer.getLatestRun().getID()-1;
+					if(rid < 0 || rid >= timer.getRuns().size()) {
+						stream.println("No run found.");
+						return true;
+					}
+					Run run = timer.getRuns().get(rid);
+					if(run == null) {
+						stream.println("No run found with id of " + rid);
+						return true;
+					}
+					stream.println("Run " + run.getID());
+					stream.println("====================");
+					for(Racer r : run.getRacers()) {
+						stream.print("Racer " + r.getID() + ": ");
+						if(r.didNotFinish()) {
+							stream.println(TimeManager.formatTime(r.getStartTime()) + " - DNF");
+						} else {
+							stream.println(TimeManager.formatTime(r.getStartTime()) + " - " + TimeManager.formatTime(r.getFinishTime()));
+						}
+					}
 				} catch(NumberFormatException e) {
+					stream.println("Must enter valid run number.");
 					return false;
 				}
-				//Implement when we have API for chronotimer written.
-				stream.println("print is not implemented yet.");
 				return true;
 			}
 		});
@@ -361,6 +507,13 @@ public class CommandLineHandler {
 				}
 				//Implement in later sprints.
 				stream.println("Export is not implemented yet.");
+				return true;
+			}
+		});
+		
+		addCommand(new Command("execute", "<file path>", "Executes file.", 1, 1, "exec") {
+			public boolean execute(PrintStream stream, ChronoTimer timer, String[] args) {
+				getSingleton().executeFile(args[0]);
 				return true;
 			}
 		});
