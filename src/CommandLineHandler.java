@@ -8,7 +8,6 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.concurrent.TimeUnit;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -125,10 +124,18 @@ public class CommandLineHandler {
 		return true;
 	}
 	
+	/**
+	 * Executes file located at given path.
+	 * @param path - The path of the file that should be executed.
+	 */
 	public void executeFile(String path) {
 		executeFile(new File(path));
 	}
 	
+	/**
+	 * Executes a given file.
+	 * @param f - The file that should be executed.
+	 */
 	public void executeFile(File f) {
 		if(f == null || !f.exists() || !f.isFile()) return;
 		Scanner in;
@@ -146,13 +153,7 @@ public class CommandLineHandler {
 			line = in.nextLine();
 			delayedCommand = extractCommandFileLine(line);
 			if(delayedCommand == null) break;
-			try {
-				if(delayedCommand.getKey() - TimeManager.getTime() > 0) {
-					TimeUnit.MILLISECONDS.sleep(delayedCommand.getKey() - TimeManager.getTime());
-				}
-			} catch (InterruptedException e) {
-				System.out.println("Failed to wait due to Interruption.");
-			}
+			TimeManager.setTime(TimeManager.formatTime(delayedCommand.getKey()));
 			executeCommand(delayedCommand.getValue());
 		}
 		in.close();
@@ -501,6 +502,7 @@ public class CommandLineHandler {
 		addCommand(new Command("export", "<run>", "Exports the given run.", 1, 1) {
 			public boolean execute(PrintStream stream, ChronoTimer timer, String[] args) {
 				try {
+					@SuppressWarnings("unused")
 					int number = Integer.parseInt(args[0]);
 				} catch(NumberFormatException e) {
 					return false;
