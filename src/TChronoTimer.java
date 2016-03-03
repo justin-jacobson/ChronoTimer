@@ -28,37 +28,15 @@ public class TChronoTimer implements ChronoTimer {
 	 */
 	private int current_run;
 	
-	public TChronoTimer(){ 
-		power = false;
-		
-		channels = new TChannel[ChronoTimer.MAXIMUM_CHANNELS];
-		safe_channels = Collections.unmodifiableList(Arrays.asList(channels));
-		for(int i=0; i<ChronoTimer.MAXIMUM_CHANNELS; i++)
-			channels[i] = new TChannel(this,i+1);
-		
-		runs = new ArrayList<TRun>();
-		safe_runs = Collections.unmodifiableList(runs);
-		runs.add(new TRun(this, 1)); // Always starts at run 1 by default.
-	}
-	
 	public boolean isOn() {
 		return power;
 	}
 	
-	/**
-	 * Toggles the power of the chrono timer.
-	 * @return True if operation was sucessful.
-	 */
 	public boolean togglePower(){
 		power = !power;
 		return true;
 	}
 	
-	/**
-	 * Sets the power state of the chrono timer.
-	 * @param pow - The power state the chrono timer should have.
-	 * @return True if the state was changed, false if it was already set to given state.
-	 */
 	public boolean setPower(boolean pow) {
 		boolean result = power != pow;
 		power = pow;
@@ -75,7 +53,7 @@ public class TChronoTimer implements ChronoTimer {
 		}
 		runs.clear();
 		runs.add(new TRun(this, 1));
-		current_run = 1;
+		current_run = 0;
 		// Reset time?
 		return true;
 	}
@@ -86,8 +64,8 @@ public class TChronoTimer implements ChronoTimer {
 	 * @return True if the operation was successful.
 	 */
 	public boolean toggleChanel(int ch){
-		if(!power) return false;
-		return channels[ch].toggle();
+		if(!power || ch < 1 || ch > channels.length-1) return false;
+		return channels[ch-1].toggle();
 	}
 	
 	/**
@@ -107,11 +85,9 @@ public class TChronoTimer implements ChronoTimer {
 	 */
 	public boolean endRun(){
 		if(!power || runs.get(current_run).finished) return false;
-		//Gun Q: is there something to check before make it finish?
 		runs.get(current_run).finished=true;
-		for(TRacer r : runs.get(current_run).toEnd) {
+		for(TRacer r : runs.get(current_run).toEnd)
 			r.ended = true;
-		}
 		return true;
 	}
 	
@@ -119,35 +95,37 @@ public class TChronoTimer implements ChronoTimer {
 	public boolean swap(){
 		return false;
 	}
-
+	
 	@Override
 	public List<Channel> getChannels() {
 		return safe_channels;
 	}
-
+	
+	
 	@Override
 	public List<Run> getRuns() {
 		return safe_runs;
 	}
-
+	
 	@Override
 	public boolean trigger(Channel c) {
 		if(!power || c == null || !c.isEnabled()||this.getLatestRun().isFinished()) return false;
+		long time = TimeManager.getTime();
 		TRun cur = (TRun)getLatestRun();
-		if((c.getID()%2)==1){
+		if(c.getID() == 1){
 			if(cur.toStart.isEmpty()) return false;
 			TRacer racer = cur.toStart.pop();
-			racer.start = TimeManager.getTime();
+			racer.start = time;
 			cur.toEnd.addLast(racer);
-		}else{
+		}else if(c.getID() == 2){
 			if(cur.toEnd.isEmpty()) return false;
 			TRacer racer = cur.toEnd.pop();
-			racer.finish = TimeManager.getTime();
+			racer.finish = time;
 			racer.ended = true;
 		}
 		return true;
 	}
-
+	
 	@Override
 	public boolean doNotFinish() {
 		if(!power || runs.get(current_run).finished) return false;
@@ -161,16 +139,30 @@ public class TChronoTimer implements ChronoTimer {
 		r.ended = true;
 		return true;
 	}
-
+	
 	@Override
 	public boolean setEvent(EventType event) {
 		if(!power || event == null) return false;
 		runs.get(current_run).setEventType(event);
 		return true;
 	}
-
+	
 	@Override
 	public Run getLatestRun() {
 		return runs.get(current_run);
 	}
+	
+	public TChronoTimer() {
+		power = false;
+		
+		channels = new TChannel[ChronoTimer.MAXIMUM_CHANNELS];
+		safe_channels = Collections.unmodifiableList(Arrays.asList(channels));
+		for(int i=0; i<ChronoTimer.MAXIMUM_CHANNELS; i++)
+			channels[i] = new TChannel(this,i+1);
+		
+		runs = new ArrayList<TRun>();
+		safe_runs = Collections.unmodifiableList(runs);
+		runs.add(new TRun(this, 1)); // Always starts at run 1 by default.
+	}
+	
 }
