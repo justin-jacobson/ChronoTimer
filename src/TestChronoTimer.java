@@ -116,23 +116,38 @@ public class TestChronoTimer {
 	public void testRunner() {
 		TChronoTimer timer = new TChronoTimer();
 		assertTrue(timer.isOn());
+		TimeManager.setTime("00:00:00");
+		timer.toggleChanel(1); timer.toggleChanel(2);
 		LinkedList<TRacer> racers = new LinkedList<TRacer>();
 		
-		//create list of 10 racers, test initial conditions are set properly
 		for(int i = 0; i < 10; i++) {
 			racers.add(new TRacer(i));
+			
 			assertEquals(racers.get(i).getID(), i);
-			//since didNotFinish returns if both start/end time aren't set
-			//this can be used to test if initial conditions are correct.
-			assertTrue(racers.get(i).didNotFinish());
+			assertEquals(racers.get(i).getStartTime(), -1);
+			assertEquals(racers.get(i).getFinishTime(), -1);
 			assertFalse(racers.get(i).ended);
+			
+			timer.getLatestRun().addRacer(i);
 		}
 		
-		Run latest = timer.getLatestRun();
-		for(TRacer r : racers) latest.addRacer(r.getID());
-		//Start a race and test that each runner has a valid start/end time
-		//not equal to -1. Then test that finish time > start time
-		
+		List<Channel> channels = timer.getChannels();
+		for(int i = 0; i < 10; i++) {
+			long st, fin;
+			timer.trigger(channels.get(0));
+			st = timer.getLatestRun().getRacers().get(i).getStartTime();
+			
+			assertFalse(st == -1);
+			assertFalse(timer.getLatestRun().getRacers().get(i).didNotFinish());
+			
+			timer.trigger(channels.get(1));
+			fin = timer.getLatestRun().getRacers().get(i).getFinishTime();
+			
+			assertFalse(fin == -1);
+			assertTrue(fin-st > 0);	
+			assertFalse(timer.getLatestRun().getRacers().get(i).didNotFinish());
+			
+		}
 	}
 	
 	/**
