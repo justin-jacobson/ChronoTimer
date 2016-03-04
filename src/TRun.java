@@ -69,8 +69,8 @@ public class TRun implements Run {
 	}
 	
 	public boolean removeRacer(int target){
-		if(!timer.isOn()&&finished) return false;
-		boolean result = racers.remove(target)!=null;
+		if(!timer.isOn()||finished || (racers.size()<=target)) return false;
+		boolean result = (racers.remove(target)!=null);
 		if(result)
 			toStart.remove(target);
 		return result;
