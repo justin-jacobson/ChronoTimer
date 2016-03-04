@@ -482,7 +482,7 @@ public class CommandLineHandler {
 						return true;
 					}
 					stream.println("Run " + run.getID());
-					stream.println("====================");
+					stream.println("===== ID : START - FINISH =====");
 					for(Racer r : run.getRacers()) {
 						stream.print("Racer " + r.getID() + ": ");
 						if(r.didNotFinish()) {
