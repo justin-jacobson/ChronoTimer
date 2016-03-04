@@ -52,8 +52,8 @@ public class TRunTest {
 		assertTrue(one.toStart.get(1)!=null);
 		
 		assertTrue(one.removeRacer(0));
-		assertEquals(one.racers.getFirst().getID(), 0);
-		assertEquals(one.toStart.getFirst().getID(), 0);
+		assertEquals(one.racers.getFirst().getID(), 1);
+		assertEquals(one.toStart.getFirst().getID(), 1);
 		
 	}
 }

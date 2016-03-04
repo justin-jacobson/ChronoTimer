@@ -53,13 +53,20 @@ public class TRun implements Run {
 	public void setEventType(EventType event){
 		this.e=event;
 	}
-	
+	/**
+	 * check this run is started or not
+	 * @return
+	 */
 	public boolean hasStarted() {
 		if(finished) return true;
 		if(racers.isEmpty()) return false;
 		return racers.getFirst().start != -1;
 	}
-	
+	/**
+	 * add Racer to racers list and start list.
+	 * @return new racer which is added to list.
+	 * @param take racers id number
+	 */
 	public Racer addRacer(int id){
 		if(!timer.isOn()&&finished) return null;
 		TRacer newRacer=new TRacer(id);
@@ -67,13 +74,32 @@ public class TRun implements Run {
 		toStart.addFirst(newRacer);
 		return newRacer;
 	}
-	
+	/**
+	 * This method removes the target id racer from racers, start, and finish list.
+	 * @return working correctly or not
+	 * @param target racer's id.
+	 */
 	public boolean removeRacer(int target){
 		if(!timer.isOn()||finished || (racers.size()<=target)) return false;
-		boolean result = (racers.remove(target)!=null);
-		if(result)
-			toStart.remove(target);
-		return result;
+		TRacer temp=racerSearch(target);
+		if(temp!=null){
+			racers.remove(temp);
+			if(toStart.indexOf(temp)!=-1) toStart.remove(temp);
+			if(toEnd.indexOf(temp)!=-1) toEnd.remove(temp);
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	private TRacer racerSearch(int target){
+		Iterator t=racers.iterator();
+		while(t.hasNext()){
+			TRacer cur=(TRacer)t.next();
+			if(cur.getID()==target)
+				return cur;
+		}
+		return null;
 	}
 
 	@Override
