@@ -1,7 +1,7 @@
 import static org.junit.Assert.*;
 
 import java.util.List;
-
+import java.util.LinkedList;
 import org.junit.Test;
 
 
@@ -111,6 +111,28 @@ public class TestChronoTimer {
 		assertRange(second.getFinishTime(), 60*2000 + 20*1000, 3);
 		assertTrue(timer.endRun());
 		assertFalse(timer.endRun());
+	}
+	
+	public void testRunner() {
+		TChronoTimer timer = new TChronoTimer();
+		assertTrue(timer.isOn());
+		LinkedList<TRacer> racers = new LinkedList<TRacer>();
+		
+		//create list of 10 racers, test initial conditions are set properly
+		for(int i = 0; i < 10; i++) {
+			racers.add(new TRacer(i));
+			assertEquals(racers.get(i).getID(), i);
+			//since didNotFinish returns if both start/end time aren't set
+			//this can be used to test if initial conditions are correct.
+			assertTrue(racers.get(i).didNotFinish());
+			assertFalse(racers.get(i).ended);
+		}
+		
+		Run latest = timer.getLatestRun();
+		for(TRacer r : racers) latest.addRacer(r.getID());
+		//Start a race and test that each runner has a valid start/end time
+		//not equal to -1. Then test that finish time > start time
+		
 	}
 	
 	/**
