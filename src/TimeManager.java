@@ -40,10 +40,10 @@ public class TimeManager {
 	 */
 	public static String formatTime(long input){
 		if(input < 0) return "NOT RECORDED";
-		return String.format("%d:%d:%d.%d",
+		return String.format("%d:%s:%s.%d",
 					TimeUnit.MILLISECONDS.toHours(input),
-					TimeUnit.MILLISECONDS.toMinutes(input) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(input)),
-					TimeUnit.MILLISECONDS.toSeconds(input) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(input)),
+					String.format( "%02d",TimeUnit.MILLISECONDS.toMinutes(input) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(input))),
+					String.format( "%02d",TimeUnit.MILLISECONDS.toSeconds(input) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(input))),
 					TimeUnit.MILLISECONDS.toMillis(input) - TimeUnit.SECONDS.toMillis(TimeUnit.MILLISECONDS.toSeconds(input)));
 	}
 	public static long subtractTime(long first, long second){
