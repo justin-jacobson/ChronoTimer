@@ -11,6 +11,15 @@ import java.util.Map.Entry;
 import java.util.Scanner;
 import java.util.Set;
 
+import team.Channel;
+import team.ChronoTimer;
+import team.EventType;
+import team.Racer;
+import team.Run;
+import team.SensorType;
+import team.TChronoTimer;
+import team.TimeManager;
+
 
 public class CommandLineHandler {
 	

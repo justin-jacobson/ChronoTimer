@@ -1,3 +1,4 @@
+package team;
 import static org.junit.Assert.*;
 
 import java.util.List;
@@ -157,7 +158,7 @@ public class TestChronoTimer {
 	 * @param expected - the Expected value
 	 * @param range - The accepted range.
 	 */
-	private void assertRange(long result, long expected, long range) {
+	public static void assertRange(long result, long expected, long range) {
 		assertFalse(Math.abs(result-expected) > range);
 	}
 	

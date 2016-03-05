@@ -1,3 +1,4 @@
+package team;
 
 public enum SensorType {
 	

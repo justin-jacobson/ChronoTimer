@@ -1,9 +1,10 @@
+package team;
 
 import java.util.concurrent.TimeUnit;
 
 
 public class TimeManager {
-	private static long system_time;
+	private static long epoch;
 	/**
 	 * Get input from user. "TIME hour:min:sec" string format.
 	 * Set system_time from 'time' to 'system_time'.
@@ -13,7 +14,7 @@ public class TimeManager {
 		String format[] = time.split(":");
 		if(time.contains("."))
 			format[2] = format[2].substring(0,format[2].indexOf("."));
-		system_time = System.currentTimeMillis() - intoMillisecs(format);
+		epoch = System.currentTimeMillis() - intoMillisecs(format);
 	}
 	
 	public static long intoMillisecs(String unformatted) {
@@ -31,7 +32,7 @@ public class TimeManager {
 		return (hrs + mins + secs);
 	}
 	public static long getTime(){
-		return subtractTime(System.currentTimeMillis(),system_time);
+		return subtractTime(System.currentTimeMillis(),epoch);
 	}
 	/**
 	 * get absolute time and return into "hour:min:sec" string format.
