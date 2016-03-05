@@ -51,9 +51,9 @@ public class TestChronoTimer {
 			//Test Channel enable/disable/connect
 			for(int j=0; j<10; ++j) {
 				SensorType s = SensorType.values()[(int)(Math.random()*SensorType.values().length)];
-				c.SetSensorType(s);
+				c.setSensorType(s);
 				assertEquals(s, c.getSensorType());
-				c.SetSensorType(SensorType.NONE);
+				c.setSensorType(SensorType.NONE);
 				assertEquals(SensorType.NONE, c.getSensorType());
 				assertTrue(timer.disconnect(i));
 				assertFalse(c.isEnabled());

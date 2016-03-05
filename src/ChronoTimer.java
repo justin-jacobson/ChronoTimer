@@ -101,7 +101,7 @@ public interface ChronoTimer {
 		if(!isOn() || c == null) return false;
 		if(s == null) s = SensorType.NONE;
 		c.setEnabled(false);
-		c.SetSensorType(s);
+		c.setSensorType(s);
 		return true;
 	}
 	
@@ -124,7 +124,7 @@ public interface ChronoTimer {
 	public default boolean disconnect(Channel c) {
 		if(!isOn() || c == null) return false;
 		c.disable();
-		c.SetSensorType(SensorType.NONE);
+		c.setSensorType(SensorType.NONE);
 		return true;
 	}
 	

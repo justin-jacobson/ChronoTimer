@@ -48,7 +48,7 @@ public class TChronoTimer implements ChronoTimer {
 	 */
 	public boolean reset() {
 		for(int i=0; i<ChronoTimer.MAXIMUM_CHANNELS; i++) {
-			channels[i].setSensor(SensorType.NONE);
+			channels[i].setSensorType(SensorType.NONE);
 			channels[i].disable();
 		}
 		runs.clear();

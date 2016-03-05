@@ -15,7 +15,7 @@ public interface Channel {
 	 * Attaches a sensor to the channel.
 	 * @param s - The type of sensor to attach.
 	 */
-	public void SetSensorType(SensorType s);
+	public void setSensorType(SensorType s);
 	
 	
 	/**
