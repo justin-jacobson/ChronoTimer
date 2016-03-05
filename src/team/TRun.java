@@ -92,7 +92,11 @@ public class TRun implements Run {
 			return false;
 		}
 	}
-	
+	/**
+	 * private method to find out the target id racer
+	 * @param target
+	 * @return the target id racer
+	 */
 	private TRacer racerSearch(int target){
 		Iterator t=racers.iterator();
 		while(t.hasNext()){
