@@ -115,6 +115,7 @@ public class TestChronoTimer {
 	
 	public void testRunner() {
 		TChronoTimer timer = new TChronoTimer();
+		timer.setPower(true);
 		assertTrue(timer.isOn());
 		TimeManager.setTime("00:00:00");
 		timer.toggleChanel(1); timer.toggleChanel(2);
