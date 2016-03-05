@@ -17,12 +17,22 @@ public class TimeManager {
 		epoch = System.currentTimeMillis() - intoMillisecs(format);
 	}
 	
+	/**
+	 * Converts a string into the number of milliseconds that string represents
+	 * @param unformatted - an unformatted string to be converted into milliseconds
+	 * @return a long containing the number of milliseconds that unformatted represents
+	 */
 	public static long intoMillisecs(String unformatted) {
 		String[] s = unformatted.split(":");
 		s[s.length-1] = s[s.length-1].substring(0, s[s.length-1].indexOf("."));
 		return intoMillisecs(s);
 	}
 	
+	/**
+	 * Converts a string into the number of milliseconds that string represents
+	 * @param unformatted - an unformatted string to be converted into milliseconds
+	 * @return a long containing the number of milliseconds that unformatted represents
+	 */
 	public static long intoMillisecs(String[] unformatted) {
 		long hrs, mins, secs;
 
@@ -31,13 +41,19 @@ public class TimeManager {
 		secs = TimeUnit.MILLISECONDS.convert(Long.parseLong(unformatted[2]), TimeUnit.SECONDS);
 		return (hrs + mins + secs);
 	}
+	
+	/**
+	 * Returns the internal system time - the time we set (epoch)
+	 * @return internal system time - the time we set (epoch)
+	 */
 	public static long getTime(){
 		return subtractTime(System.currentTimeMillis(),epoch);
 	}
+	
 	/**
 	 * get absolute time and return into "hour:min:sec" string format.
-	 * @param input(system_time)
-	 * @return "hour:min:sec"
+	 * @param input - epoch
+	 * @return string formatted as "hour:min:sec"
 	 */
 	public static String formatTime(long input){
 		if(input < 0) return "NOT RECORDED";
@@ -47,6 +63,13 @@ public class TimeManager {
 					String.format( "%02d",TimeUnit.MILLISECONDS.toSeconds(input) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(input))),
 					TimeUnit.MILLISECONDS.toMillis(input) - TimeUnit.SECONDS.toMillis(TimeUnit.MILLISECONDS.toSeconds(input)));
 	}
+	
+	/**
+	 * Return the difference between the two supplied times
+	 * @param first - time to subtract from
+	 * @param second - time to subtract
+	 * @return difference between the two times
+	 */
 	public static long subtractTime(long first, long second){
 		return first-second;
 	}
