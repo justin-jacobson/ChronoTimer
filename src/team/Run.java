@@ -36,7 +36,16 @@ public interface Run {
 	 */
 	public Racer addRacer(int id);
 	
+	/**
+	 * Ends this run if it is not finished yet.
+	 * @return True if the run was ended successfully.
+	 */
 	public boolean endRun();
+	
+	/**
+	 * Sets the next racer in the run to not finish.
+	 * @return True if the operation was successful.
+	 */
 	public boolean doNotFinish();
 	
 	/**
