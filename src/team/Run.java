@@ -36,6 +36,9 @@ public interface Run {
 	 */
 	public Racer addRacer(int id);
 	
+	public boolean endRun();
+	public boolean doNotFinish();
+	
 	/**
 	 * Removes a racer from the race. This can only before the race has started.
 	 * @param target - The racer that should be removed from the race.

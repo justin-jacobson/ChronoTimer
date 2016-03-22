@@ -66,7 +66,7 @@ public class TChronoTimer implements ChronoTimer {
 			channels[i].disable();
 		}
 		runs.clear();
-		runs.add(new TRun(this, 1));
+		runs.add(TRun.getDefaultRun(this, 1));
 		current_run = 0;
 		// Reset time?
 		return true;
@@ -88,21 +88,9 @@ public class TChronoTimer implements ChronoTimer {
 	 */
 	public Run newRun(){
 		if(!power || !runs.isEmpty() && !runs.get(current_run).finished) return null;
-		TRun result = new TRun(this, ++current_run + 1);
+		TRun result = TRun.getDefaultRun(this, ++current_run + 1);
 		runs.add(result);
 		return result;
-	}
-	
-	/**
-	 * Ends the current run.
-	 * @return True if the operation was successful. false if Chrono Timer is off or latest run already ended.
-	 */
-	public boolean endRun(){
-		if(!power || runs.get(current_run).finished) return false;
-		runs.get(current_run).finished=true;
-		for(TRacer r : runs.get(current_run).toEnd)
-			r.ended = true;
-		return true;
 	}
 	
 	//NO NEED TO IMPLEMENT NOW
@@ -133,40 +121,7 @@ public class TChronoTimer implements ChronoTimer {
 	 */
 	@Override
 	public boolean trigger(Channel c) {
-		if(!power || c == null || !c.isEnabled()||this.getLatestRun().isFinished()) return false;
-		long time = TimeManager.getTime();
-		TRun cur = (TRun)getLatestRun();
-		if(c.getID() == 1){
-			if(cur.toStart.isEmpty()) return false;
-			TRacer racer = cur.toStart.pop();
-			racer.start = time;
-			cur.toEnd.addLast(racer);
-		}else if(c.getID() == 2){
-			if(cur.toEnd.isEmpty()) return false;
-			TRacer racer = cur.toEnd.pop();
-			racer.finish = time;
-			racer.ended = true;
-		}
-		return true;
-	}
-	
-	/**
-	 * Flags a runner as "Do Not Finish."
-	 * @return True if the runner was successfully flagged
-	 * @return False if there are no runners to flag or the run is finished
-	 */
-	@Override
-	public boolean doNotFinish() {
-		if(!power || runs.get(current_run).finished) return false;
-		TRun run = runs.get(current_run);
-		if(run.finished || run.getRacers().isEmpty()) return false;
-		TRacer r = run.toEnd.getFirst();
-		if(r == null) {
-			r = run.toStart.getFirst();
-			if(r == null) return false;
-		}
-		r.ended = true;
-		return true;
+		return getLatestRun().trigger(c);
 	}
 	
 	/**
@@ -185,7 +140,7 @@ public class TChronoTimer implements ChronoTimer {
 	 * @return The current/latest run on this ChonoTimer
 	 */
 	@Override
-	public Run getLatestRun() {
+	public TRun getLatestRun() {
 		return runs.get(current_run);
 	}
 	
@@ -205,7 +160,17 @@ public class TChronoTimer implements ChronoTimer {
 		
 		runs = new ArrayList<TRun>();
 		safe_runs = Collections.unmodifiableList(runs);
-		runs.add(new TRun(this, 1)); // Always starts at run 1 by default.
+		runs.add(TRun.getDefaultRun(this, 1)); // Always starts at run 1 by default.
+	}
+
+	@Override
+	public boolean endRun() {
+		return getLatestRun().endRun();
+	}
+
+	@Override
+	public boolean doNotFinish() {
+		return getLatestRun().endRun();
 	}
 	
 }
