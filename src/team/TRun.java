@@ -38,7 +38,12 @@ public abstract class TRun implements Run {
 		return id;
 	}
 	
-	public abstract boolean trigger(Channel c);
+	public boolean trigger(Channel c) {
+		if(!timer.isOn() || c == null || !c.isEnabled()|| isFinished()) return false;
+		return safeTrigger(c);
+	}
+	
+	protected abstract boolean safeTrigger(Channel c);
 	
 	public TRun(ChronoTimer timer,int id, EventType t){
 		this.timer=timer;

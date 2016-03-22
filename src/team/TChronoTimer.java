@@ -121,7 +121,6 @@ public class TChronoTimer implements ChronoTimer {
 	 */
 	@Override
 	public boolean trigger(Channel c) {
-		if(!power || c == null || !c.isEnabled()|| getLatestRun().isFinished()) return false;
 		return getLatestRun().trigger(c);
 	}
 	

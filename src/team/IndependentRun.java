@@ -24,7 +24,7 @@ public class IndependentRun extends TRun {
 	}
 	
 	@Override
-	public boolean trigger(Channel c) {
+	public boolean safeTrigger(Channel c) {
 		long time = TimeManager.getTime();
 		if(c.getID() == 1){
 			if(toStart.isEmpty()) return false;

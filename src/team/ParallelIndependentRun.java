@@ -47,8 +47,8 @@ public class ParallelIndependentRun extends TRun {
 	}
 
 	@Override
-	public boolean trigger(Channel c) {
-		// TODO Auto-generated method stub
+	public boolean safeTrigger(Channel c) {
+		long time = TimeManager.getTime();
 		return false;
 	}
 	
