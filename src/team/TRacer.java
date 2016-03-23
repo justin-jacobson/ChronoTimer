@@ -1,6 +1,21 @@
 package team;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class TRacer implements Racer {
+	
+	protected static final Map<Integer,TRacer> racers = new HashMap<Integer,TRacer>();
+	
+	protected static final TRacer getRacer(int id) {
+		TRacer r = racers.get(id);
+		if(r == null) {
+			r = new TRacer(id);
+			racers.put(id, r);
+		}
+		return r;
+	}
+	
 	private final int id;
 	protected long start;
 	protected long finish;
