@@ -1,6 +1,10 @@
 package team;
 
+import com.google.gson.Gson;
+
 public class Exporter {
+	
+	static final Gson gson = new Gson();
 
 	private class GRun{
 		private int id;
@@ -8,8 +12,9 @@ public class Exporter {
 		
 		public GRun(TRun run){
 			id = run.getID();
+			int i = 0;
 			for(Racer r : run.getRacers()){
-				
+				racers[i] = new GRacer(r);
 			}
 		}
 	}
@@ -20,15 +25,17 @@ public class Exporter {
 		private long finish;
 		private boolean ended;
 		
-		public GRacer(TRacer racer){
+		public GRacer(Racer racer){
 			id = racer.getID();
 			start = racer.getStartTime();
 			finish = racer.getFinishTime();
-			ended = racer.
+			ended = !racer.didNotFinish();
 		}
 	}
 	
-	public void export(int run){
+	public void export(TRun run){
+		GRun grun = new GRun(run);
+		String json = gson.toJson(grun);		//incomplete
 		
 	}
 }
