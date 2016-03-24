@@ -1,6 +1,8 @@
 package team;
 
 import com.google.gson.Gson;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class Exporter {
 	
@@ -35,7 +37,15 @@ public class Exporter {
 	
 	public void export(TRun run){
 		GRun grun = new GRun(run);
-		String json = gson.toJson(grun);		//incomplete
+		String fileName = "Run" + run.getID() + ".txt";
+		String json = gson.toJson(grun);
 		
+		try(FileWriter file = new FileWriter(fileName)) {
+			file.write(json);
+			System.out.println("Copied JSON object into local file");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
