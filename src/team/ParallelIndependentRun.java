@@ -56,7 +56,14 @@ public class ParallelIndependentRun extends TRun {
 	}
 	
 	protected TRacer safeRemoveRacer(int target) {
-		return allRacers.remove(target+1);
+		TRacer r = null;
+		for(TRacer rc : allRacers) {
+			if(rc.id == target) {
+				r = rc;
+				break;
+			}
+		}
+		return r;
 	}
 
 	@Override
@@ -107,7 +114,7 @@ public class ParallelIndependentRun extends TRun {
 		return EventType.PARIND;
 	}
 	
-	public ParallelIndependentRun(ChronoTimer timer, int id) {
+	public ParallelIndependentRun(TChronoTimer timer, int id) {
 		super(timer, id);
 		allRacers = new ArrayList<TRacer>();
 		toStart = new LinkedList<TRacer>();

@@ -138,7 +138,7 @@ public class IndependentRun extends TRun {
 		return EventType.IND;
 	}
 	
-	public IndependentRun(ChronoTimer timer, int id) {
+	public IndependentRun(TChronoTimer timer, int id) {
 		super(timer, id);
 		racers=new LinkedList<TRacer>();
 		toStart = new LinkedList<TRacer>();

@@ -248,7 +248,8 @@ public class CommandLineHandler {
 		addCommand(new Command("power", "[on/off]", "Toggles the power on/off for the Chrono timer.", 0, 1, "pow") {
 			public boolean execute(PrintStream stream, ChronoTimer timer, String[] args) {
 				if(args.length == 0) {
-					if(timer.togglePower())
+					timer.togglePower();
+					if(timer.isOn())
 						stream.println("Chronotimer has powered on.");
 					else
 						stream.println("Chronotimer has powered off.");
