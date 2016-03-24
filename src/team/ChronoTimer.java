@@ -1,5 +1,6 @@
 package team;
 import java.util.List;
+import java.util.Map;
 
 
 public interface ChronoTimer {
@@ -48,6 +49,20 @@ public interface ChronoTimer {
 		else
 			setPower(true);
 		return true;
+	}
+	
+	/**
+	 * @return A map of all the racers associated with this ChronoTimer mapped using their id.
+	 */
+	public Map<Integer,Racer> getRacers();
+	
+	/**
+	 * Determines if a racer exists currently in this ChronoTimer.
+	 * @param id - The id of the racer.
+	 * @return True if the racer has been create, otherwise false.
+	 */
+	public default boolean racerExists(int id) {
+		return getRacers().containsKey(id);
 	}
 	
 	/**

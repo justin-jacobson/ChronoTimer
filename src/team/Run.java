@@ -1,5 +1,6 @@
 package team;
 import java.util.List;
+import java.util.Map;
 
 
 public interface Run {
@@ -20,9 +21,32 @@ public interface Run {
 	public List<Racer> getRacers();
 	
 	/**
+	 * @return A map that maps a racers id to his/her record for this run.
+	 */
+	public Map<Integer,? extends Record> getRecords();
+	
+	/**
+	 * Returns the record for a given racer that is in this run.
+	 * @param r
+	 * @return
+	 */
+	public default Record getRecord(Racer r) {
+		return getRecords().get(r.getID());
+	}
+	
+	public default Record getRecord(int id) {
+		return getRecords().get(id);
+	}
+	
+	/**
 	 * @return The last racer in this run.
 	 */
 	public Racer getLast();
+	
+	/**
+	 * @return True if the run has started or finished. False if it has not started.
+	 */
+	public boolean hasStarted();
 	
 	/**
 	 * @return True if this race has finished.

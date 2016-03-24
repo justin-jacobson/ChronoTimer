@@ -2,7 +2,9 @@ package team;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TChronoTimer implements ChronoTimer {
 	
@@ -30,6 +32,28 @@ public class TChronoTimer implements ChronoTimer {
 	 * The index of the current/latest run.
 	 */
 	private int current_run;
+	
+	/**
+	 * A map that stores all racers that are associated with this ChronoTimer.
+	 */
+	protected final Map<Integer,TRacer> racers = new HashMap<Integer,TRacer>();
+	/**
+	 * A non-modifiable view of all the racers.
+	 */
+	protected final Map<Integer,Racer> safe_racers;
+	
+	public Map<Integer,Racer> getRacers() {
+		return safe_racers;
+	}
+	
+	public final TRacer getRacer(int id) {
+		TRacer r = racers.get(id);
+		if(r == null) {
+			r = new TRacer(id);
+			racers.put(id, r);
+		}
+		return r;
+	}
 	
 	/**
 	 * Checks power status of the ChronoTimer
@@ -133,7 +157,8 @@ public class TChronoTimer implements ChronoTimer {
 	@Override
 	public boolean setEvent(EventType event) {
 		if(!power || event == null) return false;
-		runs.get(current_run).setEventType(event);
+		if(getLatestRun().hasStarted()) return false;
+		runs.set(current_run, event.getNewInstanceFromOld(getLatestRun()));
 		return true;
 	}
 	/**
@@ -160,6 +185,7 @@ public class TChronoTimer implements ChronoTimer {
 		
 		runs = new ArrayList<TRun>();
 		safe_runs = Collections.unmodifiableList(runs);
+		safe_racers = Collections.unmodifiableMap(racers);
 		runs.add(TRun.getDefaultRun(this, 1)); // Always starts at run 1 by default.
 	}
 
