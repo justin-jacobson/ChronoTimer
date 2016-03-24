@@ -14,7 +14,7 @@ public class ParallelIndependentRun extends TRun {
 	protected final LinkedList<TRacer> track1, track2;
 	
 	private boolean started;
-	private TRacer lastStarted;
+	private LinkedList<TRacer> lastStarted;
 	
 	@Override
 	public boolean safeAddRacer(TRacer r) {
@@ -39,14 +39,16 @@ public class ParallelIndependentRun extends TRun {
 	public boolean doNotFinish() {
 		if(!timer.isOn() || finished || getRacers().isEmpty()) return false;
 		TRacer r;
-		if(lastStarted == null) {
+		if(lastStarted.isEmpty()) {
 			if(toStart.isEmpty()) return false;
 			r = toStart.pop();
-			records.get(r.id).ended = true;
-			ended.add(r);
 		} else {
-			r = lastStarted;
+			r = lastStarted.pop();
+			track1.remove(r);
+			track2.remove(r);
 		}
+		records.get(r.id).ended = true;
+		ended.add(r);
 		return false;
 	}
 	
@@ -87,7 +89,7 @@ public class ParallelIndependentRun extends TRun {
 			case 3:
 				r = toStart.poll();
 				if(r == null) break;
-				if(lastStarted == null) lastStarted = r;
+				lastStarted.addLast(r);
 				records.get(r.id).start = time;
 				track.add(r);
 				break;
@@ -96,7 +98,7 @@ public class ParallelIndependentRun extends TRun {
 				r = track.poll();
 				if(r == null) break;
 				records.get(r.id).finish = time;
-				if(r.equals(lastStarted)) lastStarted = null;
+				lastStarted.remove(r);
 				ended.add(r);
 				break;
 		}

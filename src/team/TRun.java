@@ -2,7 +2,7 @@ package team;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,7 +10,7 @@ public abstract class TRun implements Run {
 	
 	protected final TChronoTimer timer;
 	protected final int id;
-	protected final Map<Integer,TRecord> records = new HashMap<Integer,TRecord>();
+	protected final Map<Integer,TRecord> records = new LinkedHashMap<Integer,TRecord>();
 	protected final List<TRecord> recordList = new ArrayList<TRecord>();
 	protected final Map<Integer,TRecord> safe_records;
 	
@@ -74,7 +74,7 @@ public abstract class TRun implements Run {
 	}
 	
 	public boolean trigger(Channel c) {
-		if(!timer.isOn() || c == null || !c.isEnabled() || isFinished()) return false;
+		if(!timer.isOn() || c == null || !c.isEnabled() || c.getSensorType().equals(SensorType.NONE) || isFinished()) return false;
 		return safeTrigger(c);
 	}
 	

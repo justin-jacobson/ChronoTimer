@@ -5,6 +5,11 @@ import java.util.concurrent.TimeUnit;
 
 public class TimeManager {
 	private static long epoch;
+	
+	public static final long getEpoch() {
+		return epoch;
+	}
+	
 	/**
 	 * Get input from user. "TIME hour:min:sec" string format.
 	 * Set system_time from 'time' to 'system_time'.

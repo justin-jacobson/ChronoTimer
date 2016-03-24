@@ -25,10 +25,12 @@ public class Exporter {
 
 	private static class GRun{
 		private final int id;
+		private final long epoch;
 		private GRecord[] records;
 
 		public GRun(TRun run){
 			id = run.id;
+			epoch = TimeManager.getEpoch();
 			records = new GRecord[run.getRecords().values().size()];
 			int i = 0;
 			for(Record r : run.getRecords().values()) {
