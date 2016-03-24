@@ -13,40 +13,37 @@ public class IndependentRun extends TRun {
 	protected int front;
 	protected int back;
 	
-	/**
-	 * check this run is started or not
-	 * @return
-	 */
+	protected boolean started;
+	
+	@Override
 	public boolean hasStarted() {
-		if(finished) return true;
-		if(racers.isEmpty()) return false;
-		return racers.getFirst().start != -1;
+		return started;
 	}
 	
 	@Override
 	public boolean safeTrigger(Channel c) {
 		long time = TimeManager.getTime();
-		if(c.getID() == 1){
+		if(c.getID() == 1) {
 			if(toStart.isEmpty()) return false;
 			TRacer racer = toStart.pop();
-			racer.start = time;
+			records.get(racer.id).start = time;
 			toEnd.addLast(racer);
-		}else if(c.getID() == 2){
+			started = true;
+		} else if(c.getID() == 2) {
 			if(toEnd.isEmpty()) return false;
 			TRacer racer = toEnd.pop();
-			racer.finish = time;
-			racer.ended = true;
+			TRecord rec = records.get(racer.id);
+			rec.finish = time;
+			rec.ended = true;
 		}
 		return true;
 	}
 
 	@Override
-	public Racer addRacer(int r) {
-		if(!timer.isOn()&&finished) return null;
-		TRacer newRacer=new TRacer(id);
-		racers.addFirst(newRacer);
-		toStart.addFirst(newRacer);
-		return newRacer;
+	public boolean safeAddRacer(TRacer r) {
+		racers.addFirst(r);
+		toStart.addFirst(r);
+		return true;
 	}
 	
 	/**
@@ -54,9 +51,9 @@ public class IndependentRun extends TRun {
 	 * @return True if the operation was successful. false if Chrono Timer is off or latest run already ended.
 	 */
 	public boolean endRun() {
-		if(!timer.isOn()) return false;
-		finished=true;
-		for(TRacer r : toEnd)
+		if(!timer.isOn() || finished) return false;
+		finished = true;
+		for(TRecord r : records.values())
 			r.ended = true;
 		return true;
 	}
@@ -74,7 +71,7 @@ public class IndependentRun extends TRun {
 			r = toStart.getFirst();
 			if(r == null) return false;
 		}
-		r.ended = true;
+		records.get(r.id).ended = true;
 		return true;
 	}
 	
@@ -108,16 +105,16 @@ public class IndependentRun extends TRun {
 	 * @return working correctly or not
 	 * @param target racer's id.
 	 */
-	public boolean removeRacer(int target){
-		if(!timer.isOn()||finished || (racers.size()<=target)) return false;
+	protected TRacer safeRemoveRacer(int target) {
+		if((racers.size()<=target)) return null;
 		TRacer temp= racerSearch(target);
 		if(temp!=null){
 			racers.remove(temp);
 			if(toStart.indexOf(temp)!=-1) toStart.remove(temp);
 			if(toEnd.indexOf(temp)!=-1) toEnd.remove(temp);
-			return true;
+			return temp;
 		}else{
-			return false;
+			return null;
 		}
 	}
 	
@@ -136,8 +133,13 @@ public class IndependentRun extends TRun {
 		return null;
 	}
 	
+	@Override
+	public EventType getEventType() {
+		return EventType.IND;
+	}
+	
 	public IndependentRun(ChronoTimer timer, int id) {
-		super(timer, id, EventType.IND);
+		super(timer, id);
 		racers=new LinkedList<TRacer>();
 		toStart = new LinkedList<TRacer>();
 		toEnd = new LinkedList<TRacer>();

@@ -14,7 +14,7 @@ import java.util.Set;
 import team.Channel;
 import team.ChronoTimer;
 import team.EventType;
-import team.Racer;
+import team.Record;
 import team.Run;
 import team.SensorType;
 import team.TChronoTimer;
@@ -492,8 +492,8 @@ public class CommandLineHandler {
 					}
 					stream.println("Run " + run.getID());
 					stream.println("===== ID : START - FINISH =====");
-					for(Racer r : run.getRacers()) {
-						stream.print("Racer " + r.getID() + ": ");
+					for(Record r : run.getRecords().values()) {
+						stream.print("Racer " + r.getRacer().getID() + ": ");
 						if(r.didNotFinish()) {
 							stream.println(TimeManager.formatTime(r.getStartTime()) + " - DNF");
 						} else {

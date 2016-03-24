@@ -1,37 +1,53 @@
 package team;
 
 import com.google.gson.Gson;
+
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.List;
 
 public class Exporter {
 	
 	static final Gson gson = new Gson();
-
+	
+	private class GRecord {
+		private int run, racer;
+		private long start,finish;
+		private boolean ended;
+		GRecord(Record r) {
+			run = r.getRun().getID();
+			racer = r.getRacer().getID();
+			start = r.getStartTime();
+			finish = r.getFinishTime();
+			ended = r.isFinished();
+		}
+	}
+	
 	private class GRun{
-		private int id;
-		private GRacer[] racers;
+		private final int id;
+		private GRecord[] records;
 		
 		public GRun(TRun run){
-			id = run.getID();
+			id = run.id;
+			records = new GRecord[run.getRecords().values().size()];
 			int i = 0;
-			for(Racer r : run.getRacers()){
-				racers[i] = new GRacer(r);
+			for(Record r : run.getRecords().values()) {
+				records[i++] = new GRecord(r);
 			}
 		}
 	}
 	
 	private class GRacer{
-		private int id;
-		private long start;
-		private long finish;
-		private boolean ended;
+		private final int id;
+		private GRecord[] records;
 		
 		public GRacer(Racer racer){
 			id = racer.getID();
-			start = racer.getStartTime();
-			finish = racer.getFinishTime();
-			ended = !racer.didNotFinish();
+			records = new GRecord[racer.getRecords().values().size()];
+			int i = 0;
+			for(Record r : racer.getRecords().values()) {
+				records[i++] = new GRecord(r);
+			}
 		}
 	}
 	

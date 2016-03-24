@@ -133,7 +133,8 @@ public class TChronoTimer implements ChronoTimer {
 	@Override
 	public boolean setEvent(EventType event) {
 		if(!power || event == null) return false;
-		runs.get(current_run).setEventType(event);
+		if(getLatestRun().hasStarted()) return false;
+		runs.set(current_run, event.getNewInstanceFromOld(getLatestRun()));
 		return true;
 	}
 	/**

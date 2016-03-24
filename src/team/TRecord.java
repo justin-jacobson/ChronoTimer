@@ -35,6 +35,8 @@ public class TRecord implements Record {
 	public TRecord(TRun r, TRacer rc) {
 		run = r;
 		racer = rc;
+		start = -1;
+		finish = -1;
 	}
 	
 }
