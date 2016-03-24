@@ -1,7 +1,12 @@
-package team;
+package team.test;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+
+import team.ChronoTimer;
+import team.TChronoTimer;
+import team.TRacer;
+import team.TRun;
 
 public class TestTRun {
 

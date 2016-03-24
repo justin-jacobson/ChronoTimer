@@ -1,9 +1,17 @@
-package team;
+package team.test;
 import static org.junit.Assert.*;
 
 import java.util.List;
 import java.util.LinkedList;
 import org.junit.Test;
+
+import team.Channel;
+import team.ChronoTimer;
+import team.Racer;
+import team.SensorType;
+import team.TChronoTimer;
+import team.TRacer;
+import team.TimeManager;
 
 
 public class TestChronoTimer {

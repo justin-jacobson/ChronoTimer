@@ -1,7 +1,11 @@
-package team;
+package team.test;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+
+import team.SensorType;
+import team.TChannel;
+import team.TChronoTimer;
 
 public class TestChannel {
 

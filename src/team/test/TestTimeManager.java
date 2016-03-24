@@ -1,10 +1,12 @@
-package team;
+package team.test;
 
 
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.Test;
+
+import team.TimeManager;
 
 public class TestTimeManager {
 
