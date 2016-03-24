@@ -1,0 +1,464 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.1.0">
+  <help_text>lt=&lt;&lt;-</help_text>
+  <zoom_level>7</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>553</x>
+      <y>273</y>
+      <w>308</w>
+      <h>378</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Controller&gt;&gt;
+ChronoTimer
+--
+_+ MAXIMUM_CHANNELS : int_
+- power : boolean
+- channels : TChannel[]
+- safe_channels : List&lt;Channel&gt;
+- runs : List&lt;TRun&gt;
+- safe_runs : List&lt;Run&gt;
+- current_run : int
+--
++ isOn() : boolean
++ setPower(on:boolean) : boolean
++ powerOn() : boolean
++ powerOff() : boolean
++ togglePower() : boolean
++ setEvent(event:EventType) : boolean
++ getChannels() : List&lt;Channel&gt;
++ getRuns() : List&lt;Run&gt;
++ getLatestRun() : Run
++ newRun() : Run
++ endRun() : boolean
++ reset() : boolean
++ trigger(c:Channel) : boolean
++ trigger(c:int) : boolean
++ connect(s:SensorType, c:Channel) : boolean
++ connect(s:SensorType, c:int) : boolean
++ disconnect(c:Channel) : boolean
++ disconnect(c:int) : boolean
++ doNotFinish() : boolean
+/+ swap() : boolean/
+--
+Responsibilities
+-- Control machine between User Interface and System </panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>819</x>
+      <y>777</y>
+      <w>210</w>
+      <h>224</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Component&gt;&gt;
+Channel
+--
++ id : int
++ timer : TChronoTimer
+- t : SensorType
+- enabled : boolean
+--
++ getID() : int
++ getSensorType() : SensorType
++ setSensorType(s:SensorType) : void
++ isEnabled() : boolean
++ setEnabled(e:boolean) : boolean
++ enable() : boolean
++ disable() : boolean
++ toggle() : boolean
++ trigger() : boolean
+--
+Responsibilities
+-- Control a Channel attributes</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>378</x>
+      <y>763</y>
+      <w>224</w>
+      <h>217</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Event&gt;&gt;
+Run
+--
+- timer : ChronoTimer
+- id : int
+- finished : boolean
+--
++ getID() : int
++ getEventType() : EventType
++ getRacers() : List&lt;Racer&gt;
++ getLast() ; Racer
++ isFinished() : boolean
++ addRacer(id:int) : Racer
++ endRun() : boolean
++ doNotFinish() : boolean
++ removeRacer(target:int) : boolean
+--
+Responsibilities
+-- store racer's info</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>112</x>
+      <y>112</y>
+      <w>133</w>
+      <h>119</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;?&gt;&gt;
+Exporter
+--
+
+--
+
+--
+Responsibilities
+-- </panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>98</x>
+      <y>784</y>
+      <w>175</w>
+      <h>182</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Entity&gt;&gt;
+Racer
+--
+- id : int
+- start : long
+- finish : long
+- ended : boolean
+--
++ getID() : int
++ didNotFinish() : boolean
++ getStartTime() : long
++ getFinishTime() : long
++ getElapsedTime() : long
+--
+Responsibilities
+-- </panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>567</x>
+      <y>1057</y>
+      <w>91</w>
+      <h>105</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Event&gt;&gt;
+PARIND
+--
+
+--
+
+--
+Responsibilities
+-- </panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>294</x>
+      <y>1057</y>
+      <w>91</w>
+      <h>105</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Event&gt;&gt;
+IND
+--
+
+--
+
+--
+Responsibilities
+-- </panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>399</x>
+      <y>623</y>
+      <w>105</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>EventType
+--
+IND
+PARIND
+GRP
+PARGRP</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1078</x>
+      <y>672</y>
+      <w>91</w>
+      <h>77</h>
+    </coordinates>
+    <panel_attributes>SensorType
+--
+EYE
+GATE
+PAD
+NONE</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>959</x>
+      <y>350</y>
+      <w>238</w>
+      <h>147</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Tool&gt;&gt;
+timeManager
+--
+_- epoch : long_
+--
+_+ setTime(time:String) : void_
+_+ intoMillisecs(unformatted:String) : long_
+_+ intoMillisecs(unformatted:String[]) : long_
+_+ getTime() : long_
+_+ formatTime(input:long) : String_
+_+ subractTime(first:long,second:long) : long_
+--
+Responsibilities
+-- </panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>987</x>
+      <y>35</y>
+      <w>91</w>
+      <h>105</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;?&gt;&gt;
+Command
+--
+
+--
+
+--
+Responsibilities
+-- </panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>665</x>
+      <y>28</y>
+      <w>133</w>
+      <h>119</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;?&gt;&gt;
+CommandLineHandler
+--
+
+--
+
+--
+Responsibilities
+-- </panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>224</x>
+      <y>301</y>
+      <w>133</w>
+      <h>119</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;?&gt;&gt;
+GRacer
+--
+
+--
+
+--
+Responsibilities
+-- </panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>0</x>
+      <y>301</y>
+      <w>133</w>
+      <h>119</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;?&gt;&gt;
+GRun
+--
+
+--
+
+--
+Responsibilities
+-- </panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>574</x>
+      <y>644</y>
+      <w>35</w>
+      <h>133</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=1
+m2=1..n</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;170.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>826</x>
+      <y>644</y>
+      <w>42</w>
+      <h>147</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=1
+m2=2..12</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;190.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>987</x>
+      <y>707</y>
+      <w>105</w>
+      <h>84</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=0..n
+m2=1
+Connect</panel_attributes>
+    <additional_attributes>10.0;100.0;10.0;10.0;130.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>343</x>
+      <y>973</y>
+      <w>154</w>
+      <h>98</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>200.0;10.0;200.0;40.0;10.0;40.0;10.0;120.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>476</x>
+      <y>973</y>
+      <w>147</w>
+      <h>98</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;40.0;190.0;40.0;190.0;120.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>266</x>
+      <y>861</y>
+      <w>126</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=1
+m2=0..n</panel_attributes>
+    <additional_attributes>160.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>490</x>
+      <y>686</y>
+      <w>77</w>
+      <h>91</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m2=0..1
+Designated</panel_attributes>
+    <additional_attributes>10.0;110.0;10.0;30.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>791</x>
+      <y>91</y>
+      <w>210</w>
+      <h>21</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;280.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>714</x>
+      <y>140</y>
+      <w>63</w>
+      <h>147</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=0..n
+m2=1
+Connect</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;190.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>175</x>
+      <y>224</y>
+      <w>147</w>
+      <h>91</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1
+m2=0..1
+Generated</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0;170.0;60.0;170.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>49</x>
+      <y>224</y>
+      <w>105</w>
+      <h>91</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1
+m2=1
+Generated</panel_attributes>
+    <additional_attributes>130.0;10.0;130.0;70.0;10.0;70.0;10.0;110.0</additional_attributes>
+  </element>
+</diagram>
