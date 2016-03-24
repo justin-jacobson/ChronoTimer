@@ -145,4 +145,15 @@ public class IndependentRun extends TRun {
 		safe_racers = Collections.unmodifiableList(racers);
 	}
 	
+	public IndependentRun(TRun old) {
+		super(old);
+		racers=new LinkedList<TRacer>();
+		toStart = new LinkedList<TRacer>();
+		toEnd = new LinkedList<TRacer>();
+		safe_racers = Collections.unmodifiableList(racers);
+		for(TRecord r : old.getRecords().values()) {
+			addRacer(r.getRacer().getID());
+		}
+	}
+	
 }
