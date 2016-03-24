@@ -14,10 +14,12 @@ import java.util.Set;
 import team.Channel;
 import team.ChronoTimer;
 import team.EventType;
+import team.Exporter;
 import team.Record;
 import team.Run;
 import team.SensorType;
 import team.TChronoTimer;
+import team.TRun;
 import team.TimeManager;
 
 
@@ -511,13 +513,11 @@ public class CommandLineHandler {
 		addCommand(new Command("export", "<run>", "Exports the given run.", 1, 1) {
 			public boolean execute(PrintStream stream, ChronoTimer timer, String[] args) {
 				try {
-					@SuppressWarnings("unused")
 					int number = Integer.parseInt(args[0]);
+					Exporter.export((TRun) timer.getRuns().get(number-1));
 				} catch(NumberFormatException e) {
 					return false;
 				}
-				//Implement in later sprints.
-				stream.println("Export is not implemented yet.");
 				return true;
 			}
 		});

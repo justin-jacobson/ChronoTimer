@@ -10,7 +10,7 @@ public class Exporter {
 	
 	static final Gson gson = new Gson();
 	
-	private class GRecord {
+	private static class GRecord {
 		private int run, racer;
 		private long start,finish;
 		private boolean ended;
@@ -23,7 +23,7 @@ public class Exporter {
 		}
 	}
 	
-	private class GRun{
+	private static class GRun{
 		private final int id;
 		private GRecord[] records;
 		
@@ -37,7 +37,7 @@ public class Exporter {
 		}
 	}
 	
-	private class GRacer{
+	private static class GRacer{
 		private final int id;
 		private GRecord[] records;
 		
@@ -51,7 +51,7 @@ public class Exporter {
 		}
 	}
 	
-	public void export(TRun run){
+	public static void export(TRun run) {
 		GRun grun = new GRun(run);
 		String fileName = "Run" + run.getID() + ".txt";
 		String json = gson.toJson(grun);

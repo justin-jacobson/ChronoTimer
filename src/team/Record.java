@@ -2,7 +2,14 @@ package team;
 
 public interface Record {
 	
+	/**
+	 * @return The run that this record is associated with.
+	 */
 	public Run getRun();
+	
+	/**
+	 * @return The racer that this record is associated with.
+	 */
 	public Racer getRacer();
 	
 	/**

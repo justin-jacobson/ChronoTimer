@@ -25,6 +25,11 @@ public interface Run {
 	 */
 	public Map<Integer,? extends Record> getRecords();
 	
+	/**
+	 * Returns the record for a given racer that is in this run.
+	 * @param r
+	 * @return
+	 */
 	public default Record getRecord(Racer r) {
 		return getRecords().get(r.getID());
 	}
