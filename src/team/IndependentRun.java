@@ -66,9 +66,9 @@ public class IndependentRun extends TRun {
 	@Override
 	public boolean doNotFinish() {
 		if(!timer.isOn() || finished || getRacers().isEmpty()) return false;
-		TRacer r = toEnd.getFirst();
+		TRacer r = toEnd.pollFirst();
 		if(r == null) {
-			r = toStart.getFirst();
+			r = toStart.pollFirst();
 			if(r == null) return false;
 		}
 		records.get(r.id).ended = true;
@@ -106,7 +106,6 @@ public class IndependentRun extends TRun {
 	 * @param target racer's id.
 	 */
 	protected TRacer safeRemoveRacer(int target) {
-		if((racers.size()<=target)) return null;
 		TRacer temp= racerSearch(target);
 		if(temp!=null){
 			racers.remove(temp);

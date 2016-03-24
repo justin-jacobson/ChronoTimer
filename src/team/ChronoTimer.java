@@ -76,6 +76,11 @@ public interface ChronoTimer {
 	 */
 	public List<Channel> getChannels();
 	
+	public default Channel getChannel(int id) {
+		if(id < 1 || id > MAXIMUM_CHANNELS) return null;
+		return getChannels().get(id-1);
+	}
+	
 	/**
 	 * Returns list of all of the runs that are associated with this ChronoTimer.
 	 * @return The list of all the runs.

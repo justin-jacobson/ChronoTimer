@@ -196,7 +196,7 @@ public class TChronoTimer implements ChronoTimer {
 
 	@Override
 	public boolean doNotFinish() {
-		return getLatestRun().endRun();
+		return getLatestRun().doNotFinish();
 	}
 	
 }

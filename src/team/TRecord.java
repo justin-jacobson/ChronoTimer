@@ -32,6 +32,11 @@ public class TRecord implements Record {
 		return ended;
 	}
 	
+	@Override
+	public String toString() {
+		return "Record " + racer;
+	}
+	
 	public TRecord(TRun r, TRacer rc) {
 		run = r;
 		racer = rc;

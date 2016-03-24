@@ -1,8 +1,8 @@
 package team;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -11,7 +11,7 @@ public abstract class TRun implements Run {
 	protected final TChronoTimer timer;
 	protected final int id;
 	protected final Map<Integer,TRecord> records = new LinkedHashMap<Integer,TRecord>();
-	protected final List<TRecord> recordList = new ArrayList<TRecord>();
+	protected final LinkedList<TRecord> recordList = new LinkedList<TRecord>();
 	protected final Map<Integer,TRecord> safe_records;
 	
 	protected boolean finished;
@@ -28,7 +28,7 @@ public abstract class TRun implements Run {
 	 * Removes the racer with the given id from the run.
 	 */
 	public boolean removeRacer(int target) {
-		if(!timer.isOn() || hasStarted() || target > records.values().size()) return false;
+		if(!timer.isOn() || hasStarted()) return false;
 		TRacer r = safeRemoveRacer(target);
 		if(r == null) return false;
 		records.remove(r.id);
@@ -50,7 +50,7 @@ public abstract class TRun implements Run {
 		if(!safeAddRacer(racer)) return null;
 		TRecord rec = new TRecord(this,racer);
 		records.put(id, rec);
-		recordList.add(rec);
+		recordList.addFirst(rec);
 		racer.records.put(this.id, rec);
 		return racer;
 	}
@@ -75,7 +75,8 @@ public abstract class TRun implements Run {
 	
 	public boolean trigger(Channel c) {
 		if(!timer.isOn() || c == null || !c.isEnabled() || c.getSensorType().equals(SensorType.NONE) || isFinished()) return false;
-		return safeTrigger(c);
+		safeTrigger(c);
+		return true;
 	}
 	
 	protected abstract boolean safeTrigger(Channel c);
