@@ -1,25 +1,24 @@
 package team;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
 public class ParallelIndependentRun extends TRun {
 	
-	protected final List<TRacer> allRacers;
+	protected final LinkedList<TRacer> allRacers;
 	protected final LinkedList<TRacer> toStart, ended;
 	public final List<Racer> racers;
 	
 	protected final LinkedList<TRacer> track1, track2;
 	
 	private boolean started;
-	private LinkedList<TRacer> lastStarted;
+	private LinkedList<TRacer> lastStarted = new LinkedList<TRacer>();
 	
 	@Override
 	public boolean safeAddRacer(TRacer r) {
-		allRacers.add(r);
-		toStart.add(r);
+		allRacers.addFirst(r);
+		toStart.addFirst(r);
 		return true;
 	}
 
@@ -49,7 +48,7 @@ public class ParallelIndependentRun extends TRun {
 		}
 		records.get(r.id).ended = true;
 		ended.add(r);
-		return false;
+		return true;
 	}
 	
 	@Override
@@ -97,7 +96,9 @@ public class ParallelIndependentRun extends TRun {
 			case 4:
 				r = track.poll();
 				if(r == null) break;
-				records.get(r.id).finish = time;
+				TRecord rec = records.get(r.id);
+				rec.finish = time;
+				rec.ended = true;
 				lastStarted.remove(r);
 				ended.add(r);
 				break;
@@ -118,7 +119,7 @@ public class ParallelIndependentRun extends TRun {
 	
 	public ParallelIndependentRun(TChronoTimer timer, int id) {
 		super(timer, id);
-		allRacers = new ArrayList<TRacer>();
+		allRacers = new LinkedList<TRacer>();
 		toStart = new LinkedList<TRacer>();
 		ended = new LinkedList<TRacer>();
 		track1 = new LinkedList<TRacer>();
@@ -128,7 +129,7 @@ public class ParallelIndependentRun extends TRun {
 	
 	public ParallelIndependentRun(TRun old) {
 		super(old);
-		allRacers = new ArrayList<TRacer>();
+		allRacers = new LinkedList<TRacer>();
 		toStart = new LinkedList<TRacer>();
 		ended = new LinkedList<TRacer>();
 		track1 = new LinkedList<TRacer>();
