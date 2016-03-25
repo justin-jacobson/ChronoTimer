@@ -47,12 +47,13 @@ public class ParallelIndependentRun extends TRun {
 			track2.remove(r);
 		}
 		records.get(r.id).ended = true;
-		ended.add(r);
+		ended.addFirst(r);
 		return true;
 	}
 	
 	@Override
 	public boolean hasStarted() {
+		if(finished) return true;
 		return started;
 	}
 	
