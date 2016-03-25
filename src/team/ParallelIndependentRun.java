@@ -1,6 +1,7 @@
 package team;
 
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -58,14 +59,16 @@ public class ParallelIndependentRun extends TRun {
 	}
 	
 	protected TRacer safeRemoveRacer(int target) {
-		TRacer r = null;
-		for(TRacer rc : allRacers) {
-			if(rc.id == target) {
-				r = rc;
-				break;
+		Iterator<TRacer> it = allRacers.iterator();
+		while(it.hasNext()) {
+			TRacer ir = it.next();
+			if(ir.id == target) {
+				it.remove();
+				toStart.remove(ir);
+				return ir;
 			}
 		}
-		return r;
+		return null;
 	}
 
 	@Override
