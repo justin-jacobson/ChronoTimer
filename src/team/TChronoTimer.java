@@ -89,6 +89,7 @@ public class TChronoTimer implements ChronoTimer {
 			channels[i].setSensorType(SensorType.NONE);
 			channels[i].disable();
 		}
+		racers.clear();
 		runs.clear();
 		runs.add(TRun.getDefaultRun(this, 1));
 		current_run = 0;
