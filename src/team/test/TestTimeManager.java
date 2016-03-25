@@ -25,7 +25,7 @@ public class TestTimeManager {
 			} catch (InterruptedException e) {
 				
 			}
-			TestChronoTimer.assertRange(amount, TimeManager.getTime() - start, 2);
+			TestChronoTimer.assertRange(amount, TimeManager.getTime() - start, 10);
 		}
 		
 	}
