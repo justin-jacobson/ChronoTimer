@@ -52,6 +52,7 @@ public class TestPARIND {
 		race.addRacer(2);
 		//start testing
 		assertTrue(race.removeRacer(1));
+		assertFalse(race.removeRacer(1));
 		assertTrue(race.removeRacer(2));
 	}
 	@Test
