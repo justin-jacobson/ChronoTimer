@@ -48,12 +48,39 @@ public class TestPARIND {
 	public void test_RemoveRacer() {
 		ParallelIndependentRun race =new ParallelIndependentRun(new TChronoTimer(), 1);
 		race.timer.powerOn();
-		race.addRacer(1);
-		race.addRacer(2);
+		TRacer r1 = race.addRacer(1);
+		TRacer r2 = race.addRacer(2);
 		//start testing
+		assertEquals(2,race.allRacers.size());
+		assertEquals(2,race.toStart.size());
+		assertTrue(race.allRacers.contains(r1));
+		assertTrue(race.toStart.contains(r1));
+		assertTrue(race.allRacers.contains(r2));
+		assertTrue(race.toStart.contains(r2));
+		
 		assertTrue(race.removeRacer(1));
+		assertEquals(1,race.allRacers.size());
+		assertEquals(1,race.toStart.size());
+		assertFalse(race.allRacers.contains(r1));
+		assertFalse(race.toStart.contains(r1));
+		assertTrue(race.allRacers.contains(r2));
+		assertTrue(race.toStart.contains(r2));
+		
 		assertFalse(race.removeRacer(1));
+		assertEquals(1,race.allRacers.size());
+		assertEquals(1,race.toStart.size());
+		assertFalse(race.allRacers.contains(r1));
+		assertFalse(race.toStart.contains(r1));
+		assertTrue(race.allRacers.contains(r2));
+		assertTrue(race.toStart.contains(r2));
+		
 		assertTrue(race.removeRacer(2));
+		assertEquals(0,race.allRacers.size());
+		assertEquals(0,race.toStart.size());
+		assertFalse(race.allRacers.contains(r1));
+		assertFalse(race.toStart.contains(r1));
+		assertFalse(race.allRacers.contains(r2));
+		assertFalse(race.toStart.contains(r2));
 	}
 	@Test
 	public void test_Trigger() {
