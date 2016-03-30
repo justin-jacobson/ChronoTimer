@@ -10,9 +10,12 @@ public class TestExporter {
 	TChronoTimer ct = new TChronoTimer();
 	TRun race, race2;
 	
+	Exporter ex;
+	
 	//instantiate two runs with one runner each
 	public void setUp() {
 		ct.powerOn();
+		ex = ct.getExporter();
 		ct.toggleChanel(1);
 		ct.toggleChanel(2);
 		
@@ -33,7 +36,7 @@ public class TestExporter {
 	public void testNullExport() {
 		//tests to be sure null input cannot create a file
 		try{
-			Exporter.export(null);
+			ex.export(null);
 		}
 		catch(NullPointerException e) {
 			assertFalse(foundFile("Run"+null+".txt"));
@@ -44,9 +47,9 @@ public class TestExporter {
 		setUp();
 		
 		//make sure both runs have proper file names and exist
-		Exporter.export(race);
+		ex.export(race);
 		assertTrue(foundFile("Run"+ct.getRuns().get(0).getID()+".txt"));
-		Exporter.export(race2);
+		ex.export(race2);
 		assertTrue(foundFile("Run"+ct.getRuns().get(1).getID()+".txt"));
 	}
 	
@@ -56,7 +59,7 @@ public class TestExporter {
 		String fileB = "", fileAft = "", line = "";
 		setUp();
 
-		Exporter.export(ct.getLatestRun());
+		ex.export(ct.getLatestRun());
 
 		//read in file
 		try {
@@ -74,7 +77,7 @@ public class TestExporter {
 		//reset the run data
 		ct.reset();
 		line = "";
-		Exporter.export(ct.getLatestRun());
+		ex.export(ct.getLatestRun());
 		
 		//read in second file
 		try {

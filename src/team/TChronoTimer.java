@@ -42,6 +42,8 @@ public class TChronoTimer implements ChronoTimer {
 	 */
 	protected final Map<Integer,Racer> safe_racers;
 	
+	protected final JSONExporter exporter = new JSONExporter();
+	
 	public Map<Integer,Racer> getRacers() {
 		return safe_racers;
 	}
@@ -198,6 +200,11 @@ public class TChronoTimer implements ChronoTimer {
 	@Override
 	public boolean doNotFinish() {
 		return getLatestRun().doNotFinish();
+	}
+	
+	@Override
+	public JSONExporter getExporter() {
+		return exporter;
 	}
 	
 }

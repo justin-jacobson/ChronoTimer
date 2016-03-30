@@ -3,7 +3,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public interface Run {
+public interface Run extends Exportable {
 	
 	/**
 	 * @return The runs id.

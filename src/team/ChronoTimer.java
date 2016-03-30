@@ -171,4 +171,9 @@ public interface ChronoTimer {
 	 */
 	public boolean swap();
 	
+	/**
+	 * @return The default exporter used by this chronotimer.
+	 */
+	public Exporter getExporter();
+	
 }

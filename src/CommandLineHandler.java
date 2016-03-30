@@ -14,7 +14,7 @@ import java.util.Set;
 import team.Channel;
 import team.ChronoTimer;
 import team.EventType;
-import team.Exporter;
+import team.JSONExporter;
 import team.Record;
 import team.Run;
 import team.SensorType;
@@ -515,7 +515,7 @@ public class CommandLineHandler {
 			public boolean execute(PrintStream stream, ChronoTimer timer, String[] args) {
 				try {
 					int number = Integer.parseInt(args[0]);
-					Exporter.export((TRun) timer.getRuns().get(number-1));
+					timer.getExporter().export((TRun) timer.getRuns().get(number-1));
 				} catch(NumberFormatException e) {
 					return false;
 				}
