@@ -3,7 +3,7 @@ package team;
 public enum EventType {
 	IND(IndependentRun.class),
 	PARIND(ParallelIndependentRun.class),
-	GRP(null),
+	GRP(GroupRun.class),
 	PARGRP(null);
 	
 	private final Class<? extends TRun> c;

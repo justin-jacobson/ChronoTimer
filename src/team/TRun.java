@@ -27,6 +27,11 @@ public abstract class TRun implements Run {
 	/**
 	 * Removes the racer with the given id from the run.
 	 */
+	
+	public TRecord getRecord(int id){
+		return records.get(id);
+	}
+	
 	public boolean removeRacer(int target) {
 		if(!timer.isOn() || hasStarted()) return false;
 		TRacer r = safeRemoveRacer(target);
@@ -55,7 +60,7 @@ public abstract class TRun implements Run {
 		return racer;
 	}
 
-	public abstract List<Racer> getRacers();
+	public abstract List<? extends Racer> getRacers();
 
 	@Override
 	public boolean isFinished() {
@@ -93,6 +98,7 @@ public abstract class TRun implements Run {
 		id = other.id;
 		finished=false;
 		safe_records = Collections.unmodifiableMap(records);
+		records.putAll(other.records);
 	}
 	
 	public static final TRun getDefaultRun(TChronoTimer timer, int id) {

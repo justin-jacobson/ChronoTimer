@@ -18,7 +18,7 @@ public interface Run extends Exportable {
 	/**
 	 * @return A list of all the racers that are in this run.
 	 */
-	public List<Racer> getRacers();
+	public List<? extends Racer> getRacers();
 	
 	/**
 	 * @return A map that maps a racers id to his/her record for this run.

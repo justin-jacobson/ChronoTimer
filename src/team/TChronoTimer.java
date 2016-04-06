@@ -120,9 +120,10 @@ public class TChronoTimer implements ChronoTimer {
 		return result;
 	}
 	
-	//NO NEED TO IMPLEMENT NOW
 	public boolean swap(){
-		return false;
+		if(!getLatestRun().getEventType().equals(EventType.IND)) return false;
+		IndependentRun run = (IndependentRun) getLatestRun();
+		return run.swap();
 	}
 	
 	/**
