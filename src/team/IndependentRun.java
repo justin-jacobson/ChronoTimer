@@ -155,5 +155,14 @@ public class IndependentRun extends TRun {
 			addRacer(r.getRacer().getID());
 		}
 	}
+
+	public boolean swap() {
+		if(toEnd.size() < 2) return false;
+		TRacer t1 = toEnd.pop();
+		TRacer t2 = toEnd.pop();
+		toEnd.push(t1);
+		toEnd.push(t2);
+		return true;
+	}
 	
 }

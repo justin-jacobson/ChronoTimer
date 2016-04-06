@@ -374,7 +374,7 @@ public class CommandLineHandler {
 			}
 		});
 		
-		addCommand(new Command("toggle", "<channel>", "Connects a specific sensor to a specific channel.", 1, 1, "togg") {
+		addCommand(new Command("toggle", "<channel>", "Connects a specific sensor to a specific channel.", 1, 1, "tog") {
 			public boolean execute(PrintStream stream, ChronoTimer timer, String[] args) {
 				try {
 					int c = Integer.parseInt(args[0]);
@@ -400,7 +400,7 @@ public class CommandLineHandler {
 		
 		addCommand(new Command("connect", "<sensor> <channel>", "Connects a specific sensor to a specific channel.", 2, 2, "conn") {
 			public boolean execute(PrintStream stream, ChronoTimer timer, String[] args) {
-				SensorType s = SensorType.valueOf(args[0]);
+				SensorType s = SensorType.valueOf(args[0].toUpperCase());
 				if(s == null) {
 					stream.println("No sensor called " + args[0]);
 					return true;
@@ -472,6 +472,12 @@ public class CommandLineHandler {
 					stream.println("Ended run " + timer.getLatestRun().getID());
 				else
 					stream.println("Failed to end run!");
+				return true;
+			}
+		});
+		
+		addCommand(new Command("break", "", "Breaks", 0, 0) {
+			public boolean execute(PrintStream stream, ChronoTimer timer, String[] args) {
 				return true;
 			}
 		});
