@@ -14,7 +14,6 @@ import java.util.Set;
 import team.Channel;
 import team.ChronoTimer;
 import team.EventType;
-import team.JSONExporter;
 import team.Record;
 import team.Run;
 import team.SensorType;
@@ -164,7 +163,7 @@ public class CommandLineHandler {
 			line = in.nextLine();
 			delayedCommand = extractCommandFileLine(line);
 			if(delayedCommand == null) break;
-			TimeManager.setTime(TimeManager.formatTime(delayedCommand.getKey()));
+			timer.getTimeManager().setTime(timer.getTimeManager().formatTime(delayedCommand.getKey()));
 			executeCommand(delayedCommand.getValue());
 		}
 		in.close();
@@ -173,7 +172,7 @@ public class CommandLineHandler {
 	private Entry<Long,String> extractCommandFileLine(String line) {
 		String stime = line.substring(0,line.indexOf("	"));
 		String command = line.substring(line.indexOf("	"),line.length()).replace("	", "");
-		long time = TimeManager.intoMillisecs(stime);
+		long time = timer.getTimeManager().intoMillisecs(stime);
 		return new AbstractMap.SimpleEntry<Long,String>(time,command);
 	}
 	
@@ -289,7 +288,7 @@ public class CommandLineHandler {
 		
 		addCommand(new Command("time", "", "Sets the current time.", 1, 1, "settime") {
 			public boolean execute(PrintStream stream, ChronoTimer timer, String[] args) {
-				TimeManager.setTime(args[0]);
+				timer.getTimeManager().setTime(args[0]);
 				System.out.println("Set time to " + args[0]);
 				return true;
 			}
@@ -443,7 +442,7 @@ public class CommandLineHandler {
 				EventType event;
 				try {
 					event = EventType.valueOf(args[0].toUpperCase());
-				} catch(IllegalArgumentException e) {
+				} catch(Exception e) {
 					stream.println("No event type called " + args[0]);
 					return true;
 				}
@@ -501,12 +500,12 @@ public class CommandLineHandler {
 					}
 					stream.println("Run " + run.getID());
 					stream.println("===== ID : START - FINISH =====");
-					for(Record r : run.getRecords().values()) {
+					for(Record r : run.getRecords()) {
 						stream.print("Racer " + r.getRacer().getID() + ": ");
 						if(r.didNotFinish()) {
-							stream.println(TimeManager.formatTime(r.getStartTime()) + " - DNF");
+							stream.println(timer.getTimeManager().formatTime(r.getStartTime()) + " - DNF");
 						} else {
-							stream.println(TimeManager.formatTime(r.getStartTime()) + " - " + TimeManager.formatTime(r.getFinishTime()));
+							stream.println(timer.getTimeManager().formatTime(r.getStartTime()) + " - " + timer.getTimeManager().formatTime(r.getFinishTime()));
 						}
 					}
 				} catch(NumberFormatException e) {

@@ -1,6 +1,5 @@
 package team;
 import java.util.List;
-import java.util.Map;
 
 
 public interface Run extends Exportable {
@@ -23,20 +22,21 @@ public interface Run extends Exportable {
 	/**
 	 * @return A map that maps a racers id to his/her record for this run.
 	 */
-	public Map<Integer,? extends Record> getRecords();
+	public List<TRecord> getRecords();
 	
 	/**
-	 * Returns the record for a given racer that is in this run.
+	 * Returns the record for a given racer for this run.
 	 * @param r
-	 * @return
+	 * @return The record of the racer.
 	 */
-	public default Record getRecord(Racer r) {
-		return getRecords().get(r.getID());
-	}
+	public Record getRecord(Racer r);
 	
-	public default Record getRecord(int id) {
-		return getRecords().get(id);
-	}
+	/**
+	 * Returns the record for a given racer by bib number for this run.
+	 * @param id - The racers bib number.
+	 * @return The record of the racer.
+	 */
+	public Record getRecord(int id);
 	
 	/**
 	 * @return The last racer in this run.

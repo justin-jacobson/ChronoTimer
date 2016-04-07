@@ -69,7 +69,7 @@ public class IntegrationTest {
 		assertTrue(timer.getChannel(1).isEnabled());
 		assertTrue(timer.getChannel(2).isEnabled());
 		
-		TimeManager.setTime("12:00:00");
+		timer.getTimeManager().setTime("12:00:00");
 		assertTrue(timer.trigger(1));
 		assertTrue(timer.doNotFinish());
 		assertTrue(timer.trigger(2));
@@ -139,7 +139,7 @@ public class IntegrationTest {
 		ChronoTimer timer = new TChronoTimer();
 		assertTrue(timer.powerOn());
 		
-		TimeManager.setTime("12:00:00");
+		timer.getTimeManager().setTime("12:00:00");
 		
 		assertTrue(timer.setEvent(EventType.PARIND));
 		Run run = timer.getLatestRun();

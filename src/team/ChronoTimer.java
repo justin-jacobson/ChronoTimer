@@ -39,6 +39,8 @@ public interface ChronoTimer {
 		return setPower(false);
 	}
 	
+	public TimeManager getTimeManager();
+	
 	/**
 	 * Toggles the power of the chrono timer.
 	 * @return True if operation was sucessful.
