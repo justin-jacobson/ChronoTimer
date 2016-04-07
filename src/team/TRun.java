@@ -1,7 +1,7 @@
 package team;
 
 import java.util.Collections;
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -10,7 +10,7 @@ public abstract class TRun implements Run {
 	
 	protected final TChronoTimer timer;
 	protected final int id;
-	protected final Map<Integer,TRecord> records = new LinkedHashMap<Integer,TRecord>();
+	protected final Map<Integer,TRecord> records = new HashMap<Integer,TRecord>();
 	protected final LinkedList<TRecord> recordList = new LinkedList<TRecord>();
 	protected final Map<Integer,TRecord> safe_records;
 	
@@ -24,14 +24,17 @@ public abstract class TRun implements Run {
 	 */
 	protected abstract TRacer safeRemoveRacer(int target);
 	
-	/**
-	 * Removes the racer with the given id from the run.
-	 */
+	public TRecord getRecord(Racer r) {
+		return records.get(r.getID());
+	}
 	
 	public TRecord getRecord(int id){
 		return records.get(id);
 	}
 	
+	/**
+	 * Removes the racer with the given id from the run.
+	 */
 	public boolean removeRacer(int target) {
 		if(!timer.isOn() || hasStarted()) return false;
 		TRacer r = safeRemoveRacer(target);
@@ -67,8 +70,8 @@ public abstract class TRun implements Run {
 		return finished;
 	}
 	
-	public Map<Integer,TRecord> getRecords() {
-		return safe_records;
+	public List<TRecord> getRecords() {
+		return recordList;
 	}
 	
 	public abstract Racer getLast();
@@ -97,8 +100,9 @@ public abstract class TRun implements Run {
 		timer = other.timer;
 		id = other.id;
 		finished=false;
-		safe_records = Collections.unmodifiableMap(records);
 		records.putAll(other.records);
+		safe_records = Collections.unmodifiableMap(records);
+		recordList.addAll(other.recordList);
 	}
 	
 	public static final TRun getDefaultRun(TChronoTimer timer, int id) {

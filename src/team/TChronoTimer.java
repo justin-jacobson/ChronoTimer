@@ -44,6 +44,8 @@ public class TChronoTimer implements ChronoTimer {
 	
 	protected final JSONExporter exporter = new JSONExporter();
 	
+	protected final TimeManager timeManager = new TimeManager();
+	
 	public Map<Integer,Racer> getRacers() {
 		return safe_racers;
 	}
@@ -182,6 +184,7 @@ public class TChronoTimer implements ChronoTimer {
 	public TChronoTimer() {
 		power = false;
 		
+		timeManager.setTime("00:00:00");
 		channels = new TChannel[ChronoTimer.MAXIMUM_CHANNELS];
 		safe_channels = Collections.unmodifiableList(Arrays.asList(channels));
 		for(int i=0; i<ChronoTimer.MAXIMUM_CHANNELS; i++)
@@ -206,6 +209,10 @@ public class TChronoTimer implements ChronoTimer {
 	@Override
 	public JSONExporter getExporter() {
 		return exporter;
+	}
+	
+	public TimeManager getTimeManager() {
+		return timeManager;
 	}
 	
 }

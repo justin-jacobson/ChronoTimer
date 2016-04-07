@@ -22,7 +22,7 @@ public class IndependentRun extends TRun {
 	
 	@Override
 	public boolean safeTrigger(Channel c) {
-		long time = TimeManager.getTime();
+		long time = timer.getTimeManager().getTime();
 		if(c.getID() == 1) {
 			if(toStart.isEmpty()) return false;
 			TRacer racer = toStart.pop();
@@ -151,7 +151,7 @@ public class IndependentRun extends TRun {
 		toStart = new LinkedList<TRacer>();
 		toEnd = new LinkedList<TRacer>();
 		safe_racers = Collections.unmodifiableList(racers);
-		for(TRecord r : old.getRecords().values()) {
+		for(TRecord r : old.getRecords()) {
 			addRacer(r.getRacer().getID());
 		}
 	}

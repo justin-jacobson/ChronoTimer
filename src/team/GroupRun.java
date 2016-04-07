@@ -9,7 +9,7 @@ public class GroupRun extends TRun {
 	List<TRacer> racers = new ArrayList<TRacer>();
 	int ind;
 	
-	public GroupRun(TRun run){
+	public GroupRun(TRun run) {
 		super(run);
 		for(TRecord r : recordList) {
 			racers.add(r.racer);
@@ -34,7 +34,7 @@ public class GroupRun extends TRun {
 	@Override
 	public boolean endRun() {
 		for(int i = ind; i < racers.size(); i++){
-			getRecord(i).ended = true;
+			records.get(racers.get(i).id).ended = true;
 		}
 		finished = true;
 		return true;
@@ -62,7 +62,7 @@ public class GroupRun extends TRun {
 
 	@Override
 	protected boolean safeAddRacer(TRacer r) {
-		racers.add(r);
+		racers.add(0,r);
 		return true;
 	}
 
@@ -79,7 +79,7 @@ public class GroupRun extends TRun {
 
 	@Override
 	protected boolean safeTrigger(Channel c) {
-		long time = TimeManager.getTime();
+		long time = timer.getTimeManager().getTime();
 		int id = c.getID();
 		if(id == 1){
 			if(hasStarted()) return false;

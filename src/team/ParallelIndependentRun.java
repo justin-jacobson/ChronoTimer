@@ -83,7 +83,7 @@ public class ParallelIndependentRun extends TRun {
 
 	@Override
 	public boolean safeTrigger(Channel c) {
-		long time = TimeManager.getTime();
+		long time = timer.getTimeManager().getTime();
 		started = true;
 		TRacer r = null;
 		LinkedList<TRacer> track = getTrackFromChannel(c.getID());
@@ -139,8 +139,8 @@ public class ParallelIndependentRun extends TRun {
 		track1 = new LinkedList<TRacer>();
 		track2 = new LinkedList<TRacer>();
 		racers = Collections.unmodifiableList(allRacers);
-		for(TRecord r : old.getRecords().values()) {
-			addRacer(r.getRacer().getID());
+		for(TRecord r : old.getRecords()) {
+			allRacers.add(r.racer);
 		}
 	}
 	

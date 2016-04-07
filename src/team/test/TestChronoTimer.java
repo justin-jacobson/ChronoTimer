@@ -34,7 +34,7 @@ public class TestChronoTimer {
 		assertTrue(timer.connect(SensorType.GATE, 2));
 		assertNotNull(timer.getLatestRun().addRacer(5));
 		assertTrue(timer.toggleChanel(1));
-		TimeManager.setTime("00:00:00");
+		timer.getTimeManager().setTime("00:00:00");
 		assertTrue(timer.trigger(1));
 		assertRange(timer.getLatestRun().getRacers().get(0).getRecords().get(timer.getLatestRun().getID()).getStartTime(), 0, 3);
 		assertEquals(timer.getLatestRun().getRacers().get(0).getRecords().get(timer.getLatestRun().getID()).getFinishTime(), -1);
@@ -101,20 +101,20 @@ public class TestChronoTimer {
 		assertNotNull(second);
 		Racer first = timer.getLatestRun().addRacer(72);
 		assertNotNull(first);
-		TimeManager.setTime("00:00:00");
+		timer.getTimeManager().setTime("00:00:00");
 		assertTrue(timer.trigger(1));
 		assertEquals(72, first.getID());
 		assertRange(0,first.getRecords().get(timer.getLatestRun().getID()).getStartTime(), 3);
-		TimeManager.setTime("00:01:00");
+		timer.getTimeManager().setTime("00:01:00");
 		assertTrue(timer.trigger(2));
 		assertRange(60*1000, first.getRecords().get(timer.getLatestRun().getID()).getFinishTime(), 3);
 		assertRange(60*1000, first.getRecords().get(timer.getLatestRun().getID()).getFinishTime(), 3);
 		//assertFalse(timer.trigger(2));
 		assertEquals(-1,second.getRecords().get(timer.getLatestRun().getID()).getStartTime());
 		assertEquals(-1,second.getRecords().get(timer.getLatestRun().getID()).getFinishTime());
-		TimeManager.setTime("00:01:30");
+		timer.getTimeManager().setTime("00:01:30");
 		assertTrue(timer.trigger(1));
-		TimeManager.setTime("00:02:20");
+		timer.getTimeManager().setTime("00:02:20");
 		assertTrue(timer.trigger(2));
 		assertRange(second.getRecords().get(timer.getLatestRun().getID()).getStartTime(), 60*1500, 3);
 		assertRange(second.getRecords().get(timer.getLatestRun().getID()).getFinishTime(), 60*2000 + 20*1000, 3);
@@ -126,7 +126,7 @@ public class TestChronoTimer {
 		TChronoTimer timer = new TChronoTimer();
 		timer.setPower(true);
 		assertTrue(timer.isOn());
-		TimeManager.setTime("00:00:00");
+		timer.getTimeManager().setTime("00:00:00");
 		timer.toggleChanel(1); timer.toggleChanel(2);
 		LinkedList<TRacer> racers = new LinkedList<TRacer>();
 		

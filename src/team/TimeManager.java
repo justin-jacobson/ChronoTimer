@@ -4,9 +4,10 @@ import java.util.concurrent.TimeUnit;
 
 
 public class TimeManager {
-	private static long epoch;
 	
-	public static final long getEpoch() {
+	private long epoch;
+	
+	public final long getEpoch() {
 		return epoch;
 	}
 	
@@ -15,7 +16,7 @@ public class TimeManager {
 	 * Set system_time from 'time' to 'system_time'.
 	 * @param time
 	 */
-	public static void setTime(String time){
+	public void setTime(String time){
 		String format[] = time.split(":");
 		if(time.contains("."))
 			format[2] = format[2].substring(0,format[2].indexOf("."));
@@ -27,7 +28,7 @@ public class TimeManager {
 	 * @param unformatted - an unformatted string to be converted into milliseconds
 	 * @return a long containing the number of milliseconds that unformatted represents
 	 */
-	public static long intoMillisecs(String unformatted) {
+	public long intoMillisecs(String unformatted) {
 		String[] s = unformatted.split(":");
 		s[s.length-1] = s[s.length-1].substring(0, s[s.length-1].indexOf("."));
 		return intoMillisecs(s);
@@ -38,7 +39,7 @@ public class TimeManager {
 	 * @param unformatted - an unformatted string to be converted into milliseconds
 	 * @return a long containing the number of milliseconds that unformatted represents
 	 */
-	public static long intoMillisecs(String[] unformatted) {
+	public long intoMillisecs(String[] unformatted) {
 		long hrs, mins, secs;
 
 		hrs = TimeUnit.MILLISECONDS.convert(Long.parseLong(unformatted[0]), TimeUnit.HOURS);
@@ -51,7 +52,7 @@ public class TimeManager {
 	 * Returns the internal system time - the time we set (epoch)
 	 * @return internal system time - the time we set (epoch)
 	 */
-	public static long getTime(){
+	public long getTime(){
 		return subtractTime(System.currentTimeMillis(),epoch);
 	}
 	
@@ -60,7 +61,7 @@ public class TimeManager {
 	 * @param input - epoch
 	 * @return string formatted as "hour:min:sec"
 	 */
-	public static String formatTime(long input){
+	public String formatTime(long input) {
 		if(input < 0) return "NOT RECORDED";
 		return String.format("%d:%s:%s.%d",
 					TimeUnit.MILLISECONDS.toHours(input),
@@ -75,7 +76,7 @@ public class TimeManager {
 	 * @param second - time to subtract
 	 * @return difference between the two times
 	 */
-	public static long subtractTime(long first, long second){
+	public long subtractTime(long first, long second){
 		return first-second;
 	}
 
