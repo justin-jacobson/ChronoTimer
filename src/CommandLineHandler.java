@@ -475,12 +475,6 @@ public class CommandLineHandler {
 			}
 		});
 		
-		addCommand(new Command("break", "", "Breaks", 0, 0) {
-			public boolean execute(PrintStream stream, ChronoTimer timer, String[] args) {
-				return true;
-			}
-		});
-		
 		addCommand(new Command("print", "[run]", "Prints the given run.", 0, 1) {
 			public boolean execute(PrintStream stream, ChronoTimer timer, String[] args) {
 				try {
