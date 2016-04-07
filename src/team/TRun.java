@@ -101,6 +101,9 @@ public abstract class TRun implements Run {
 		id = other.id;
 		finished=false;
 		records.putAll(other.records);
+		for(TRecord r : records.values()) {
+			r.run = this;
+		}
 		safe_records = Collections.unmodifiableMap(records);
 		recordList.addAll(other.recordList);
 	}
