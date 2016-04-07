@@ -2,7 +2,7 @@ package team;
 
 public class TRecord implements Record {
 	
-	public final TRun run;
+	protected TRun run;
 	public final TRacer racer;
 	protected long start,finish;
 	protected boolean ended;
