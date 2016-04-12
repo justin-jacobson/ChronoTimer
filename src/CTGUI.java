@@ -15,23 +15,26 @@ public class CTGUI {
 		window.setLayout(new GridLayout(2, 3));
 		
 		//create function buttons
-		JPanel functionPanel = new JPanel();
+		JPanel functionPanel = new JPanel(new GridLayout(2,1));
 			JButton powerButton = new JButton("POWER");
-			JButton functionButton = new JButton("FUNCTION");
-		JPanel buttonPanel = new JPanel();
-			JButton leftButton = new JButton("left <");
-			JButton rightButton = new JButton("right >");
-			JButton downButton = new JButton("down V");
-			JButton upButton = new JButton("up ^");
-			JButton swapButton = new JButton("SWAP");
-		
+			JPanel buttonPanel = new JPanel(new GridLayout(3,1));
+				JButton functionButton = new JButton("FUNCTION");
+				JPanel arrowButtonPanel = new JPanel(new GridLayout(1,4));
+					JButton leftButton = new JButton("left <");
+					JButton rightButton = new JButton("right >");
+					JButton downButton = new JButton("down V");
+					JButton upButton = new JButton("up ^");
+				JButton swapButton = new JButton("SWAP");
+			
 		functionPanel.add(powerButton);
-		functionPanel.add(functionButton);
-		buttonPanel.add(leftButton);
-		buttonPanel.add(rightButton);
-		buttonPanel.add(downButton);
-		buttonPanel.add(downButton);
-		buttonPanel.add(swapButton);
+		functionPanel.add(buttonPanel);
+			buttonPanel.add(functionButton);
+			buttonPanel.add(arrowButtonPanel);
+				arrowButtonPanel.add(leftButton);
+				arrowButtonPanel.add(rightButton);
+				arrowButtonPanel.add(downButton);
+				arrowButtonPanel.add(upButton);
+			buttonPanel.add(swapButton);
 		//create signal buttons
 		JPanel signalPanel = new JPanel(new GridLayout(2,1));
 			JPanel startPanel = new JPanel(new GridLayout(3,5));
@@ -160,7 +163,8 @@ public class CTGUI {
 			numpadPanel.add(numpadButtonHash);
 			
 		//create backview's ports
-		JPanel backViewPanel = new JPanel(new GridLayout(3,1));
+		JPanel backViewPanel = new JPanel(new GridLayout(4,1));
+		JLabel backViewLabel = new JLabel("Sensor Connetcion");
 		JPanel inputGrid = new JPanel(new GridLayout(4,4));
 			JLabel inpLabel1=new JLabel("1");
 			JLabel inpLabel3=new JLabel("3");
@@ -204,6 +208,7 @@ public class CTGUI {
 			inputGrid.add(inpCB8);
 			
 			//add inputGrid to backViewPanel
+			backViewPanel.add(backViewLabel);
 			backViewPanel.add(inputGrid);
 			
 		JLabel usbLabel = new JLabel("USB Port");
@@ -224,7 +229,6 @@ public class CTGUI {
 		//add to window and display
 			window.setSize(750, 500);
 			window.add(functionPanel);
-			window.add(buttonPanel);
 			window.add(signalPanel);
 			window.add(printerPanel);
 			window.add(numpadPanel);
@@ -237,4 +241,6 @@ public class CTGUI {
 	public static void main(String[] args){
 		CTGUI gui = new CTGUI();	
 	}
+	
+	
 }
