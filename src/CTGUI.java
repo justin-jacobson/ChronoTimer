@@ -9,10 +9,18 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+import team.ChronoTimer;
+import team.TChronoTimer;
+
 public class CTGUI {
+	
+	protected ChronoTimer timer;
 	
 	public CTGUI(){
 		//create the window
+		
+		timer = new TChronoTimer();
+		
 		JFrame window = new JFrame("Chrono Timer 1009 (by Hello, cs361!) ");
 		window.setLayout(new GridLayout(2, 3));
 		
@@ -41,6 +49,7 @@ public class CTGUI {
 		powerButton.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent event){
+				timer.togglePower();
 				
 			}
 		});
@@ -77,7 +86,7 @@ public class CTGUI {
 		swapButton.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent event){
-				
+				timer.swap();
 			}
 		});
 			
@@ -92,16 +101,16 @@ public class CTGUI {
 					JLabel SL7=new JLabel("7");
 				
 				JLabel startLabel=new JLabel("Start");
-					JButton signalButton1 = new JButton("1");
-					JButton signalButton3 = new JButton("3");
-					JButton signalButton5 = new JButton("5");
-					JButton signalButton7 = new JButton("7");
+					JButton signalButton1 = new TriggerButton(1);
+					JButton signalButton3 = new TriggerButton(3);
+					JButton signalButton5 = new TriggerButton(5);
+					JButton signalButton7 = new TriggerButton(7);
 				
 				JLabel EDLabel = new JLabel("Enable/Disable");
-					JCheckBox CB1 = new JCheckBox();
-					JCheckBox CB3 = new JCheckBox();
-					JCheckBox CB5 = new JCheckBox();
-					JCheckBox CB7 = new JCheckBox();
+					JCheckBox CB1 = new ChannelButton(1);
+					JCheckBox CB3 = new ChannelButton(3);
+					JCheckBox CB5 = new ChannelButton(5);
+					JCheckBox CB7 = new ChannelButton(7);
 					
 				//add startPanel components to startPanel
 					startPanel.add(empty);
@@ -121,55 +130,6 @@ public class CTGUI {
 					startPanel.add(CB3);
 					startPanel.add(CB5);
 					startPanel.add(CB7);
-					
-					signalButton1.addActionListener(new ActionListener(){
-						@Override
-						public void actionPerformed(ActionEvent event){
-							
-						}
-					});
-					signalButton3.addActionListener(new ActionListener(){
-						@Override
-						public void actionPerformed(ActionEvent event){
-							
-						}
-					});
-					signalButton5.addActionListener(new ActionListener(){
-						@Override
-						public void actionPerformed(ActionEvent event){
-							
-						}
-					});
-					signalButton7.addActionListener(new ActionListener(){
-						@Override
-						public void actionPerformed(ActionEvent event){
-							
-						}
-					});
-					CB1.addActionListener(new ActionListener(){
-						@Override
-						public void actionPerformed(ActionEvent event){
-							
-						}
-					});
-					CB3.addActionListener(new ActionListener(){
-						@Override
-						public void actionPerformed(ActionEvent event){
-							
-						}
-					});
-					CB5.addActionListener(new ActionListener(){
-						@Override
-						public void actionPerformed(ActionEvent event){
-							
-						}
-					});
-					CB7.addActionListener(new ActionListener(){
-						@Override
-						public void actionPerformed(ActionEvent event){
-							
-						}
-					});
 				
 				//add start panel to signal panel
 					signalPanel.add(startPanel);
@@ -183,16 +143,16 @@ public class CTGUI {
 					JLabel SL8=new JLabel("8");
 			
 				JLabel finishLabel=new JLabel("Finish");
-					JButton signalButton2 = new JButton("2");
-					JButton signalButton4 = new JButton("4");
-					JButton signalButton6 = new JButton("6");
-					JButton signalButton8 = new JButton("8");
+					JButton signalButton2 = new TriggerButton(2);
+					JButton signalButton4 = new TriggerButton(4);
+					JButton signalButton6 = new TriggerButton(6);
+					JButton signalButton8 = new TriggerButton(8);
 			
 				JLabel EDLabel2 = new JLabel("Enable/Disable");
-					JCheckBox CB2 = new JCheckBox();
-					JCheckBox CB4 = new JCheckBox();
-					JCheckBox CB6 = new JCheckBox();
-					JCheckBox CB8 = new JCheckBox();
+					JCheckBox CB2 = new ChannelButton(2);
+					JCheckBox CB4 = new ChannelButton(4);
+					JCheckBox CB6 = new ChannelButton(6);
+					JCheckBox CB8 = new ChannelButton(8);
 					
 				//add components to finishPanel
 					finishPanel.add(empty2);
@@ -212,55 +172,6 @@ public class CTGUI {
 					finishPanel.add(CB4);
 					finishPanel.add(CB6);
 					finishPanel.add(CB8);
-					
-					signalButton2.addActionListener(new ActionListener(){
-						@Override
-						public void actionPerformed(ActionEvent event){
-							
-						}
-					});
-					signalButton4.addActionListener(new ActionListener(){
-						@Override
-						public void actionPerformed(ActionEvent event){
-							
-						}
-					});
-					signalButton6.addActionListener(new ActionListener(){
-						@Override
-						public void actionPerformed(ActionEvent event){
-							
-						}
-					});
-					signalButton8.addActionListener(new ActionListener(){
-						@Override
-						public void actionPerformed(ActionEvent event){
-							
-						}
-					});
-					CB2.addActionListener(new ActionListener(){
-						@Override
-						public void actionPerformed(ActionEvent event){
-							
-						}
-					});
-					CB4.addActionListener(new ActionListener(){
-						@Override
-						public void actionPerformed(ActionEvent event){
-							
-						}
-					});
-					CB6.addActionListener(new ActionListener(){
-						@Override
-						public void actionPerformed(ActionEvent event){
-							
-						}
-					});
-					CB8.addActionListener(new ActionListener(){
-						@Override
-						public void actionPerformed(ActionEvent event){
-							
-						}
-					});
 			
 				//add finish panel to signal Panel
 					signalPanel.add(finishPanel);
@@ -516,6 +427,60 @@ public class CTGUI {
 			window.add(screenPanel);
 			window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			window.setVisible(true);
+	}
+	
+	protected class ChannelButton extends JCheckBox {
+		
+		private static final long serialVersionUID = 2412443805772599043L;
+		private final int id;
+		
+		ChannelButton(int id) {
+			this.id = id;
+			this.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					System.out.println("Toggling chan " + id);
+					timer.getChannel(id).toggle();
+				}
+			});
+		}
+		
+	}
+	
+	protected class NumberPadButton extends JButton {
+		
+		private static final long serialVersionUID = 2412443805772599043L;
+		private final String id;
+		
+		NumberPadButton(String id) {
+			this.id = id;
+			this.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					
+				}
+			});
+		}
+		
+	}
+	
+	protected class TriggerButton extends JButton {
+		
+		private static final long serialVersionUID = 2412443805772599043L;
+		private final int id;
+		
+		TriggerButton(int id) {
+			super(Integer.toString(id));
+			this.id = id;
+			this.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					System.out.println("Triggering chan " + id);
+					timer.trigger(id);
+				}
+			});
+		}
+		
 	}
 	
 	public static void main(String[] args){
