@@ -19,8 +19,6 @@ import team.Run;
 import team.SensorType;
 import team.TChronoTimer;
 import team.TRun;
-import team.TimeManager;
-
 
 public class CommandLineHandler {
 	
@@ -373,7 +371,7 @@ public class CommandLineHandler {
 			}
 		});
 		
-		addCommand(new Command("toggle", "<channel>", "Connects a specific sensor to a specific channel.", 1, 1, "tog") {
+		addCommand(new Command("toggle", "<channel>", "Connects a specific sensor to a specific channel.", 1, 1, "tog", "togg") {
 			public boolean execute(PrintStream stream, ChronoTimer timer, String[] args) {
 				try {
 					int c = Integer.parseInt(args[0]);
@@ -475,12 +473,6 @@ public class CommandLineHandler {
 			}
 		});
 		
-		addCommand(new Command("break", "", "Breaks", 0, 0) {
-			public boolean execute(PrintStream stream, ChronoTimer timer, String[] args) {
-				return true;
-			}
-		});
-		
 		addCommand(new Command("print", "[run]", "Prints the given run.", 0, 1) {
 			public boolean execute(PrintStream stream, ChronoTimer timer, String[] args) {
 				try {
@@ -520,6 +512,10 @@ public class CommandLineHandler {
 			public boolean execute(PrintStream stream, ChronoTimer timer, String[] args) {
 				try {
 					int number = Integer.parseInt(args[0]);
+					if(number < 1 || number > timer.getRuns().size()) {
+						stream.println("No run found with that id.");
+						return true;
+					}
 					timer.getExporter().export((TRun) timer.getRuns().get(number-1));
 				} catch(NumberFormatException e) {
 					return false;
