@@ -4,7 +4,7 @@
  */
 
 
-import java.awt.GridLayout;
+import java.awt.*;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -19,7 +19,8 @@ public class guiRework {
 		
 		//create the window
 		JFrame window = new JFrame("Chrono Timer 1009 (by Hello, cs361!) ");
-		window.setLayout(new GridLayout(2, 3));
+		window.setLayout(new GridLayout(2, 1, 10, 10));
+		window.setSize(720, 500);
 		
 		//create the panels and components that will go into the window
 		//Top Row
@@ -30,40 +31,45 @@ public class guiRework {
 			powerPanel.add(powerButton);
 		
 		//Signal Panel (1,2)
-		JPanel signalPanel = new JPanel();
+		JPanel signalPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 			JLabel chonoLabel = new JLabel("CHRONOTIMER");
-			JPanel startFinishTable = new JPanel(new GridLayout(5,6));
+			JPanel startFinishTable = new JPanel(new GridLayout(6, 5, 5, 5));
 			JLabel numLabels[] = new JLabel[8];
 			JLabel titles[] = {new JLabel(""), new JLabel("Start"), new JLabel("Enable/Disable"), new JLabel(""), new JLabel("Finish"), new JLabel("Enable/Disable")};
 			
-			JButton startSignals[] = new JButton[4];
-			JCheckBox startEnable[] = new JCheckBox[4];
-			JButton finishSignals[] = new JButton[4];
-			JCheckBox finishEnable[] = new JCheckBox[4];
+			JButton signals[] = new JButton[8];
+			JCheckBox enable[] = new JCheckBox[8];
 			
 			//initialize arrays
+			int odd = 1, even = 2;
 			for(int i = 0; i < numLabels.length; i++) {
-				if(i < 4) {
-					startSignals[i] = new JButton();
-					startEnable[i] = new JCheckBox();
-					finishSignals[i] = new JButton();
-					finishEnable[i] = new JCheckBox();
+				if(i < numLabels.length/2) {
+					numLabels[i] = new JLabel(Integer.toString(odd));
+					odd+=2;
 				}
-				numLabels[i] = new JLabel(Integer.toString(i));
+				else {
+					numLabels[i] = new JLabel(Integer.toString(even));
+					even+=2;
+				}
+				signals[i] = new JButton();
+				enable[i] = new JCheckBox();
 			}
 			
 			//add components to the startFinishTable
 			for(int y = 0; y < 6; y++) {
 				for(int x = 0; x < 5; x++) {
 					if(x==0) startFinishTable.add(titles[y]);
-					if(y==0) {startFinishTable.add(numLabels[x]);}
-					else if(y==1) {startFinishTable.add(startSignals[x]);} //array is size 4, 0->3... this fails because x can = 4, so will all other size 4 arrays
-					else if(y==2) {startFinishTable.add(startEnable[x]);}
-					else if(y==3) {startFinishTable.add(numLabels[x*2]);}
-					else if(y==4) {startFinishTable.add(finishSignals[x]);}
-					else if(y==5) {startFinishTable.add(finishEnable[x]);}
+					else {
+						if(y==0) startFinishTable.add(numLabels[x-1]);
+						else if(y==1) startFinishTable.add(signals[x-1]);
+						else if(y==2) startFinishTable.add(enable[x-1]);
+						else if(y==3) startFinishTable.add(numLabels[x+3]);
+						else if(y==4) startFinishTable.add(signals[x+3]);
+						else if(y==5) startFinishTable.add(enable[x+3]);
+						
 					}
 				}
+			}
 			
 			//add components to signal panel
 			signalPanel.add(chonoLabel);
@@ -81,7 +87,7 @@ public class guiRework {
 		//Bottom row
 			
 		//function panel (2,1)
-		JPanel functionPanel = new JPanel(new GridLayout(1,3));
+		JPanel functionPanel = new JPanel(new GridLayout(3,1));
 			JButton functionButton = new JButton("FUNCTION");
 			JPanel buttonPanel = new JPanel(new GridLayout(4,1));
 				JButton directions[] = {new JButton("left <"), new JButton("right >"), new JButton("down V"), new JButton("up ^")};
@@ -105,14 +111,16 @@ public class guiRework {
 		JPanel numpadPanel = new JPanel(new GridLayout(4,3));
 			
 		//numpad panel(2,3)
-		JButton numpad[] = new JButton[11];
-			for(int i = 0; i < 8; i++) numpad[i] = new JButton(Integer.toString(i+1));
+		JButton numpad[] = new JButton[12];
+			for(int i = 1; i < 10; i++) numpad[i-1] = new JButton(Integer.toString(i));
 			numpad[9] = new JButton("*");
 			numpad[10] = new JButton("0");
 			numpad[11] = new JButton("#");
 		
 		//add components to numpadPanel
-			for(JButton b : numpad) numpadPanel.add(b);
+			for(int i = 0; i < numpad.length; i++) 
+					numpadPanel.add(numpad[i]);
+
 		/*	
 		//create backview's ports
 		JPanel backViewPanel = new JPanel(new GridLayout(3,1));
@@ -170,7 +178,7 @@ public class guiRework {
 		//create screen to show result
 			
 		//add to window and display
-			window.setSize(750, 500);
+			
 			window.add(powerPanel);
 			window.add(signalPanel);
 			window.add(printerPanel);
@@ -178,8 +186,11 @@ public class guiRework {
 			window.add(screenPanel);
 			window.add(numpadPanel);
 			
+			
+			
 //			window.add(backViewPanel);
 			window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			window.pack();
 			window.setVisible(true);
 	}
 	
