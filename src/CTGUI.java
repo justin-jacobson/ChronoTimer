@@ -19,12 +19,9 @@ public class CTGUI {
 	
 	public CTGUI(){
 		//create the window
-		
 		timer = new TChronoTimer();
-		
 		JFrame window = new JFrame("Chrono Timer 1009 (by Hello, cs361!) ");
 		window.setLayout(new GridLayout(2, 3));
-		
 		//create function buttons
 		JPanel functionPanel = new JPanel(new GridLayout(2,1));
 			JButton powerButton = new JButton("POWER");
@@ -36,7 +33,6 @@ public class CTGUI {
 					JButton downButton = new JButton("down V");
 					JButton upButton = new JButton("up ^");
 				JButton swapButton = new JButton("SWAP");
-			
 		functionPanel.add(powerButton);
 		functionPanel.add(buttonPanel);
 			buttonPanel.add(functionButton);
@@ -46,7 +42,7 @@ public class CTGUI {
 				arrowButtonPanel.add(downButton);
 				arrowButtonPanel.add(upButton);
 			buttonPanel.add(swapButton);
-			
+
 		powerButton.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent event){
@@ -285,18 +281,12 @@ public class CTGUI {
 				public void actionPerformed(ActionEvent e) {
 					
 				}
-			});
-			
-			
+			});	
 		}
-	
-		
 	}
 	protected class ChannelButton extends JCheckBox {
-		
 		private static final long serialVersionUID = 2412443805772599043L;
 		private final int id;
-		
 		ChannelButton(int id) {
 			this.id = id;
 			this.addActionListener(new ActionListener() {
@@ -310,10 +300,8 @@ public class CTGUI {
 		
 	}
 	protected class NumberPadButton extends JButton {
-		
 		private static final long serialVersionUID = 2412443805772599043L;
 		private final String id;
-		
 		NumberPadButton(String id) {
 			this.id = id;
 			this.setText(id);
@@ -342,7 +330,6 @@ public class CTGUI {
 				}
 			});
 		}
-		
 	}
 	public static void main(String[] args){
 		CTGUI gui = new CTGUI();	
