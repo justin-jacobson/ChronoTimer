@@ -1,4 +1,6 @@
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -35,6 +37,50 @@ public class CTGUI {
 				arrowButtonPanel.add(downButton);
 				arrowButtonPanel.add(upButton);
 			buttonPanel.add(swapButton);
+			
+		powerButton.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent event){
+				
+			}
+		});
+		functionButton.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent event){
+				
+			}
+		});
+		leftButton.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent event){
+				
+			}
+		});
+		rightButton.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent event){
+				
+			}
+		});
+		downButton.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent event){
+				
+			}
+		});
+		upButton.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent event){
+				
+			}
+		});
+		swapButton.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent event){
+				
+			}
+		});
+			
 		//create signal buttons
 		JPanel signalPanel = new JPanel(new GridLayout(2,1));
 			JPanel startPanel = new JPanel(new GridLayout(3,5));
@@ -75,6 +121,55 @@ public class CTGUI {
 					startPanel.add(CB3);
 					startPanel.add(CB5);
 					startPanel.add(CB7);
+					
+					signalButton1.addActionListener(new ActionListener(){
+						@Override
+						public void actionPerformed(ActionEvent event){
+							
+						}
+					});
+					signalButton3.addActionListener(new ActionListener(){
+						@Override
+						public void actionPerformed(ActionEvent event){
+							
+						}
+					});
+					signalButton5.addActionListener(new ActionListener(){
+						@Override
+						public void actionPerformed(ActionEvent event){
+							
+						}
+					});
+					signalButton7.addActionListener(new ActionListener(){
+						@Override
+						public void actionPerformed(ActionEvent event){
+							
+						}
+					});
+					CB1.addActionListener(new ActionListener(){
+						@Override
+						public void actionPerformed(ActionEvent event){
+							
+						}
+					});
+					CB3.addActionListener(new ActionListener(){
+						@Override
+						public void actionPerformed(ActionEvent event){
+							
+						}
+					});
+					CB5.addActionListener(new ActionListener(){
+						@Override
+						public void actionPerformed(ActionEvent event){
+							
+						}
+					});
+					CB7.addActionListener(new ActionListener(){
+						@Override
+						public void actionPerformed(ActionEvent event){
+							
+						}
+					});
 				
 				//add start panel to signal panel
 					signalPanel.add(startPanel);
@@ -117,6 +212,55 @@ public class CTGUI {
 					finishPanel.add(CB4);
 					finishPanel.add(CB6);
 					finishPanel.add(CB8);
+					
+					signalButton2.addActionListener(new ActionListener(){
+						@Override
+						public void actionPerformed(ActionEvent event){
+							
+						}
+					});
+					signalButton4.addActionListener(new ActionListener(){
+						@Override
+						public void actionPerformed(ActionEvent event){
+							
+						}
+					});
+					signalButton6.addActionListener(new ActionListener(){
+						@Override
+						public void actionPerformed(ActionEvent event){
+							
+						}
+					});
+					signalButton8.addActionListener(new ActionListener(){
+						@Override
+						public void actionPerformed(ActionEvent event){
+							
+						}
+					});
+					CB2.addActionListener(new ActionListener(){
+						@Override
+						public void actionPerformed(ActionEvent event){
+							
+						}
+					});
+					CB4.addActionListener(new ActionListener(){
+						@Override
+						public void actionPerformed(ActionEvent event){
+							
+						}
+					});
+					CB6.addActionListener(new ActionListener(){
+						@Override
+						public void actionPerformed(ActionEvent event){
+							
+						}
+					});
+					CB8.addActionListener(new ActionListener(){
+						@Override
+						public void actionPerformed(ActionEvent event){
+							
+						}
+					});
 			
 				//add finish panel to signal Panel
 					signalPanel.add(finishPanel);
@@ -129,6 +273,13 @@ public class CTGUI {
 		//add components to printer panel
 			printerPanel.add(printButton);
 			printerPanel.add(printer);
+			
+			printButton.addActionListener(new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent event){
+					
+				}
+			});
 			
 		//create numpad input
 		JPanel numpadPanel = new JPanel(new GridLayout(4,3));
@@ -161,6 +312,79 @@ public class CTGUI {
 			numpadPanel.add(numpadButtonStar);
 			numpadPanel.add(numpadButton0);
 			numpadPanel.add(numpadButtonHash);
+			
+			numpadButton1.addActionListener(new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent event){
+					
+				}
+			});
+			numpadButton2.addActionListener(new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent event){
+					
+				}
+			});
+			numpadButton3.addActionListener(new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent event){
+					
+				}
+			});
+			numpadButton4.addActionListener(new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent event){
+					
+				}
+			});
+			numpadButton5.addActionListener(new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent event){
+					
+				}
+			});
+			numpadButton6.addActionListener(new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent event){
+					
+				}
+			});
+			numpadButton7.addActionListener(new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent event){
+					
+				}
+			});
+			numpadButton8.addActionListener(new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent event){
+					
+				}
+			});
+			numpadButton9.addActionListener(new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent event){
+					
+				}
+			});
+			numpadButton0.addActionListener(new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent event){
+					
+				}
+			});
+			numpadButtonStar.addActionListener(new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent event){
+					
+				}
+			});
+			numpadButtonHash.addActionListener(new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent event){
+					
+				}
+			});
 			
 		//create backview's ports
 		JPanel backViewPanel = new JPanel(new GridLayout(4,1));
@@ -207,6 +431,55 @@ public class CTGUI {
 			inputGrid.add(inpCB6);
 			inputGrid.add(inpCB8);
 			
+			inpCB1.addActionListener(new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent event){
+					
+				}
+			});
+			inpCB3.addActionListener(new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent event){
+					
+				}
+			});
+			inpCB5.addActionListener(new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent event){
+					
+				}
+			});
+			inpCB7.addActionListener(new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent event){
+					
+				}
+			});
+			inpCB2.addActionListener(new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent event){
+					
+				}
+			});
+			inpCB4.addActionListener(new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent event){
+					
+				}
+			});
+			inpCB6.addActionListener(new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent event){
+					
+				}
+			});
+			inpCB8.addActionListener(new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent event){
+					
+				}
+			});
+			
 			//add inputGrid to backViewPanel
 			backViewPanel.add(backViewLabel);
 			backViewPanel.add(inputGrid);
@@ -216,6 +489,13 @@ public class CTGUI {
 		
 		backViewPanel.add(usbLabel);
 		backViewPanel.add(usbPort);
+		
+		usbPort.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent event){
+				
+			}
+		});
 		
 		//create screen to show result
 		JPanel screenPanel = new JPanel(new GridLayout(2,1));
@@ -241,6 +521,7 @@ public class CTGUI {
 	public static void main(String[] args){
 		CTGUI gui = new CTGUI();	
 	}
+	
 	
 	
 }
