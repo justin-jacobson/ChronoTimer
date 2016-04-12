@@ -4,6 +4,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -93,93 +94,78 @@ public class CTGUI {
 		//create signal buttons
 		JPanel signalPanel = new JPanel(new GridLayout(2,1));
 			JPanel startPanel = new JPanel(new GridLayout(3,5));
+			JPanel finishPanel = new JPanel(new GridLayout(3,5));
 			
 				JLabel empty=new JLabel("     ");
-					JLabel SL1=new JLabel("1");
-					JLabel SL3=new JLabel("3");
-					JLabel SL5=new JLabel("5");
-					JLabel SL7=new JLabel("7");
+				JLabel empty2=new JLabel("     ");
+				// creating signal's Label
+				JLabel[] signalLabel = new JLabel[9];
+				for(int i=1; i<=8; i++){
+					signalLabel[i] = new JLabel(Integer.toString(i));
+				}
 				
 				JLabel startLabel=new JLabel("Start");
-					JButton signalButton1 = new TriggerButton(1);
-					JButton signalButton3 = new TriggerButton(3);
-					JButton signalButton5 = new TriggerButton(5);
-					JButton signalButton7 = new TriggerButton(7);
+				JLabel finishLabel=new JLabel("Finish");
+				JButton[] signalButton = new TriggerButton[9];
+				for(int i=1;i<=8;i++){
+					signalButton[i] = new TriggerButton(i);
+				}
 				
 				JLabel EDLabel = new JLabel("Enable/Disable");
-					JCheckBox CB1 = new ChannelButton(1);
-					JCheckBox CB3 = new ChannelButton(3);
-					JCheckBox CB5 = new ChannelButton(5);
-					JCheckBox CB7 = new ChannelButton(7);
-					
+				JLabel EDLabel2 = new JLabel("Enable/Disable");
+				JCheckBox[] toggleChannel = new ChannelButton[9];
+				for(int i=1;i<=8;i++){
+					toggleChannel[i] = new ChannelButton(i);
+				}
 				//add startPanel components to startPanel
 					startPanel.add(empty);
-					startPanel.add(SL1);
-					startPanel.add(SL3);
-					startPanel.add(SL5);
-					startPanel.add(SL7);
+					startPanel.add(signalLabel[1]);
+					startPanel.add(signalLabel[3]);
+					startPanel.add(signalLabel[5]);
+					startPanel.add(signalLabel[7]);
 					
 					startPanel.add(startLabel);
-					startPanel.add(signalButton1);
-					startPanel.add(signalButton3);
-					startPanel.add(signalButton5);
-					startPanel.add(signalButton7);
+					startPanel.add(signalButton[1]);
+					startPanel.add(signalButton[3]);
+					startPanel.add(signalButton[5]);
+					startPanel.add(signalButton[7]);
 					
 					startPanel.add(EDLabel);
-					startPanel.add(CB1);
-					startPanel.add(CB3);
-					startPanel.add(CB5);
-					startPanel.add(CB7);
+					startPanel.add(toggleChannel[1]);
+					startPanel.add(toggleChannel[3]);
+					startPanel.add(toggleChannel[5]);
+					startPanel.add(toggleChannel[7]);
 				
 				//add start panel to signal panel
 					signalPanel.add(startPanel);
 					
-			JPanel finishPanel = new JPanel(new GridLayout(3,5));
-
-				JLabel empty2=new JLabel("     ");
-					JLabel SL2=new JLabel("2");
-					JLabel SL4=new JLabel("4");
-					JLabel SL6=new JLabel("6");
-					JLabel SL8=new JLabel("8");
-			
-				JLabel finishLabel=new JLabel("Finish");
-					JButton signalButton2 = new TriggerButton(2);
-					JButton signalButton4 = new TriggerButton(4);
-					JButton signalButton6 = new TriggerButton(6);
-					JButton signalButton8 = new TriggerButton(8);
-			
-				JLabel EDLabel2 = new JLabel("Enable/Disable");
-					JCheckBox CB2 = new ChannelButton(2);
-					JCheckBox CB4 = new ChannelButton(4);
-					JCheckBox CB6 = new ChannelButton(6);
-					JCheckBox CB8 = new ChannelButton(8);
-					
 				//add components to finishPanel
 					finishPanel.add(empty2);
-					finishPanel.add(SL2);
-					finishPanel.add(SL4);
-					finishPanel.add(SL6);
-					finishPanel.add(SL8);
+					finishPanel.add(signalLabel[2]);
+					finishPanel.add(signalLabel[4]);
+					finishPanel.add(signalLabel[6]);
+					finishPanel.add(signalLabel[8]);
 				
 					finishPanel.add(finishLabel);
-					finishPanel.add(signalButton2);
-					finishPanel.add(signalButton4);
-					finishPanel.add(signalButton6);
-					finishPanel.add(signalButton8);
+					finishPanel.add(signalButton[2]);
+					finishPanel.add(signalButton[4]);
+					finishPanel.add(signalButton[6]);
+					finishPanel.add(signalButton[8]);
 				
 					finishPanel.add(EDLabel2);
-					finishPanel.add(CB2);
-					finishPanel.add(CB4);
-					finishPanel.add(CB6);
-					finishPanel.add(CB8);
+					finishPanel.add(toggleChannel[2]);
+					finishPanel.add(toggleChannel[4]);
+					finishPanel.add(toggleChannel[6]);
+					finishPanel.add(toggleChannel[8]);
 			
 				//add finish panel to signal Panel
 					signalPanel.add(finishPanel);
 				
 		//create printer
 		JPanel printerPanel = new JPanel(new GridLayout(2,1));
-			JButton printButton = new JButton("Printer Pwr");
+			JButton printButton = new JButton("Printer Button");
 			JTextArea printer = new JTextArea(80,100);
+			printer.setEditable(false);
 			
 		//add components to printer panel
 			printerPanel.add(printButton);
@@ -194,202 +180,60 @@ public class CTGUI {
 			
 		//create numpad input
 		JPanel numpadPanel = new JPanel(new GridLayout(4,3));
-			JButton numpadButton1 = new JButton("1");
-			JButton numpadButton2 = new JButton("2");
-			JButton numpadButton3 = new JButton("3");
-		
-			JButton numpadButton4 = new JButton("4");
-			JButton numpadButton5 = new JButton("5");
-			JButton numpadButton6 = new JButton("6");
-		
-			JButton numpadButton7 = new JButton("7");
-			JButton numpadButton8 = new JButton("8");
-			JButton numpadButton9 = new JButton("9");
-		
-			JButton numpadButtonStar = new JButton("*");
-			JButton numpadButton0 = new JButton("0");
-			JButton numpadButtonHash = new JButton("#");
+		JButton[] numpadButton = new NumberPadButton[10];
+			for(int i=0;i<10;i++){
+				numpadButton[i] = new NumberPadButton(Integer.toString(i));
+			}
+			JButton numpadButtonStar = new NumberPadButton("*");
+			JButton numpadButtonHash = new NumberPadButton("#");
 		
 		//add components to numpadPanel
-			numpadPanel.add(numpadButton1);
-			numpadPanel.add(numpadButton2);
-			numpadPanel.add(numpadButton3);
-			numpadPanel.add(numpadButton4);
-			numpadPanel.add(numpadButton5);
-			numpadPanel.add(numpadButton6);
-			numpadPanel.add(numpadButton7);
-			numpadPanel.add(numpadButton8);
-			numpadPanel.add(numpadButton9);
+			numpadPanel.add(numpadButton[1]);
+			numpadPanel.add(numpadButton[2]);
+			numpadPanel.add(numpadButton[3]);
+			numpadPanel.add(numpadButton[4]);
+			numpadPanel.add(numpadButton[5]);
+			numpadPanel.add(numpadButton[6]);
+			numpadPanel.add(numpadButton[7]);
+			numpadPanel.add(numpadButton[8]);
+			numpadPanel.add(numpadButton[9]);
 			numpadPanel.add(numpadButtonStar);
-			numpadPanel.add(numpadButton0);
+			numpadPanel.add(numpadButton[0]);
 			numpadPanel.add(numpadButtonHash);
-			
-			numpadButton1.addActionListener(new ActionListener(){
-				@Override
-				public void actionPerformed(ActionEvent event){
-					
-				}
-			});
-			numpadButton2.addActionListener(new ActionListener(){
-				@Override
-				public void actionPerformed(ActionEvent event){
-					
-				}
-			});
-			numpadButton3.addActionListener(new ActionListener(){
-				@Override
-				public void actionPerformed(ActionEvent event){
-					
-				}
-			});
-			numpadButton4.addActionListener(new ActionListener(){
-				@Override
-				public void actionPerformed(ActionEvent event){
-					
-				}
-			});
-			numpadButton5.addActionListener(new ActionListener(){
-				@Override
-				public void actionPerformed(ActionEvent event){
-					
-				}
-			});
-			numpadButton6.addActionListener(new ActionListener(){
-				@Override
-				public void actionPerformed(ActionEvent event){
-					
-				}
-			});
-			numpadButton7.addActionListener(new ActionListener(){
-				@Override
-				public void actionPerformed(ActionEvent event){
-					
-				}
-			});
-			numpadButton8.addActionListener(new ActionListener(){
-				@Override
-				public void actionPerformed(ActionEvent event){
-					
-				}
-			});
-			numpadButton9.addActionListener(new ActionListener(){
-				@Override
-				public void actionPerformed(ActionEvent event){
-					
-				}
-			});
-			numpadButton0.addActionListener(new ActionListener(){
-				@Override
-				public void actionPerformed(ActionEvent event){
-					
-				}
-			});
-			numpadButtonStar.addActionListener(new ActionListener(){
-				@Override
-				public void actionPerformed(ActionEvent event){
-					
-				}
-			});
-			numpadButtonHash.addActionListener(new ActionListener(){
-				@Override
-				public void actionPerformed(ActionEvent event){
-					
-				}
-			});
 			
 		//create backview's ports
 		JPanel backViewPanel = new JPanel(new GridLayout(4,1));
 		JLabel backViewLabel = new JLabel("Sensor Connetcion");
 		JPanel inputGrid = new JPanel(new GridLayout(4,4));
-			JLabel inpLabel1=new JLabel("1");
-			JLabel inpLabel3=new JLabel("3");
-			JLabel inpLabel5=new JLabel("5");
-			JLabel inpLabel7=new JLabel("7");
-			
-			JCheckBox inpCB1 = new JCheckBox();
-			JCheckBox inpCB3 = new JCheckBox();
-			JCheckBox inpCB5 = new JCheckBox();
-			JCheckBox inpCB7 = new JCheckBox();
-			
-			JLabel inpLabel2=new JLabel("2");
-			JLabel inpLabel4=new JLabel("4");
-			JLabel inpLabel6=new JLabel("6");
-			JLabel inpLabel8=new JLabel("8");
-			
-			JCheckBox inpCB2 = new JCheckBox();
-			JCheckBox inpCB4 = new JCheckBox();
-			JCheckBox inpCB6 = new JCheckBox();
-			JCheckBox inpCB8 = new JCheckBox();
+		JLabel[] inputLabel = new JLabel[9];
+		for(int i=1; i<=8; i++){
+			inputLabel[i] = new JLabel(Integer.toString(i));
+		}
+		JComboBox[] inputCB = new BackViewBox[9];
+		for(int i=1;i<=8; i++){
+			inputCB[i] = new BackViewBox();
+		}
 			
 			//Add components to inputGrid panel
-			inputGrid.add(inpLabel1);
-			inputGrid.add(inpLabel3);
-			inputGrid.add(inpLabel5);
-			inputGrid.add(inpLabel7);
+			inputGrid.add(inputLabel[1]);
+			inputGrid.add(inputLabel[3]);
+			inputGrid.add(inputLabel[5]);
+			inputGrid.add(inputLabel[7]);
 			
-			inputGrid.add(inpCB1);
-			inputGrid.add(inpCB3);
-			inputGrid.add(inpCB5);
-			inputGrid.add(inpCB7);
+			inputGrid.add(inputCB[1]);
+			inputGrid.add(inputCB[3]);
+			inputGrid.add(inputCB[5]);
+			inputGrid.add(inputCB[7]);
 			
-			inputGrid.add(inpLabel2);
-			inputGrid.add(inpLabel4);
-			inputGrid.add(inpLabel6);
-			inputGrid.add(inpLabel8);
+			inputGrid.add(inputLabel[2]);
+			inputGrid.add(inputLabel[4]);
+			inputGrid.add(inputLabel[6]);
+			inputGrid.add(inputLabel[8]);
 			
-			inputGrid.add(inpCB2);
-			inputGrid.add(inpCB4);
-			inputGrid.add(inpCB6);
-			inputGrid.add(inpCB8);
-			
-			inpCB1.addActionListener(new ActionListener(){
-				@Override
-				public void actionPerformed(ActionEvent event){
-					
-				}
-			});
-			inpCB3.addActionListener(new ActionListener(){
-				@Override
-				public void actionPerformed(ActionEvent event){
-					
-				}
-			});
-			inpCB5.addActionListener(new ActionListener(){
-				@Override
-				public void actionPerformed(ActionEvent event){
-					
-				}
-			});
-			inpCB7.addActionListener(new ActionListener(){
-				@Override
-				public void actionPerformed(ActionEvent event){
-					
-				}
-			});
-			inpCB2.addActionListener(new ActionListener(){
-				@Override
-				public void actionPerformed(ActionEvent event){
-					
-				}
-			});
-			inpCB4.addActionListener(new ActionListener(){
-				@Override
-				public void actionPerformed(ActionEvent event){
-					
-				}
-			});
-			inpCB6.addActionListener(new ActionListener(){
-				@Override
-				public void actionPerformed(ActionEvent event){
-					
-				}
-			});
-			inpCB8.addActionListener(new ActionListener(){
-				@Override
-				public void actionPerformed(ActionEvent event){
-					
-				}
-			});
+			inputGrid.add(inputCB[2]);
+			inputGrid.add(inputCB[4]);
+			inputGrid.add(inputCB[6]);
+			inputGrid.add(inputCB[8]);
 			
 			//add inputGrid to backViewPanel
 			backViewPanel.add(backViewLabel);
@@ -412,13 +256,13 @@ public class CTGUI {
 		JPanel screenPanel = new JPanel(new GridLayout(2,1));
 		JLabel screenLabel = new JLabel("Queue/Running/Final Time");
 			JTextArea screen = new JTextArea(100,100);
-		
+			screen.setEditable(false);
 		//add components to screenPanel
 			screenPanel.add(screenLabel);
 			screenPanel.add(screen);
 			
 		//add to window and display
-			window.setSize(750, 500);
+			window.setSize(1000, 600);
 			window.add(functionPanel);
 			window.add(signalPanel);
 			window.add(printerPanel);
@@ -429,6 +273,25 @@ public class CTGUI {
 			window.setVisible(true);
 	}
 	
+	protected class BackViewBox extends JComboBox{
+		private static final long serialVersionUID = -1061884623532972956L;
+		private final String[] sensorTypes = {"EYE","GATE","PAD","NONE"};
+		
+		BackViewBox(){
+			for(int i=0; i<sensorTypes.length; i++)
+				this.addItem(sensorTypes[i]);
+			this.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					
+				}
+			});
+			
+			
+		}
+	
+		
+	}
 	protected class ChannelButton extends JCheckBox {
 		
 		private static final long serialVersionUID = 2412443805772599043L;
@@ -446,7 +309,6 @@ public class CTGUI {
 		}
 		
 	}
-	
 	protected class NumberPadButton extends JButton {
 		
 		private static final long serialVersionUID = 2412443805772599043L;
@@ -454,6 +316,7 @@ public class CTGUI {
 		
 		NumberPadButton(String id) {
 			this.id = id;
+			this.setText(id);
 			this.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -463,7 +326,6 @@ public class CTGUI {
 		}
 		
 	}
-	
 	protected class TriggerButton extends JButton {
 		
 		private static final long serialVersionUID = 2412443805772599043L;
@@ -482,11 +344,7 @@ public class CTGUI {
 		}
 		
 	}
-	
 	public static void main(String[] args){
 		CTGUI gui = new CTGUI();	
 	}
-	
-	
-	
 }
