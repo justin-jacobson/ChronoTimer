@@ -42,9 +42,12 @@ public abstract class TRun implements Run {
 		records.remove(r.id);
 		r.records.remove(this.id);
 		for(TRecord rec : recordList) {
-			if(rec.getRacer().equals(r)) {
-				recordList.remove(rec);
-				break;
+			if(rec instanceof TRacerRecord) {
+				TRacerRecord rRec = (TRacerRecord) rec;
+				if(rRec.getRacer().equals(r)){
+					recordList.remove(rec);
+					break;
+				}
 			}
 		}
 		return true;
@@ -56,7 +59,7 @@ public abstract class TRun implements Run {
 		if(!timer.isOn() || finished || records.containsKey(id)) return null;
 		TRacer racer = timer.getRacer(id);
 		if(!safeAddRacer(racer)) return null;
-		TRecord rec = new TRecord(this,racer);
+		TRecord rec = new TRacerRecord(this,racer);
 		records.put(id, rec);
 		recordList.addFirst(rec);
 		racer.records.put(this.id, rec);

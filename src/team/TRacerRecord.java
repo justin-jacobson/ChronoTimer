@@ -2,7 +2,7 @@ package team;
 
 public class TRacerRecord extends TRecord implements RacerRecord {
 
-	TRacer racer;
+	protected TRacer racer;
 	
 	public TRacerRecord(TRun r, TRacer rc) {
 		super(r);

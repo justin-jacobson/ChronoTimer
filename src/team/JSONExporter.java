@@ -11,12 +11,21 @@ public class JSONExporter implements Exporter {
 	static final Gson gson = new Gson();
 
 	private static class GRecord {
+		private boolean isRacer;
 		private int run, racer;
 		private long start,finish;
 		private boolean ended;
 		GRecord(Record r) {
 			run = r.getRun().getID();
-			racer = r.getRacer().getID();
+			if(r instanceof TRacerRecord){
+				TRacerRecord rec = (TRacerRecord) r;
+				racer = rec.getRacer().getID();
+				isRacer = true;
+			} else if(r instanceof TPlaceHolderRecord){
+				TPlaceHolderRecord phRec = (TPlaceHolderRecord) r;
+				racer = phRec.getPlaceHolder();
+				isRacer = false;
+			}
 			start = r.getStartTime();
 			finish = r.getFinishTime();
 			ended = r.isFinished();
