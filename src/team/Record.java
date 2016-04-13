@@ -7,11 +7,11 @@ public interface Record {
 	 */
 	public Run getRun();
 	
-	/**
-	 * @return The racer that this record is associated with.
-	 */
-	public Racer getRacer();
-	
+//	/**
+//	 * @return The racer that this record is associated with.
+//	 */
+//	public Racer getRacer();
+//	
 	/**
 	 * @return The racers start time, will return -1 if they do not have a start time recorded.
 	 */

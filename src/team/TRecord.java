@@ -3,7 +3,6 @@ package team;
 public class TRecord implements Record {
 	
 	protected TRun run;
-	public final TRacer racer;
 	protected long start,finish;
 	protected boolean ended;
 
@@ -12,10 +11,6 @@ public class TRecord implements Record {
 		return run;
 	}
 
-	@Override
-	public Racer getRacer() {
-		return racer;
-	}
 
 	@Override
 	public long getStartTime() {
@@ -32,14 +27,8 @@ public class TRecord implements Record {
 		return ended;
 	}
 	
-	@Override
-	public String toString() {
-		return "Record " + racer;
-	}
-	
-	public TRecord(TRun r, TRacer rc) {
+	public TRecord(TRun r) {
 		run = r;
-		racer = rc;
 		start = -1;
 		finish = -1;
 	}
