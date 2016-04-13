@@ -14,6 +14,8 @@ import java.util.Set;
 import team.Channel;
 import team.ChronoTimer;
 import team.EventType;
+import team.PlaceHolderRecord;
+import team.RacerRecord;
 import team.Record;
 import team.Run;
 import team.SensorType;
@@ -493,7 +495,13 @@ public class CommandLineHandler {
 					stream.println("Run " + run.getID());
 					stream.println("===== ID : START - FINISH =====");
 					for(Record r : run.getRecords()) {
-						stream.print("Racer " + r.getRacer().getID() + ": ");
+						if(r instanceof RacerRecord) {
+							RacerRecord rec = (RacerRecord) r;
+							stream.print("Racer " + rec.getRacer().getID() + ": ");
+						} else if(r instanceof PlaceHolderRecord) {
+							PlaceHolderRecord rec = (PlaceHolderRecord) r;
+							stream.print("PlaceHolder " + rec.getPlaceHolder() + ": ");
+						}
 						if(r.didNotFinish()) {
 							stream.println(timer.getTimeManager().formatTime(r.getStartTime()) + " - DNF");
 						} else {

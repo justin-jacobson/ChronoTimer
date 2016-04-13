@@ -6,13 +6,17 @@ import java.util.List;
 
 public class GroupRun extends TRun {
 	
-	List<TRacer> racers = new ArrayList<TRacer>();
-	int ind;
+	protected List<TRacer> racers = new ArrayList<TRacer>();
+	protected int ind, ph = 1;
+	
+	protected long startTime = -1;
 	
 	public GroupRun(TRun run) {
 		super(run);
 		for(TRecord r : recordList) {
-			racers.add(r.racer);
+			if(!(r instanceof TRacerRecord)) continue;
+			TRacerRecord rec = (TRacerRecord) r;
+			racers.add(rec.racer);
 		}
 	}
 
@@ -27,8 +31,7 @@ public class GroupRun extends TRun {
 
 	@Override
 	public boolean hasStarted() {
-		if(racers.isEmpty() || records.get(racers.get(0).id).start == -1) return false;
-		return true;
+		return startTime != -1;
 	}
 
 	@Override
@@ -83,15 +86,24 @@ public class GroupRun extends TRun {
 		int id = c.getID();
 		if(id == 1){
 			if(hasStarted()) return false;
+			startTime = time;
 			for(TRecord r : records.values()){
-				r.start = time;
+				r.start = startTime;
 			}
 			return true;
 		}
 		else if(id == 2 && hasStarted()){
-			TRacer racer = racers.get(ind++);
-			records.get(racer.id).finish = time;
-			if(ind == racers.size()) finished = true;
+			TRecord record;
+			if(ind >= recordList.size()) {
+				record = new TPlaceHolderRecord(this,ph++);
+				record.start = startTime;
+				recordList.addLast(record);
+				++ind;
+			}
+			else
+				record = recordList.get(ind++);
+			record.finish = time;
+			record.ended = true;
 			return true;
 		}
 		return false;

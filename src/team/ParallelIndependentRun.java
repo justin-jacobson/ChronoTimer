@@ -20,8 +20,8 @@ public class ParallelIndependentRun extends TRun {
 	@Override
 	public boolean safeAddRacer(TRacer r) {
 		allRacers.addFirst(r);
-		if(addTo1) toStart1.addFirst(r);
-		else toStart2.addFirst(r);
+		if(addTo1) toStart1.add(r);
+		else toStart2.add(r);
 		addTo1 = !addTo1;
 		return true;
 	}
@@ -44,8 +44,10 @@ public class ParallelIndependentRun extends TRun {
 		if(!timer.isOn() || finished || getRacers().isEmpty()) return false;
 		TRacer r;
 		if(lastStarted.isEmpty()) {
-			if(ended.size()) return false;
-			r = toStart.pop();
+			if(ended.size() == allRacers.size()) return false;
+			r = allRacers.get(ended.size());
+			toStart1.remove(r);
+			toStart2.remove(r);
 		} else {
 			r = lastStarted.pop();
 			track1.remove(r);
@@ -68,7 +70,8 @@ public class ParallelIndependentRun extends TRun {
 			TRacer ir = it.next();
 			if(ir.id == target) {
 				it.remove();
-				toStart.remove(ir);
+				toStart1.remove(ir);
+				toStart2.remove(ir);
 				return ir;
 			}
 		}
@@ -93,8 +96,11 @@ public class ParallelIndependentRun extends TRun {
 		LinkedList<TRacer> track = getTrackFromChannel(c.getID());
 		switch (c.getID()) {
 			case 1:
+				r = toStart1.poll();
+				if(r == null) break;
 			case 3:
-				r = toStart.poll();
+				if(r == null)
+					r = toStart2.poll();
 				if(r == null) break;
 				lastStarted.addLast(r);
 				records.get(r.id).start = time;
@@ -128,7 +134,8 @@ public class ParallelIndependentRun extends TRun {
 	public ParallelIndependentRun(TChronoTimer timer, int id) {
 		super(timer, id);
 		allRacers = new LinkedList<TRacer>();
-		toStart = new LinkedList<TRacer>();
+		toStart1 = new LinkedList<TRacer>();
+		toStart2 = new LinkedList<TRacer>();
 		ended = new LinkedList<TRacer>();
 		track1 = new LinkedList<TRacer>();
 		track2 = new LinkedList<TRacer>();
@@ -138,7 +145,8 @@ public class ParallelIndependentRun extends TRun {
 	public ParallelIndependentRun(TRun old) {
 		super(old);
 		allRacers = new LinkedList<TRacer>();
-		toStart = new LinkedList<TRacer>();
+		toStart1 = new LinkedList<TRacer>();
+		toStart2 = new LinkedList<TRacer>();
 		ended = new LinkedList<TRacer>();
 		track1 = new LinkedList<TRacer>();
 		track2 = new LinkedList<TRacer>();
