@@ -8,7 +8,8 @@ import java.util.List;
 public class ParallelIndependentRun extends TRun {
 	
 	protected final LinkedList<TRacer> allRacers;
-	protected final LinkedList<TRacer> toStart, ended;
+	protected final LinkedList<TRacer> toStart1, toStart2, ended;
+	protected boolean addTo1 = true;
 	public final List<Racer> racers;
 	
 	protected final LinkedList<TRacer> track1, track2;
@@ -19,7 +20,9 @@ public class ParallelIndependentRun extends TRun {
 	@Override
 	public boolean safeAddRacer(TRacer r) {
 		allRacers.addFirst(r);
-		toStart.addFirst(r);
+		if(addTo1) toStart1.addFirst(r);
+		else toStart2.addFirst(r);
+		addTo1 = !addTo1;
 		return true;
 	}
 
@@ -30,7 +33,8 @@ public class ParallelIndependentRun extends TRun {
 		for(TRecord r : records.values()) {
 			r.ended = true;
 		}
-		toStart.clear();
+		toStart1.clear();
+		toStart2.clear();
 		ended.clear();
 		return true;
 	}
@@ -40,7 +44,7 @@ public class ParallelIndependentRun extends TRun {
 		if(!timer.isOn() || finished || getRacers().isEmpty()) return false;
 		TRacer r;
 		if(lastStarted.isEmpty()) {
-			if(toStart.isEmpty()) return false;
+			if(ended.size()) return false;
 			r = toStart.pop();
 		} else {
 			r = lastStarted.pop();
@@ -140,7 +144,10 @@ public class ParallelIndependentRun extends TRun {
 		track2 = new LinkedList<TRacer>();
 		racers = Collections.unmodifiableList(allRacers);
 		for(TRecord r : old.getRecords()) {
-			allRacers.add(r.racer);
+			if(r instanceof TRacerRecord){
+				TRacerRecord rec = (TRacerRecord) r;
+				allRacers.add(rec.racer);
+			}
 		}
 	}
 	
