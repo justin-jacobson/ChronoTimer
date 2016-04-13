@@ -1,10 +1,5 @@
 package team;
 
 public enum SensorType {
-	
-	EYE(),
-	GATE(),
-	PAD(),
-	NONE();
-	
+	EYE(), GATE(), PAD(), NONE();
 }
