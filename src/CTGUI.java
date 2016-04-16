@@ -71,7 +71,7 @@ public class CTGUI {
 							+ "3) num <number> - Sets <number> as the next competetor to start.(3#n)\n"
 							+ "4) clear <number> - Clear <number> as the next competetor.(4#n)\n"
 							+ "5) dnf - The next competetor to finish will not finish.(5#)\n"
-							+ "6) event <type> - Sets the current run with the give event type.(6#type)\n(EYE:1, GATE:2,PAD:3,NONE:4)\n"
+							+ "6) event <type> - Sets the current run with the give event type.(6#type)\n(IND:1, PARIND:2, GRP:3)\n"
 							+ "7) newrun - Creates a new run.(Must end a run first)\n"
 							+ "8) endrun - Done with the current run.\n"
 							+ "9) print <run> - Prints the given run.\n"
@@ -397,12 +397,15 @@ public class CTGUI {
 				// event <type> - Sets the current run with the give event type.
 				// (EYE:1, GATE:2,PAD:3,NONE:4)
 				number = Integer.parseInt(inputCmd.substring(2));
-				EventType event = EventType.valueOf("NONE");
-				if(number == 1){event = EventType.valueOf("EYE");}
-				else if(number == 2){event = EventType.valueOf("GATE");}
-				else if(number == 3){event = EventType.valueOf("PAD");}
-				else if(number == 4){event = EventType.valueOf("NONE");}
-				timer.setEvent(event);
+				EventType event = EventType.valueOf("IND");
+				if(number == 1){event = EventType.valueOf("IND");}
+				else if(number == 2){event = EventType.valueOf("PARIND");}
+				else if(number == 3){event = EventType.valueOf("GRP");}
+				else{screen.append("[!!] Invalid event type!");}
+				if(timer.setEvent(event))
+					screen.append("Successfully set event to " + event + "\n");
+				else
+					screen.append("Failed to set event to " + event + "\n");
 				break;
 			case"7":
 				// newrun - Creates a new run.(Must end a run first)
@@ -454,6 +457,7 @@ public class CTGUI {
 				screen.append("\n[!!]Invalid command number!");
 				break;
 		}
+		inputCmd="";
 	}
 	public static void main(String[] args){
 		CTGUI gui = new CTGUI();
