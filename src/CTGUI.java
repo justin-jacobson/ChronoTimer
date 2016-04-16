@@ -371,6 +371,7 @@ public class CTGUI {
 			case"2":
 				// reset - Resets the chrono timer back to initial state.
 				timer.reset();
+				screen.append("Reset done\n");
 				break;
 			case"3":
 				// num <number> - Sets <number> as the next competetor to start.
@@ -391,6 +392,7 @@ public class CTGUI {
 			case"5":
 				// dnf - The next competetor to finish will not finish.
 				timer.doNotFinish();
+				screen.append("DNF done\n");
 				break;
 			case"6":
 				// event <type> - Sets the current run with the give event type.
@@ -409,10 +411,12 @@ public class CTGUI {
 			case"7":
 				// newrun - Creates a new run.(Must end a run first)
 				timer.newRun();
+				screen.append("add new run done\n");
 				break;
 			case"8":
 				// endrun - Done with the current run.
 				timer.endRun();
+				screen.append("end run done\n");
 				break;
 			case"9":
 				// print <run> - Prints the given run.
