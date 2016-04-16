@@ -365,7 +365,6 @@ public class CTGUI {
 			case"1":
 				// time - Sets the current time.
 				String[] t=inputCmd.substring(2).split("\\*");
-				if(t.length==3) screen.append("\n[!!] Invalid input time!");
 				timer.getTimeManager().setTime(t[0]+":"+t[1]+":"+t[2]);
 				screen.append("Set time to " + t[0]+":"+t[1]+":"+t[2] + "\n");
 				break;
