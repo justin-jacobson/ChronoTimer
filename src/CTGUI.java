@@ -11,11 +11,19 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 import team.ChronoTimer;
+import team.EventType;
+import team.PlaceHolderRecord;
+import team.RacerRecord;
+import team.Record;
+import team.Run;
 import team.TChronoTimer;
+import team.TRun;
 
 public class CTGUI {
 	
 	protected ChronoTimer timer;
+	protected String inputCmd = "";
+	private JTextArea screen;
 	
 	public CTGUI(){
 		//create the window
@@ -53,7 +61,24 @@ public class CTGUI {
 		functionButton.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent event){
-				
+				if(inputCmd.contains("#")){
+					processCmd();
+				}else{
+					inputCmd = "";
+					screen.setText("<Function List>\n"
+							+ "1) time - Sets the current time.(1#HH*MM*SS)\n"
+							+ "2) reset - Resets the chrono timer back to initial state.(2#)\n"
+							+ "3) num <number> - Sets <number> as the next competetor to start.(3#n)\n"
+							+ "4) clear <number> - Clear <number> as the next competetor.(4#n)\n"
+							+ "5) dnf - The next competetor to finish will not finish.(5#)\n"
+							+ "6) event <type> - Sets the current run with the give event type.(6#type)\n(EYE:1, GATE:2,PAD:3,NONE:4)\n"
+							+ "7) newrun - Creates a new run.(Must end a run first)\n"
+							+ "8) endrun - Done with the current run.\n"
+							+ "9) print <run> - Prints the given run.\n"
+							+ "10) export <run> - Exports the given run.\n"
+							+ "Enter command to execute : "
+					);
+				}
 			}
 		});
 		leftButton.addActionListener(new ActionListener(){
@@ -251,14 +276,14 @@ public class CTGUI {
 		//create screen to show result
 		JPanel screenPanel = new JPanel(new GridLayout(2,1));
 		JLabel screenLabel = new JLabel("Queue/Running/Final Time");
-			JTextArea screen = new JTextArea(100,100);
+			screen = new JTextArea(300,300);
 			screen.setEditable(false);
 		//add components to screenPanel
 			screenPanel.add(screenLabel);
 			screenPanel.add(screen);
 			
 		//add to window and display
-			window.setSize(1000, 600);
+			window.setSize(1500, 800);
 			window.add(functionPanel);
 			window.add(signalPanel);
 			window.add(printerPanel);
@@ -308,7 +333,8 @@ public class CTGUI {
 			this.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					
+					inputCmd+=id;
+					screen.append(id);
 				}
 			});
 		}
@@ -331,7 +357,105 @@ public class CTGUI {
 			});
 		}
 	}
+	public void processCmd(){
+		screen.setText("\nExecuting : "+ inputCmd +"\n");
+		int number;
+		switch(inputCmd.substring(0, inputCmd.indexOf("#"))){
+			case"": screen.append("no selected command!\n"); break;
+			case"1":
+				// time - Sets the current time.
+				String[] t=inputCmd.substring(2).split("\\*");
+				if(t.length==3) screen.append("\n[!!] Invalid input time!");
+				timer.getTimeManager().setTime(t[0]+":"+t[1]+":"+t[2]);
+				screen.append("Set time to " + t[0]+":"+t[1]+":"+t[2] + "\n");
+				break;
+			case"2":
+				// reset - Resets the chrono timer back to initial state.
+				timer.reset();
+				break;
+			case"3":
+				// num <number> - Sets <number> as the next competetor to start.
+				number = Integer.parseInt(inputCmd.substring(2));
+				if(timer.getLatestRun().addRacer(number) != null)
+					screen.append("Successfully added racer " + number+"\n");
+				else
+					screen.append("[!!]Failed to add racer " + number+"\n");
+				break;
+			case"4":
+				// clear <number> - Clear <number> as the next competetor.
+				number = Integer.parseInt(inputCmd.substring(2));
+				if(timer.getLatestRun().removeRacer(number))
+					screen.append("Successfully removed racer " + number+"\n");
+				else
+					screen.append("Failed to remove racer " + number+"\n");
+				break;
+			case"5":
+				// dnf - The next competetor to finish will not finish.
+				timer.doNotFinish();
+				break;
+			case"6":
+				// event <type> - Sets the current run with the give event type.
+				// (EYE:1, GATE:2,PAD:3,NONE:4)
+				number = Integer.parseInt(inputCmd.substring(2));
+				EventType event = EventType.valueOf("NONE");
+				if(number == 1){event = EventType.valueOf("EYE");}
+				else if(number == 2){event = EventType.valueOf("GATE");}
+				else if(number == 3){event = EventType.valueOf("PAD");}
+				else if(number == 4){event = EventType.valueOf("NONE");}
+				timer.setEvent(event);
+				break;
+			case"7":
+				// newrun - Creates a new run.(Must end a run first)
+				timer.newRun();
+				break;
+			case"8":
+				// endrun - Done with the current run.
+				timer.endRun();
+				break;
+			case"9":
+				// print <run> - Prints the given run.
+				int rid = Integer.parseInt(inputCmd.substring(2))-1;
+				if(rid < 0 || rid >= timer.getRuns().size()) {
+					screen.append("[!!]No run found.\n");
+					break;
+				}
+				Run run = timer.getRuns().get(rid);
+				if(run == null) {
+					screen.append("No run found with id of " + rid+"\n");
+					break;
+				}
+				screen.append("Run " + run.getID()+"\n");
+				screen.append("===== ID : START - FINISH =====\n");
+				for(Record r : run.getRecords()) {
+					if(r instanceof RacerRecord) {
+						RacerRecord rec = (RacerRecord) r;
+						screen.append("Racer " + rec.getRacer().getID() + ": ");
+					} else if(r instanceof PlaceHolderRecord) {
+						PlaceHolderRecord rec = (PlaceHolderRecord) r;
+						screen.append("PlaceHolder " + rec.getPlaceHolder() + ": ");
+					}
+					if(r.didNotFinish()) {
+						screen.append(timer.getTimeManager().formatTime(r.getStartTime()) + " - DNF\n");
+					} else {
+						screen.append(timer.getTimeManager().formatTime(r.getStartTime()) + " - " + timer.getTimeManager().formatTime(r.getFinishTime())+"\n");
+					}
+				}
+				break;
+			case"10":
+				// export <run> - Exports the given run.
+				number = Integer.parseInt(inputCmd.substring(3));
+				if(number < 1 || number > timer.getRuns().size()) {
+					screen.append("No run found with that id.\n");
+					break;
+				}
+				timer.getExporter().export((TRun) timer.getRuns().get(number-1));
+				break;
+			default:
+				screen.append("\n[!!]Invalid command number!");
+				break;
+		}
+	}
 	public static void main(String[] args){
-		CTGUI gui = new CTGUI();	
+		CTGUI gui = new CTGUI();
 	}
 }
