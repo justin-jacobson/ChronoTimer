@@ -60,6 +60,7 @@ public class CTGUI {
 		powerButton.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent event){
+				System.out.println("Toggle Power!");
 				timer.togglePower();
 			}
 		});
@@ -390,7 +391,10 @@ public class CTGUI {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					System.out.println("Triggering chan " + id);
-					timer.trigger(id);
+					if(!timer.trigger(id))
+						System.out.println("Failed to trigger channel " + id);
+					else
+						System.out.println("Successfully triggered channel " + id);
 				}
 			});
 		}
