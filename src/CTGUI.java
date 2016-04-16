@@ -1,6 +1,11 @@
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.util.Iterator;
+import java.util.List;
+import java.awt.ItemSelectable;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -16,6 +21,7 @@ import team.PlaceHolderRecord;
 import team.RacerRecord;
 import team.Record;
 import team.Run;
+import team.SensorType;
 import team.TChronoTimer;
 import team.TRun;
 
@@ -55,7 +61,6 @@ public class CTGUI {
 			@Override
 			public void actionPerformed(ActionEvent event){
 				timer.togglePower();
-				
 			}
 		});
 		functionButton.addActionListener(new ActionListener(){
@@ -84,25 +89,25 @@ public class CTGUI {
 		leftButton.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent event){
-				
+				System.out.println("Deprecated!");
 			}
 		});
 		rightButton.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent event){
-				
+				System.out.println("Deprecated!");
 			}
 		});
 		downButton.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent event){
-				
+				System.out.println("Deprecated!");
 			}
 		});
 		upButton.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent event){
-				
+				System.out.println("Deprecated!");
 			}
 		});
 		swapButton.addActionListener(new ActionListener(){
@@ -195,7 +200,29 @@ public class CTGUI {
 			printButton.addActionListener(new ActionListener(){
 				@Override
 				public void actionPerformed(ActionEvent event){
-					
+					// print <run> - Prints the given run.
+					printer.setText("");
+					List<Run> runs = timer.getRuns();
+					Iterator<Run> it = runs.iterator();
+					while(it.hasNext()){
+						Run run = it.next();
+						printer.append("Run " + run.getID()+"\n");
+						printer.append("===== ID : START - FINISH =====\n");
+						for(Record r : run.getRecords()) {
+							if(r instanceof RacerRecord) {
+								RacerRecord rec = (RacerRecord) r;
+								printer.append("Racer " + rec.getRacer().getID() + ": ");
+							} else if(r instanceof PlaceHolderRecord) {
+								PlaceHolderRecord rec = (PlaceHolderRecord) r;
+								printer.append("PlaceHolder " + rec.getPlaceHolder() + ": ");
+							}
+							if(r.didNotFinish()) {
+								printer.append(timer.getTimeManager().formatTime(r.getStartTime()) + " - DNF\n");
+							} else {
+								printer.append(timer.getTimeManager().formatTime(r.getStartTime()) + " - " + timer.getTimeManager().formatTime(r.getFinishTime())+"\n");
+							}
+						}
+					}
 				}
 			});
 			
@@ -232,7 +259,7 @@ public class CTGUI {
 		}
 		JComboBox[] inputCB = new BackViewBox[9];
 		for(int i=1;i<=8; i++){
-			inputCB[i] = new BackViewBox();
+			inputCB[i] = new BackViewBox(i);
 		}
 			
 			//Add components to inputGrid panel
@@ -269,7 +296,7 @@ public class CTGUI {
 		usbPort.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent event){
-				
+				//What should do with usbPort?
 			}
 		});
 		
@@ -296,17 +323,28 @@ public class CTGUI {
 	
 	protected class BackViewBox extends JComboBox{
 		private static final long serialVersionUID = -1061884623532972956L;
-		private final String[] sensorTypes = {"EYE","GATE","PAD","NONE"};
+		private final String[] sensorTypes = {"NONE","EYE","GATE","PAD"};
+		private final int id;
 		
-		BackViewBox(){
+		BackViewBox(int id){
+			this.id = id;
 			for(int i=0; i<sensorTypes.length; i++)
 				this.addItem(sensorTypes[i]);
-			this.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					
+			ItemListener itemListener = new ItemListener(){
+				public void itemStateChanged(ItemEvent itemEvent){
+		          int state = itemEvent.getStateChange();
+		          String selectedSensor = "NONE";
+		          if(state == ItemEvent.SELECTED){
+		        	  selectedSensor = (String)itemEvent.getItem();
+		        	  SensorType s= SensorType.NONE;
+		        	  if(selectedSensor=="EYE") s = SensorType.EYE;
+		        	  else if(selectedSensor=="GATE") s=SensorType.GATE;
+		        	  else if(selectedSensor=="PAD") s=SensorType.PAD;
+		        	  timer.connect(s, id);
+		          }
 				}
-			});	
+			};
+			this.addItemListener(itemListener);	
 		}
 	}
 	protected class ChannelButton extends JCheckBox {
