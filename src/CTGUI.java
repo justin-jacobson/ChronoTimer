@@ -455,6 +455,7 @@ public class CTGUI {
 					break;
 				}
 				timer.getExporter().export((TRun) timer.getRuns().get(number-1));
+				screen.append("export run done\n");
 				break;
 			default:
 				screen.append("\n[!!]Invalid command number!");
