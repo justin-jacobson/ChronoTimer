@@ -5,7 +5,7 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1716</x>
+      <x>1595</x>
       <y>517</y>
       <w>484</w>
       <h>594</h>
@@ -49,7 +49,7 @@ Responsibilities
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>2134</x>
+      <x>2013</x>
       <y>1309</y>
       <w>330</w>
       <h>352</h>
@@ -79,7 +79,7 @@ Responsibilities
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1441</x>
+      <x>1320</x>
       <y>1287</y>
       <w>418</w>
       <h>396</h>
@@ -112,7 +112,7 @@ Responsibilities
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1023</x>
+      <x>902</x>
       <y>308</y>
       <w>209</w>
       <h>99</h>
@@ -129,7 +129,7 @@ _+ export(run:Run) : void_
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1001</x>
+      <x>880</x>
       <y>1320</y>
       <w>275</w>
       <h>286</h>
@@ -155,7 +155,7 @@ Responsibilities
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1738</x>
+      <x>1617</x>
       <y>1749</y>
       <w>429</w>
       <h>297</h>
@@ -183,7 +183,7 @@ Responsibilities
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1309</x>
+      <x>1188</x>
       <y>1771</y>
       <w>352</w>
       <h>319</h>
@@ -212,7 +212,7 @@ Responsibilities
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1474</x>
+      <x>1353</x>
       <y>1067</y>
       <w>165</w>
       <h>110</h>
@@ -228,7 +228,7 @@ PARGRP</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>2541</x>
+      <x>2420</x>
       <y>1144</y>
       <w>143</w>
       <h>121</h>
@@ -244,7 +244,7 @@ NONE</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>2354</x>
+      <x>2233</x>
       <y>638</y>
       <w>374</w>
       <h>231</h>
@@ -268,7 +268,7 @@ Responsibilities
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>2563</x>
+      <x>2442</x>
       <y>33</y>
       <w>143</w>
       <h>66</h>
@@ -281,7 +281,7 @@ Command
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1892</x>
+      <x>1771</x>
       <y>198</y>
       <w>308</w>
       <h>121</h>
@@ -297,7 +297,7 @@ Responsibilities
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1199</x>
+      <x>1078</x>
       <y>561</y>
       <w>209</w>
       <h>121</h>
@@ -313,7 +313,7 @@ GRacer
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>847</x>
+      <x>726</x>
       <y>561</y>
       <w>209</w>
       <h>176</h>
@@ -333,7 +333,7 @@ GRecord
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1749</x>
+      <x>1628</x>
       <y>1100</y>
       <w>55</w>
       <h>209</h>
@@ -346,7 +346,7 @@ m2=1..n</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>2145</x>
+      <x>2024</x>
       <y>1100</y>
       <w>66</w>
       <h>231</h>
@@ -359,7 +359,7 @@ m2=2..12</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>2398</x>
+      <x>2277</x>
       <y>1199</y>
       <w>165</w>
       <h>132</h>
@@ -373,7 +373,7 @@ Connect</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1386</x>
+      <x>1265</x>
       <y>1672</y>
       <w>242</w>
       <h>121</h>
@@ -384,7 +384,7 @@ Connect</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1595</x>
+      <x>1474</x>
       <y>1672</y>
       <w>231</w>
       <h>99</h>
@@ -395,7 +395,7 @@ Connect</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1265</x>
+      <x>1144</x>
       <y>1441</y>
       <w>198</w>
       <h>44</h>
@@ -408,7 +408,7 @@ m2=0..n</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1617</x>
+      <x>1496</x>
       <y>1166</y>
       <w>121</w>
       <h>143</h>
@@ -421,7 +421,7 @@ Designated</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>2420</x>
+      <x>2299</x>
       <y>55</y>
       <w>165</w>
       <h>33</h>
@@ -432,7 +432,7 @@ Designated</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1969</x>
+      <x>1848</x>
       <y>308</y>
       <w>99</w>
       <h>231</h>
@@ -446,7 +446,7 @@ Connect</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1122</x>
+      <x>1001</x>
       <y>396</y>
       <w>209</w>
       <h>187</h>
@@ -460,7 +460,7 @@ Generated</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>924</x>
+      <x>803</x>
       <y>396</y>
       <w>165</w>
       <h>187</h>
@@ -474,7 +474,7 @@ Generated</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1419</x>
+      <x>1298</x>
       <y>297</y>
       <w>209</w>
       <h>110</h>
@@ -490,7 +490,7 @@ GRun
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1221</x>
+      <x>1100</x>
       <y>341</y>
       <w>220</w>
       <h>55</h>
@@ -504,7 +504,7 @@ Generated</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>2123</x>
+      <x>2002</x>
       <y>0</y>
       <w>308</w>
       <h>121</h>
@@ -520,7 +520,7 @@ Responsibilities
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1650</x>
+      <x>1529</x>
       <y>0</y>
       <w>308</w>
       <h>121</h>
@@ -536,7 +536,7 @@ Responsibilities
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1782</x>
+      <x>1661</x>
       <y>110</y>
       <w>264</w>
       <h>110</h>
@@ -547,7 +547,7 @@ Responsibilities
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>2013</x>
+      <x>1892</x>
       <y>110</y>
       <w>264</w>
       <h>110</h>
@@ -558,7 +558,7 @@ Responsibilities
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>869</x>
+      <x>748</x>
       <y>1771</y>
       <w>352</w>
       <h>319</h>
@@ -586,7 +586,7 @@ Responsibilities
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1034</x>
+      <x>913</x>
       <y>1672</y>
       <w>594</w>
       <h>121</h>
@@ -597,7 +597,7 @@ Responsibilities
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>561</x>
+      <x>440</x>
       <y>1254</y>
       <w>275</w>
       <h>319</h>
@@ -625,7 +625,7 @@ Responsibilities
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>132</x>
+      <x>11</x>
       <y>1507</y>
       <w>275</w>
       <h>176</h>
@@ -644,7 +644,7 @@ Responsibilities
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>121</x>
+      <x>0</x>
       <y>1210</y>
       <w>275</w>
       <h>176</h>
@@ -663,7 +663,7 @@ Responsibilities
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>825</x>
+      <x>704</x>
       <y>1463</y>
       <w>198</w>
       <h>44</h>
@@ -676,7 +676,7 @@ m2=0..n</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>396</x>
+      <x>275</x>
       <y>1452</y>
       <w>187</w>
       <h>176</h>
@@ -687,7 +687,7 @@ m2=0..n</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>385</x>
+      <x>264</x>
       <y>1287</y>
       <w>198</w>
       <h>198</h>
