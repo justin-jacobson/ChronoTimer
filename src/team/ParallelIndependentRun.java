@@ -20,8 +20,8 @@ public class ParallelIndependentRun extends TRun {
 	@Override
 	public boolean safeAddRacer(TRacer r) {
 		allRacers.addFirst(r);
-		if(addTo1) toStart1.add(r);
-		else toStart2.add(r);
+		if(addTo1) toStart1.addFirst(r);
+		else toStart2.addFirst(r);
 		addTo1 = !addTo1;
 		return true;
 	}
