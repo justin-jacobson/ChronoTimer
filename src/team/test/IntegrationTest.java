@@ -17,6 +17,7 @@ import team.Record;
 import team.Run;
 import team.SensorType;
 import team.TChronoTimer;
+import team.TRacerRecord;
 import team.TimeManager;
 /*
  * This is black box testing between components.
@@ -122,7 +123,7 @@ public class IntegrationTest {
 			for(Racer rc : run.getRacers()) {
 				Racer r = racers.poll();
 				assertEquals(r,rc);
-				assertEquals(r,run.getRecord(r.getID()).getRacer());
+				assertEquals(r,((TRacerRecord)run.getRecord(r.getID())).getRacer());
 			}
 			assertTrue(racers.isEmpty());
 			
