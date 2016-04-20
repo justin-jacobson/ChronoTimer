@@ -1,12 +1,14 @@
 package team;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
 public class GroupRun extends TRun {
 	
-	protected List<TRacer> racers = new ArrayList<TRacer>();
+	protected final List<TRacer> racers = new ArrayList<TRacer>();
+	public final List<TRacer> safeRacers;
 	protected int ind, ph = 1;
 	
 	protected long startTime = -1;
@@ -18,10 +20,13 @@ public class GroupRun extends TRun {
 			TRacerRecord rec = (TRacerRecord) r;
 			racers.add(rec.racer);
 		}
+		safeRacers = Collections.unmodifiableList(racers);
 	}
 
 	public GroupRun(TChronoTimer timer, int id) {
 		super(timer, id);
+		safeRacers = Collections.unmodifiableList(racers);
+
 	}
 
 	@Override
@@ -71,7 +76,7 @@ public class GroupRun extends TRun {
 
 	@Override
 	public List<TRacer> getRacers() {
-		return racers;
+		return safeRacers;
 	}
 
 	@Override

@@ -4,7 +4,7 @@ public enum EventType {
 	IND(IndependentRun.class),
 	PARIND(ParallelIndependentRun.class),
 	GRP(GroupRun.class),
-	PARGRP(null);
+	PARGRP(ParallelGroupRun.class);
 	
 	private final Class<? extends TRun> c;
 	
@@ -20,7 +20,7 @@ public enum EventType {
 		try {
 			return c.getConstructor(TRun.class).newInstance(old);
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("Event Type change failed: " + e.getMessage());
 			return null;
 		}
 	}
