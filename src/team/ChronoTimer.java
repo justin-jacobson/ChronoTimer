@@ -8,7 +8,7 @@ public interface ChronoTimer {
 	/**
 	 * The maximum amount of channels for any ChronoTimer.
 	 */
-	public static final int MAXIMUM_CHANNELS = 12;
+	public static final int MAXIMUM_CHANNELS = 8;
 	
 	/**
 	 * 
