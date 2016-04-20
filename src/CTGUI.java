@@ -31,7 +31,7 @@ public class CTGUI {
 	protected String inputCmd = "";
 	private JTextArea screen;
 	private String[] functions;
-	
+	private int selectedCmd=0;
 	
 	public CTGUI(){
 		//create the window
@@ -84,27 +84,22 @@ public class CTGUI {
 				if(inputCmd.contains("#")){
 					processCmd();
 				}else{
-					inputCmd = "";
-					screen.setText("<Function List>\n"
-							+ "1) time - Sets the current time.(1#HH*MM*SS)\n"
-							+ "2) reset - Resets the chrono timer back to initial state.(2#)\n"
-							+ "3) num <number> - Sets <number> as the next competetor to start.(3#n)\n"
-							+ "4) clear <number> - Clear <number> as the next competetor.(4#n)\n"
-							+ "5) dnf - The next competetor to finish will not finish.(5#)\n"
-							+ "6) event <type> - Sets the current run with the give event type.(6#type)\n(IND:1, PARIND:2, GRP:3)\n"
-							+ "7) newrun - Creates a new run.(Must end a run first)\n"
-							+ "8) endrun - Done with the current run.\n"
-							+ "9) print <run> - Prints the given run.\n"
-							+ "10) export <run> - Exports the given run.\n"
-							+ "Enter command to execute : "
-					);
+					screen.setText("");
+					for(int i=0; i<10;i++){
+						if(i==selectedCmd){screen.append(">>");}
+						screen.append(functions[i]);
+					}
+					screen.append("INPUT : "+inputCmd);
 				}
 			}
 		});
 		leftButton.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent event){
-				System.out.println("Deprecated!");
+				if(!inputCmd.isEmpty()){
+					inputCmd=inputCmd.substring(0, inputCmd.length()-1);
+					functionButton.getActionListeners()[0].actionPerformed(new ActionEvent(event, selectedCmd, inputCmd));
+				}	
 			}
 		});
 		rightButton.addActionListener(new ActionListener(){
@@ -116,13 +111,15 @@ public class CTGUI {
 		downButton.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent event){
-				System.out.println("Deprecated!");
+				if(selectedCmd<9) selectedCmd+=1;
+				functionButton.getActionListeners()[0].actionPerformed(new ActionEvent(event, selectedCmd, inputCmd));
 			}
 		});
 		upButton.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent event){
-				System.out.println("Deprecated!");
+				if(selectedCmd>0)selectedCmd-=1;
+				functionButton.getActionListeners()[0].actionPerformed(new ActionEvent(event, selectedCmd, inputCmd));
 			}
 		});
 		swapButton.addActionListener(new ActionListener(){
@@ -414,46 +411,52 @@ public class CTGUI {
 		}
 	}
 	public void processCmd(){
-		screen.setText("\nExecuting : "+ inputCmd +"\n");
+		inputCmd=inputCmd.substring(1);
+		System.out.println(inputCmd);
 		int number;
-		switch(inputCmd.substring(0, inputCmd.indexOf("#"))){
-			case"": screen.append("no selected command!\n"); break;
-			case"1":
+		switch(selectedCmd){
+			case 0:
 				// time - Sets the current time.
-				String[] t=inputCmd.substring(2).split("\\*");
+				screen.setText("\nExecuting : TIME <hh*mm*ss> \n");
+				String[] t=inputCmd.split("\\*");
 				timer.getTimeManager().setTime(t[0]+":"+t[1]+":"+t[2]);
 				screen.append("Set time to " + t[0]+":"+t[1]+":"+t[2] + "\n");
 				break;
-			case"2":
+			case 1:
 				// reset - Resets the chrono timer back to initial state.
+				screen.setText("\nExecuting : RESET \n");
 				timer.reset();
 				screen.append("Reset done\n");
 				break;
-			case"3":
+			case 2:
 				// num <number> - Sets <number> as the next competetor to start.
-				number = Integer.parseInt(inputCmd.substring(2));
+				screen.setText("\nExecuting : NUMBER <num> \n");
+				number = Integer.parseInt(inputCmd);
 				if(timer.getLatestRun().addRacer(number) != null)
 					screen.append("Successfully added racer " + number+"\n");
 				else
 					screen.append("[!!]Failed to add racer " + number+"\n");
 				break;
-			case"4":
+			case 3:
 				// clear <number> - Clear <number> as the next competetor.
-				number = Integer.parseInt(inputCmd.substring(2));
+				screen.setText("\nExecuting : CLEAR <num> \n");
+				number = Integer.parseInt(inputCmd);
 				if(timer.getLatestRun().removeRacer(number))
 					screen.append("Successfully removed racer " + number+"\n");
 				else
 					screen.append("Failed to remove racer " + number+"\n");
 				break;
-			case"5":
+			case 4:
 				// dnf - The next competetor to finish will not finish.
+				screen.setText("\nExecuting : DNF \n");
 				timer.doNotFinish();
 				screen.append("DNF done\n");
 				break;
-			case"6":
+			case 5:
 				// event <type> - Sets the current run with the give event type.
 				// (EYE:1, GATE:2,PAD:3,NONE:4)
-				number = Integer.parseInt(inputCmd.substring(2));
+				screen.setText("\nExecuting : EVENT <type> (EYE:1, GATE:2, PAD:3, NONE:4 \n");
+				number = Integer.parseInt(inputCmd);
 				EventType event = EventType.valueOf("IND");
 				if(number == 1){event = EventType.valueOf("IND");}
 				else if(number == 2){event = EventType.valueOf("PARIND");}
@@ -464,19 +467,22 @@ public class CTGUI {
 				else
 					screen.append("Failed to set event to " + event + "\n");
 				break;
-			case"7":
+			case 6:
 				// newrun - Creates a new run.(Must end a run first)
+				screen.setText("\nExecuting : NEWRUN \n");
 				timer.newRun();
 				screen.append("add new run done\n");
 				break;
-			case"8":
+			case 7:
 				// endrun - Done with the current run.
+				screen.setText("\nExecuting : ENDRUN \n");
 				timer.endRun();
 				screen.append("end run done\n");
 				break;
-			case"9":
+			case 8:
 				// print <run> - Prints the given run.
-				int rid = Integer.parseInt(inputCmd.substring(2))-1;
+				screen.setText("\nExecuting : PRINT <runID> \n");
+				int rid = Integer.parseInt(inputCmd)-1;
 				if(rid < 0 || rid >= timer.getRuns().size()) {
 					screen.append("[!!]No run found.\n");
 					break;
@@ -503,9 +509,10 @@ public class CTGUI {
 					}
 				}
 				break;
-			case"10":
+			case 9:
 				// export <run> - Exports the given run.
-				number = Integer.parseInt(inputCmd.substring(3));
+				screen.setText("\nExecuting : EXPORT <runID> \n");
+				number = Integer.parseInt(inputCmd);
 				if(number < 1 || number > timer.getRuns().size()) {
 					screen.append("No run found with that id.\n");
 					break;
