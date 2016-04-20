@@ -30,6 +30,8 @@ public class CTGUI {
 	protected ChronoTimer timer;
 	protected String inputCmd = "";
 	private JTextArea screen;
+	private String[] functions;
+	
 	
 	public CTGUI(){
 		//create the window
@@ -64,6 +66,18 @@ public class CTGUI {
 				timer.togglePower();
 			}
 		});
+		
+		functions = new String[]{
+				"time <HH*MM*SS>- Sets the current time.\n",
+				"reset - Resets the chrono timer back to initial state.\n",
+				"num <number> - Sets <number> as the next competetor to start.\n",
+				"clear <number> - Clear <number> as the next competetor.\n",
+				"dnf - The next competetor to finish will not finish.\n",
+				"event <type> - Sets the current run with the give event type.\n(IND:1, PARIND:2, GRP:3)\n",
+				"newrun - Creates a new run.(Must end a run first)\n",
+				"endrun - Done with the current run.\n",
+				"print <run> - Prints the given run.\n",
+				"export <run> - Exports the given run.\n"};
 		functionButton.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent event){
