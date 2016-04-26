@@ -33,6 +33,7 @@ public class CTGUI {
 	private JTextArea screen;
 	private String[] functions;
 	private int selectedCmd=0;
+	private JCheckBox[] toggleChannel;
 	
 	public CTGUI(){
 		//create the window
@@ -160,8 +161,8 @@ public class CTGUI {
 				
 				JLabel EDLabel = new JLabel("Enable/Disable");
 				JLabel EDLabel2 = new JLabel("Enable/Disable");
-				JCheckBox[] toggleChannel = new ChannelButton[9];
-				for(int i=1;i<=8;i++){
+				toggleChannel = new ChannelButton[timer.MAXIMUM_CHANNELS];
+				for(int i=0;i<timer.MAXIMUM_CHANNELS;i++){
 					toggleChannel[i] = new ChannelButton(i);
 				}
 				//add startPanel components to startPanel
@@ -178,10 +179,10 @@ public class CTGUI {
 					startPanel.add(signalButton[7]);
 					
 					startPanel.add(EDLabel);
-					startPanel.add(toggleChannel[1]);
-					startPanel.add(toggleChannel[3]);
-					startPanel.add(toggleChannel[5]);
-					startPanel.add(toggleChannel[7]);
+					startPanel.add(toggleChannel[0]);
+					startPanel.add(toggleChannel[2]);
+					startPanel.add(toggleChannel[4]);
+					startPanel.add(toggleChannel[6]);
 				
 				//add start panel to signal panel
 					signalPanel.add(startPanel);
@@ -200,10 +201,10 @@ public class CTGUI {
 					finishPanel.add(signalButton[8]);
 				
 					finishPanel.add(EDLabel2);
-					finishPanel.add(toggleChannel[2]);
-					finishPanel.add(toggleChannel[4]);
-					finishPanel.add(toggleChannel[6]);
-					finishPanel.add(toggleChannel[8]);
+					finishPanel.add(toggleChannel[1]);
+					finishPanel.add(toggleChannel[3]);
+					finishPanel.add(toggleChannel[5]);
+					finishPanel.add(toggleChannel[7]);
 			
 				//add finish panel to signal Panel
 					signalPanel.add(finishPanel);
@@ -377,7 +378,7 @@ public class CTGUI {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					System.out.println("Toggling chan " + id);
-					timer.getChannel(id).toggle();
+					timer.getChannel(id+1).toggle();
 				}
 			});
 		}
@@ -464,7 +465,7 @@ public class CTGUI {
 			case 5:
 				// event <type> - Sets the current run with the give event type.
 				// (EYE:1, GATE:2,PAD:3,NONE:4)
-				screen.setText("\nExecuting : EVENT <type> (EYE:1, GATE:2, PAD:3, NONE:4 \n");
+				screen.setText("\nExecuting : EVENT <type> (IND:1, PARIND:2, GRP:3) \n");
 				number = Integer.parseInt(inputCmd);
 				EventType event = EventType.valueOf("IND");
 				if(number == 1){event = EventType.valueOf("IND");}
