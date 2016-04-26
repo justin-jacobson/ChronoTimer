@@ -44,7 +44,7 @@ public class CTGUI {
 			JPanel buttonPanel = new JPanel(new GridLayout(3,1));
 				JButton functionButton = new JButton("FUNCTION");
 				JPanel arrowButtonPanel = new JPanel(new GridLayout(1,4));
-					JButton leftButton = new JButton("left <");
+					JButton leftButton = new JButton("left < (Backspace)");
 					JButton rightButton = new JButton("right >");
 					JButton downButton = new JButton("down V");
 					JButton upButton = new JButton("up ^");
