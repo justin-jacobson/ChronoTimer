@@ -33,7 +33,7 @@ public class CTGUI {
 	private JTextArea screen;
 	private String[] functions;
 	private int selectedCmd=0;
-	private JCheckBox[] toggleChannel;
+	private JButton[] toggleChannel;
 	
 	public CTGUI(){
 		//create the window
@@ -83,7 +83,7 @@ public class CTGUI {
 				"num <number> - Sets <number> as the next competetor to start.\n",
 				"clear <number> - Clear <number> as the next competetor.\n",
 				"dnf - The next competetor to finish will not finish.\n",
-				"event <type> - Sets the current run with the give event type.\n(IND:1, PARIND:2, GRP:3)\n",
+				"event <type> - Sets the current run with the give event type.\n\t(IND:1, PARIND:2, GRP:3)\n",
 				"newrun - Creates a new run.(Must end a run first)\n",
 				"endrun - Done with the current run.\n",
 				"print <run> - Prints the given run.\n",
@@ -107,7 +107,8 @@ public class CTGUI {
 			@Override
 			public void actionPerformed(ActionEvent event){
 				if(!inputCmd.isEmpty()){
-					inputCmd=inputCmd.substring(inputCmd.lastIndexOf("#")+1, inputCmd.length()-1);
+					if(inputCmd.contains("#")){inputCmd=inputCmd.replace("#", "");}
+					if(!inputCmd.isEmpty()){inputCmd=inputCmd.substring(0, inputCmd.length()-1);}
 					functionButton.getActionListeners()[0].actionPerformed(new ActionEvent(event, selectedCmd, inputCmd));
 				}	
 			}
@@ -147,65 +148,55 @@ public class CTGUI {
 				JLabel empty=new JLabel("     ");
 				JLabel empty2=new JLabel("     ");
 				// creating signal's Label
-				JLabel[] signalLabel = new JLabel[9];
-				for(int i=1; i<=8; i++){
-					signalLabel[i] = new JLabel(Integer.toString(i));
+				JLabel[] signalLabel = new JLabel[8];
+				for(int i=0; i<8; i++){
+					signalLabel[i] = new JLabel(Integer.toString(i+1));
 				}
 				
 				JLabel startLabel=new JLabel("Start");
 				JLabel finishLabel=new JLabel("Finish");
-				JButton[] signalButton = new TriggerButton[9];
-				for(int i=1;i<=8;i++){
-					signalButton[i] = new TriggerButton(i);
+				JButton[] signalButton = new TriggerButton[8];
+				for(int i=0;i<8;i++){
+					signalButton[i] = new TriggerButton(i+1);
 				}
 				
 				JLabel EDLabel = new JLabel("Enable/Disable");
 				JLabel EDLabel2 = new JLabel("Enable/Disable");
 				toggleChannel = new ChannelButton[timer.MAXIMUM_CHANNELS];
 				for(int i=0;i<timer.MAXIMUM_CHANNELS;i++){
-					toggleChannel[i] = new ChannelButton(i);
+					toggleChannel[i] = new ChannelButton(i+1);
+					toggleChannel[i].setBackground(Color.BLACK);
+					toggleChannel[i].setOpaque(true);
 				}
 				//add startPanel components to startPanel
 					startPanel.add(empty);
-					startPanel.add(signalLabel[1]);
-					startPanel.add(signalLabel[3]);
-					startPanel.add(signalLabel[5]);
-					startPanel.add(signalLabel[7]);
-					
+					for(int i=0;i<(timer.MAXIMUM_CHANNELS/2);i++){
+						startPanel.add(signalLabel[i*2]);
+					}
 					startPanel.add(startLabel);
-					startPanel.add(signalButton[1]);
-					startPanel.add(signalButton[3]);
-					startPanel.add(signalButton[5]);
-					startPanel.add(signalButton[7]);
-					
+					for(int i=0;i<(timer.MAXIMUM_CHANNELS/2);i++){
+						startPanel.add(signalButton[i*2]);
+					}
 					startPanel.add(EDLabel);
-					startPanel.add(toggleChannel[0]);
-					startPanel.add(toggleChannel[2]);
-					startPanel.add(toggleChannel[4]);
-					startPanel.add(toggleChannel[6]);
-				
+					for(int i=0;i<(timer.MAXIMUM_CHANNELS/2);i++){
+						startPanel.add(toggleChannel[i*2]);
+					}
 				//add start panel to signal panel
 					signalPanel.add(startPanel);
 					
 				//add components to finishPanel
 					finishPanel.add(empty2);
-					finishPanel.add(signalLabel[2]);
-					finishPanel.add(signalLabel[4]);
-					finishPanel.add(signalLabel[6]);
-					finishPanel.add(signalLabel[8]);
-				
+					for(int i=0;i<(timer.MAXIMUM_CHANNELS/2);i++){
+						finishPanel.add(signalLabel[i*2+1]);
+					}
 					finishPanel.add(finishLabel);
-					finishPanel.add(signalButton[2]);
-					finishPanel.add(signalButton[4]);
-					finishPanel.add(signalButton[6]);
-					finishPanel.add(signalButton[8]);
-				
+					for(int i=0;i<(timer.MAXIMUM_CHANNELS/2);i++){
+						finishPanel.add(signalButton[i*2+1]);
+					}
 					finishPanel.add(EDLabel2);
-					finishPanel.add(toggleChannel[1]);
-					finishPanel.add(toggleChannel[3]);
-					finishPanel.add(toggleChannel[5]);
-					finishPanel.add(toggleChannel[7]);
-			
+					for(int i=0;i<(timer.MAXIMUM_CHANNELS/2);i++){
+						finishPanel.add(toggleChannel[i*2+1]);
+					}
 				//add finish panel to signal Panel
 					signalPanel.add(finishPanel);
 				
@@ -258,15 +249,9 @@ public class CTGUI {
 			JButton numpadButtonHash = new NumberPadButton("#");
 		
 		//add components to numpadPanel
-			numpadPanel.add(numpadButton[1]);
-			numpadPanel.add(numpadButton[2]);
-			numpadPanel.add(numpadButton[3]);
-			numpadPanel.add(numpadButton[4]);
-			numpadPanel.add(numpadButton[5]);
-			numpadPanel.add(numpadButton[6]);
-			numpadPanel.add(numpadButton[7]);
-			numpadPanel.add(numpadButton[8]);
-			numpadPanel.add(numpadButton[9]);
+			for(int i=1; i<10;i++){
+				numpadPanel.add(numpadButton[i]);
+			}
 			numpadPanel.add(numpadButtonStar);
 			numpadPanel.add(numpadButton[0]);
 			numpadPanel.add(numpadButtonHash);
@@ -275,35 +260,28 @@ public class CTGUI {
 		JPanel backViewPanel = new JPanel(new GridLayout(4,1));
 		JLabel backViewLabel = new JLabel("Sensor Connetcion");
 		JPanel inputGrid = new JPanel(new GridLayout(4,4));
-		JLabel[] inputLabel = new JLabel[9];
-		for(int i=1; i<=8; i++){
-			inputLabel[i] = new JLabel(Integer.toString(i));
+		JLabel[] inputLabel = new JLabel[8];
+		for(int i=0; i<8; i++){
+			inputLabel[i] = new JLabel(Integer.toString(i+1));
 		}
-		JComboBox[] inputCB = new BackViewBox[9];
-		for(int i=1;i<=8; i++){
-			inputCB[i] = new BackViewBox(i);
+		JComboBox[] inputCB = new BackViewBox[8];
+		for(int i=0;i<8; i++){
+			inputCB[i] = new BackViewBox(i+1);
 		}
 			
 			//Add components to inputGrid panel
-			inputGrid.add(inputLabel[1]);
-			inputGrid.add(inputLabel[3]);
-			inputGrid.add(inputLabel[5]);
-			inputGrid.add(inputLabel[7]);
-			
-			inputGrid.add(inputCB[1]);
-			inputGrid.add(inputCB[3]);
-			inputGrid.add(inputCB[5]);
-			inputGrid.add(inputCB[7]);
-			
-			inputGrid.add(inputLabel[2]);
-			inputGrid.add(inputLabel[4]);
-			inputGrid.add(inputLabel[6]);
-			inputGrid.add(inputLabel[8]);
-			
-			inputGrid.add(inputCB[2]);
-			inputGrid.add(inputCB[4]);
-			inputGrid.add(inputCB[6]);
-			inputGrid.add(inputCB[8]);
+		for(int i=0;i<(timer.MAXIMUM_CHANNELS/2);i++){
+			inputGrid.add(inputLabel[i*2]);
+		}
+		for(int i=0;i<(timer.MAXIMUM_CHANNELS/2);i++){
+			inputGrid.add(inputCB[i*2]);
+		}
+		for(int i=0;i<(timer.MAXIMUM_CHANNELS/2);i++){
+			inputGrid.add(inputLabel[i*2+1]);
+		}
+		for(int i=0;i<(timer.MAXIMUM_CHANNELS/2);i++){
+			inputGrid.add(inputCB[i*2+1]);
+		}
 			
 			//add inputGrid to backViewPanel
 			backViewPanel.add(backViewLabel);
@@ -363,13 +341,14 @@ public class CTGUI {
 		        	  else if(selectedSensor=="GATE") s=SensorType.GATE;
 		        	  else if(selectedSensor=="PAD") s=SensorType.PAD;
 		        	  timer.connect(s, id);
+		        	  System.out.println(selectedSensor + " is connected with " + id +" Channel.");
 		          }
 				}
 			};
 			this.addItemListener(itemListener);	
 		}
 	}
-	protected class ChannelButton extends JCheckBox {
+	protected class ChannelButton extends JButton {
 		private static final long serialVersionUID = 2412443805772599043L;
 		private final int id;
 		ChannelButton(int id) {
@@ -377,8 +356,19 @@ public class CTGUI {
 			this.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					System.out.println("Toggling chan " + id);
-					timer.getChannel(id+1).toggle();
+					if(!timer.isOn()){
+						timer.getChannel(id).disable();
+						toggleChannel[id-1].setBackground(Color.BLACK);
+						System.out.println("Channel " + id+" is disabled because power is off.");
+					}else if(timer.getChannel(id).isEnabled()){
+						timer.getChannel(id).disable();
+						toggleChannel[id-1].setBackground(Color.RED);
+						System.out.println("Channel " + id+" is disabled.");
+					}else{
+						timer.getChannel(id).enable();
+						toggleChannel[id-1].setBackground(Color.GREEN);
+						System.out.println("Channel " + id+" is enabled.");
+					}
 				}
 			});
 		}
