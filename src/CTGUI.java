@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -41,6 +42,8 @@ public class CTGUI {
 		//create function buttons
 		JPanel functionPanel = new JPanel(new GridLayout(2,1));
 			JButton powerButton = new JButton("POWER");
+			powerButton.setBackground(Color.RED);
+			powerButton.setOpaque(true);
 			JPanel buttonPanel = new JPanel(new GridLayout(3,1));
 				JButton functionButton = new JButton("FUNCTION");
 				JPanel arrowButtonPanel = new JPanel(new GridLayout(1,4));
@@ -63,7 +66,13 @@ public class CTGUI {
 			@Override
 			public void actionPerformed(ActionEvent event){
 				System.out.println("Toggle Power!");
-				timer.togglePower();
+				if(timer.isOn()){
+					timer.powerOff();
+					powerButton.setBackground(Color.RED);
+				}else{
+					timer.powerOn();
+					powerButton.setBackground(Color.GREEN);
+				}
 			}
 		});
 		
@@ -97,7 +106,7 @@ public class CTGUI {
 			@Override
 			public void actionPerformed(ActionEvent event){
 				if(!inputCmd.isEmpty()){
-					inputCmd=inputCmd.substring(0, inputCmd.length()-1);
+					inputCmd=inputCmd.substring(inputCmd.lastIndexOf("#")+1, inputCmd.length()-1);
 					functionButton.getActionListeners()[0].actionPerformed(new ActionEvent(event, selectedCmd, inputCmd));
 				}	
 			}
