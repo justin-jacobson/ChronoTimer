@@ -27,6 +27,8 @@ public class TRacer implements Racer {
 	public boolean equals(Object o) {
 		if(o instanceof TRacer)
 			return id == ((TRacer)o).id;
+		if(o instanceof Integer)
+			return id == (Integer)o;
 		return false;
 	}
 	

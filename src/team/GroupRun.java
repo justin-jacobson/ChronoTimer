@@ -67,10 +67,39 @@ public class GroupRun extends TRun {
 		}
 		return null;
 	}
-
+	
+	@Override
+	public TRacer addRacer(int id) {
+		if(!timer.isOn() || finished || records.containsKey(id)) return null;
+		TRacer racer = timer.getRacer(id);
+		TRecord rec = null;
+		int index = 0;
+		for(Record r : recordList) {
+			if(r instanceof TPlaceHolderRecord) {
+				TPlaceHolderRecord pr = (TPlaceHolderRecord) r;
+				recordList.remove(index);
+				rec = new TRacerRecord(this,racer);
+				rec.ended = pr.ended;
+				rec.start = pr.start;
+				rec.finish = pr.finish;
+				recordList.add(index, rec);
+				break;
+			}
+			++index;
+		}
+		if(rec == null && !hasStarted()) {
+			rec = new TRacerRecord(this,racer);
+			recordList.addFirst(rec);
+		}
+		if(rec == null) return null;
+		racers.add(0,racer);
+		records.put(id, rec);
+		racer.records.put(this.id, rec);
+		return racer;
+	}
+	
 	@Override
 	protected boolean safeAddRacer(TRacer r) {
-		racers.add(0,r);
 		return true;
 	}
 
