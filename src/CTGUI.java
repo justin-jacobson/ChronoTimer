@@ -353,7 +353,7 @@ public class CTGUI {
 		        	  //change sensor type
 		        	  if(!timer.isOn()){
 		        		  System.out.println("Timer's Power is OFF!"); 
-		        		  //inputCB[id].setSelectedIndex(2);
+		        		  inputCB[id-1].setSelectedIndex(0);
 		        	  }
 		        	  else if(selectedSensor=="EYE") s=SensorType.EYE;
 		        	  else if(selectedSensor=="GATE") s=SensorType.GATE;
