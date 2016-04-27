@@ -61,7 +61,16 @@ public class JSONExporter implements Exporter {
 			}
 		}
 	}
-
+	
+	public String exportToString(Exportable e) {
+		if(e instanceof TRun) {
+			TRun run = (TRun)e;
+			GRun grun = new GRun(run);
+			return gson.toJson(grun);
+		}
+		return null;
+	}
+	
 	public void export(Exportable e) {
 		if(e instanceof TRun) {
 			TRun run = (TRun) e;
@@ -71,6 +80,7 @@ public class JSONExporter implements Exporter {
 
 			try(FileWriter file = new FileWriter(fileName)) {
 				file.write(json);
+				file.close();
 				System.out.println("Copied JSON object into local file");
 			} catch (IOException ex) {
 				// TODO Auto-generated catch block
