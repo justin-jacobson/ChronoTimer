@@ -1,3 +1,4 @@
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -14,7 +15,9 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.ScrollPaneConstants;
 
 import team.ChronoTimer;
 import team.EventType;
@@ -215,14 +218,18 @@ public class CTGUI {
 				
 		//create printer
 		JPanel printerPanel = new JPanel(new GridLayout(2,1));
+
 			JButton printButton = new JButton("Printer Button");
 			JTextArea printer = new JTextArea(80,100);
 			printer.setEditable(false);
 			
+			//create scrollbar for printer text area
+			JScrollPane pScroll = new JScrollPane(printer, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+			
 		//add components to printer panel
 			printerPanel.add(printButton);
-			printerPanel.add(printer);
-			
+			printerPanel.add(pScroll);
+
 			printButton.addActionListener(new ActionListener(){
 				@Override
 				public void actionPerformed(ActionEvent event){
