@@ -16,8 +16,8 @@ public class TestExporter {
 	public void setUp() {
 		ct.powerOn();
 		ex = ct.getExporter();
-		ct.toggleChanel(1);
-		ct.toggleChanel(2);
+		ct.toggleChannel(1);
+		ct.toggleChannel(2);
 		
 		race = ct.getLatestRun();
 		race.addRacer(11);

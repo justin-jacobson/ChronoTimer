@@ -95,6 +95,7 @@ public class GroupRun extends TRun {
 		racers.add(0,racer);
 		records.put(id, rec);
 		racer.records.put(this.id, rec);
+		timer.wExporter.export(this);
 		return racer;
 	}
 	

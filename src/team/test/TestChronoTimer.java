@@ -33,7 +33,7 @@ public class TestChronoTimer {
 		assertTrue(timer.connect(SensorType.PAD, 1));
 		assertTrue(timer.connect(SensorType.GATE, 2));
 		assertNotNull(timer.getLatestRun().addRacer(5));
-		assertTrue(timer.toggleChanel(1));
+		assertTrue(timer.toggleChannel(1));
 		timer.getTimeManager().setTime("00:00:00");
 		assertTrue(timer.trigger(1));
 		assertRange(timer.getLatestRun().getRacers().get(0).getRecords().get(timer.getLatestRun().getID()).getStartTime(), 0, 3);
@@ -93,9 +93,9 @@ public class TestChronoTimer {
 		assertTrue(timer.connect(SensorType.EYE, 2));
 		assertFalse(timer.trigger(1));
 		assertFalse(timer.trigger(2));
-		assertTrue(timer.toggleChanel(1));
+		assertTrue(timer.toggleChannel(1));
 		assertTrue(timer.getChannels().get(0).isEnabled());
-		assertTrue(timer.toggleChanel(2));
+		assertTrue(timer.toggleChannel(2));
 		assertTrue(timer.getChannels().get(1).isEnabled());
 		Racer second = timer.getLatestRun().addRacer(25);
 		assertNotNull(second);
@@ -127,7 +127,7 @@ public class TestChronoTimer {
 		timer.setPower(true);
 		assertTrue(timer.isOn());
 		timer.getTimeManager().setTime("00:00:00");
-		timer.toggleChanel(1); timer.toggleChanel(2);
+		timer.toggleChannel(1); timer.toggleChannel(2);
 		LinkedList<TRacer> racers = new LinkedList<TRacer>();
 		
 		for(int i = 0; i < 10; i++) {

@@ -23,10 +23,10 @@ public class TestIND {
 		assertTrue(currRun.getID() == 1);
 		
 		assertTrue(currRun.getEventType() == EventType.IND);
-		assertTrue(timer.toggleChanel(1));
+		assertTrue(timer.toggleChannel(1));
 		assertFalse(currRun.trigger(timer.getChannel(1)));
 		timer.getChannel(1).setSensorType(SensorType.EYE);
-		assertTrue(timer.toggleChanel(2));
+		assertTrue(timer.toggleChannel(2));
 		assertFalse(currRun.trigger(timer.getChannel(2)));
 		timer.getChannel(2).setSensorType(SensorType.EYE);
 		

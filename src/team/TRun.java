@@ -63,6 +63,7 @@ public abstract class TRun implements Run {
 		records.put(id, rec);
 		recordList.addFirst(rec);
 		racer.records.put(this.id, rec);
+		timer.wExporter.export(this);
 		return racer;
 	}
 

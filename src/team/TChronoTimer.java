@@ -44,6 +44,8 @@ public class TChronoTimer implements ChronoTimer {
 	
 	protected final JSONExporter exporter = new JSONExporter();
 	
+	protected final WebExporter wExporter = new WebExporter("localhost", 8000, exporter);
+	
 	protected final TimeManager timeManager = new TimeManager();
 	
 	public Map<Integer,Racer> getRacers() {
@@ -106,7 +108,7 @@ public class TChronoTimer implements ChronoTimer {
 	 * @param ch - The channel.
 	 * @return True if the operation was successful.
 	 */
-	public boolean toggleChanel(int ch){
+	public boolean toggleChannel(int ch){
 		if(!power || ch < 1 || ch > channels.length-1) return false;
 		return channels[ch-1].toggle();
 	}
@@ -119,13 +121,16 @@ public class TChronoTimer implements ChronoTimer {
 		if(!power || !runs.isEmpty() && !runs.get(current_run).finished) return null;
 		TRun result = TRun.getDefaultRun(this, ++current_run + 1);
 		runs.add(result);
+		wExporter.export(result);
 		return result;
 	}
 	
 	public boolean swap(){
 		if(!getLatestRun().getEventType().equals(EventType.IND)) return false;
 		IndependentRun run = (IndependentRun) getLatestRun();
-		return run.swap();
+		boolean r = run.swap();
+		wExporter.export(run);
+		return r;
 	}
 	
 	/**
@@ -151,7 +156,9 @@ public class TChronoTimer implements ChronoTimer {
 	 */
 	@Override
 	public boolean trigger(Channel c) {
-		return getLatestRun().trigger(c);
+		boolean r = getLatestRun().trigger(c);
+		wExporter.export(getLatestRun());
+		return r;
 	}
 	
 	/**
@@ -198,12 +205,16 @@ public class TChronoTimer implements ChronoTimer {
 
 	@Override
 	public boolean endRun() {
-		return getLatestRun().endRun();
+		boolean r = getLatestRun().endRun();
+		wExporter.export(getLatestRun());
+		return r;
 	}
 
 	@Override
 	public boolean doNotFinish() {
-		return getLatestRun().doNotFinish();
+		boolean r = getLatestRun().doNotFinish();
+		wExporter.export(getLatestRun());
+		return r;
 	}
 	
 	@Override
