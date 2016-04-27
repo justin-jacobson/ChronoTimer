@@ -34,6 +34,7 @@ public class CTGUI {
 	private String[] functions;
 	private int selectedCmd=0;
 	private JButton[] toggleChannel;
+	JComboBox[] inputCB;
 	
 	public CTGUI(){
 		//create the window
@@ -70,9 +71,21 @@ public class CTGUI {
 				if(timer.isOn()){
 					timer.powerOff();
 					powerButton.setBackground(Color.RED);
+					for(int i=1;i<=timer.MAXIMUM_CHANNELS;i++ ){
+						toggleChannel[i-1].setBackground(Color.BLACK);
+					}
 				}else{
 					timer.powerOn();
 					powerButton.setBackground(Color.GREEN);
+					
+					for(int i=1;i<=timer.MAXIMUM_CHANNELS;i++ ){
+						if(timer.getChannel(i).isEnabled()){
+							toggleChannel[i-1].setBackground(Color.GREEN);
+						}else{
+							toggleChannel[i-1].setBackground(Color.RED);
+						}
+						
+					}
 				}
 			}
 		});
@@ -264,8 +277,8 @@ public class CTGUI {
 		for(int i=0; i<8; i++){
 			inputLabel[i] = new JLabel(Integer.toString(i+1));
 		}
-		JComboBox[] inputCB = new BackViewBox[8];
-		for(int i=0;i<8; i++){
+		inputCB = new BackViewBox[8];
+		for(int i=0;i<timer.MAXIMUM_CHANNELS; i++){
 			inputCB[i] = new BackViewBox(i+1);
 		}
 			
@@ -337,11 +350,20 @@ public class CTGUI {
 		          if(state == ItemEvent.SELECTED){
 		        	  selectedSensor = (String)itemEvent.getItem();
 		        	  SensorType s= SensorType.NONE;
-		        	  if(selectedSensor=="EYE") s = SensorType.EYE;
+		        	  //change sensor type
+		        	  if(!timer.isOn()){
+		        		  System.out.println("Timer's Power is OFF!"); 
+		        		  //inputCB[id].setSelectedIndex(2);
+		        	  }
+		        	  else if(selectedSensor=="EYE") s=SensorType.EYE;
 		        	  else if(selectedSensor=="GATE") s=SensorType.GATE;
 		        	  else if(selectedSensor=="PAD") s=SensorType.PAD;
 		        	  timer.connect(s, id);
-		        	  System.out.println(selectedSensor + " is connected with " + id +" Channel.");
+		        	  //change color
+		        	  if(!timer.isOn()){toggleChannel[id-1].setBackground(Color.BLACK);}
+		        	  else if(timer.getChannel(id).isEnabled()){toggleChannel[id-1].setBackground(Color.GREEN);}
+		        	  else{toggleChannel[id-1].setBackground(Color.RED);}
+		        	  System.out.println(timer.getChannel(id).getSensorType() + " is connected with " + id +" Channel.");
 		          }
 				}
 			};
@@ -357,9 +379,8 @@ public class CTGUI {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					if(!timer.isOn()){
-						timer.getChannel(id).disable();
 						toggleChannel[id-1].setBackground(Color.BLACK);
-						System.out.println("Channel " + id+" is disabled because power is off.");
+						System.out.println("Channel " + id+" does not changed. STAT: "+ timer.getChannel(id).isEnabled());
 					}else if(timer.getChannel(id).isEnabled()){
 						timer.getChannel(id).disable();
 						toggleChannel[id-1].setBackground(Color.RED);
