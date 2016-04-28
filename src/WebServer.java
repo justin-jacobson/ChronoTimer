@@ -26,22 +26,22 @@ public class WebServer {
 	
 	static Map<Integer, String> racerNames = new HashMap<Integer, String>();
 
-	public WebServer(){
+	public WebServer() {
 		// set up a simple HTTP server on our local host
 		try{
-			HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
+			serv = HttpServer.create(new InetSocketAddress(8000), 0);
 
 			// create a context to get the request to display the results
-			server.createContext("/displayresults", new DisplayLastHandler());
+			serv.createContext("/display", new DisplayLastHandler());
 
-			server.createContext("/displayresults/mystyle.css", new CSSHandler());
+			serv.createContext("/display/mystyle.css", new CSSHandler());
 
 			// create a context to get the request for the POST
-			server.createContext("/sendresults",new PostHandler());
+			serv.createContext("/sendresults",new PostHandler());
 			
-			server.createContext("/clear", new ClearHandler());
+			serv.createContext("/clear", new ClearHandler());
 
-			server.setExecutor(null); // creates a default executor
+			serv.setExecutor(null); // creates a default executor
 
 		} catch(Exception e)
 		{
@@ -75,6 +75,7 @@ public class WebServer {
 	public void start() {
 		// TODO Auto-generated method stub
 		serv.start();
+		System.out.println("Server started");
 	}
 	
     private class ClearHandler implements HttpHandler {
@@ -97,23 +98,26 @@ public class WebServer {
 	private class DisplayLastHandler implements HttpHandler {
 		public void handle(HttpExchange t) throws IOException {
 			t.getResponseHeaders().set("Content-Type", "text/html");
-
+			System.out.println("Sending results page.");
 			String response = sendResultsPage(latestRun);
-
+			//String response = "This is a test.";
 			t.sendResponseHeaders(200, response.length());
 			// write out the response
 			OutputStream os = t.getResponseBody();
 
 			os.write(response.getBytes());
 			os.close();
+			System.out.println("Finished sending results page.");
 		}
 	}
 
 	private String sendResultsPage(GRun run) {
 		String response = "<link rel=\"stylesheet\" type=\"text/css\" href=\"mystyle.css\">";
 
-		response += "<table><tbody><tr> <th>Title</th> <th><a href='/displayresults/lastname'>Last Name</a></th> <th>First Name</th> <th><a href='/displayresults/dept'>Department</a></th> <th>Phone</th> <th>Gender</th> </tr>";
-
+		response += "<table><tbody><tr> <th>Racer</th> <th>Start</th> <th>Finish</th> <th>Department</th> <th>Phone</th> <th>Gender</th> </tr>";
+		
+		t.setEpoch(run.epoch);
+		
 		for(GRecord r : run.records) {
 			response += "<tr>";
 			response += "<td>";
@@ -122,7 +126,7 @@ public class WebServer {
 			} else {
 				response += "PlaceHolder ";
 			}
-			response += r.racer + "</td><td>" + r. + "</td><td>" + e.firstName + "</td><td>" + e.dept + "</td><td>" + e.phone + "</td><td>" + e.gender + "</td>\n";
+			response += r.racer + "</td><td>" + t.formatTime(r.start) + "</td><td>" + t.formatTime(r.finish) + "</td><td>" + r.finish + "</td><td>" + r.finish + "</td><td>" + r.finish + "</td>\n";
 			response += "</tr>";
 		}
 
@@ -159,15 +163,19 @@ public class WebServer {
 
 			System.out.println("response: " + sharedResponse);
 
-			GRun[] newRuns = gson.fromJson(sharedResponse, GRun[].class);
-
-			for(GRun e : newRuns) {
-				if(e.id >= latestRun.id)
-					latestRun = e;
-				runs.put(e.id, e);
-				System.out.println(e);
+			GRun newRun = gson.fromJson(sharedResponse, GRun.class);
+			
+			System.out.println("Got json");
+			
+			if(latestRun == null || newRun.id >= latestRun.id) {
+				latestRun = newRun;
+				System.out.println("Latest run is now " + newRun.id);
 			}
-
+			runs.put(newRun.id, newRun);
+			System.out.println(newRun);
+			
+			System.out.println("Finished looping new runs");
+			
 			// assume that stuff works all the time
 			transmission.sendResponseHeaders(300, postResponse.length());
 

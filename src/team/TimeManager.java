@@ -11,6 +11,10 @@ public class TimeManager {
 		return epoch;
 	}
 	
+	public void setEpoch(long e) {
+		epoch = e;
+	}
+	
 	/**
 	 * Get input from user. "TIME hour:min:sec" string format.
 	 * Set system_time from 'time' to 'system_time'.
