@@ -36,10 +36,14 @@ public class JSONExporter implements Exporter {
 		private final int id;
 		private final long epoch;
 		private GRecord[] records;
-
-		public GRun(TRun run){
+		
+		private final boolean started, finished;
+		
+		public GRun(TRun run) {
 			id = run.id;
 			epoch = run.timer.getTimeManager().getTime();
+			started = run.hasStarted();
+			finished = run.isFinished();
 			records = new GRecord[run.getRecords().size()];
 			int i = 0;
 			for(Record r : run.getRecords()) {

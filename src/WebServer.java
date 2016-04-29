@@ -12,7 +12,6 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
-import team.Run;
 import team.TimeManager;
 
 public class WebServer {
@@ -32,9 +31,9 @@ public class WebServer {
 			serv = HttpServer.create(new InetSocketAddress(8000), 0);
 
 			// create a context to get the request to display the results
-			serv.createContext("/display", new DisplayLastHandler());
+			serv.createContext(DisplayRunHandler.context, new DisplayRunHandler());
 
-			serv.createContext("/display/mystyle.css", new CSSHandler());
+			serv.createContext(DisplayRunHandler.context + "/mystyle.css", new CSSHandler());
 
 			// create a context to get the request for the POST
 			serv.createContext("/sendresults",new PostHandler());
@@ -53,12 +52,13 @@ public class WebServer {
 		private int id;
 		private long epoch;
 		private GRecord[] records;
+		private boolean started,finished;
 	}
 
 	private class GRecord {
 		private boolean isRacer;
+		private long start, finish;
 		private int run, racer;
-		private long start,finish;
 		private boolean ended;
 		
 		public boolean didNotFinish() {
@@ -95,26 +95,58 @@ public class WebServer {
         }
     }
 
-	private class DisplayLastHandler implements HttpHandler {
+	private class DisplayRunHandler implements HttpHandler {
+		
+		private static final String context = "/display";
+		
 		public void handle(HttpExchange t) throws IOException {
 			t.getResponseHeaders().set("Content-Type", "text/html");
-			System.out.println("Sending results page.");
-			String response = sendResultsPage(latestRun);
-			//String response = "This is a test.";
-			t.sendResponseHeaders(200, response.length());
-			// write out the response
-			OutputStream os = t.getResponseBody();
+			GRun run = null;
+			String response, param ="";
+			try {
+				String[] p = t.getRequestURI().toString().split("/");
+				param = p[p.length-1];
+				if(context.replaceAll("/", "").equals(param)) param = "";
+				if(param.length() > 0) {
+					int id = Integer.parseInt(param);
+					run = runs.get(id);
+				} else {
+					run = latestRun;
+				}
+				if(run == null && param.length() != 0) {
+					response = "No run found with id " + param;
+				} else if(run == null && param.length() == 0) {
+					response = "No runs to display.";
+				} else
+					response = sendResultsPage(run);
+				
+				t.sendResponseHeaders(200, response.length());
+				
+				// write out the response
+				OutputStream os = t.getResponseBody();
 
-			os.write(response.getBytes());
-			os.close();
-			System.out.println("Finished sending results page.");
+				os.write(response.getBytes());
+				os.close();
+				
+			} catch(Exception e) {
+				
+			}
 		}
 	}
 
 	private String sendResultsPage(GRun run) {
 		String response = "<link rel=\"stylesheet\" type=\"text/css\" href=\"mystyle.css\">";
-
-		response += "<table><tbody><tr> <th>Racer</th> <th>Start</th> <th>Finish</th> <th>Department</th> <th>Phone</th> <th>Gender</th> </tr>";
+		
+		response += "<center><h1>Run " + run.id + "</h1></br> Status: ";
+		if(!run.started) {
+			response += "Has not started.";
+		} else if(run.finished) {
+			response += "Finished";
+		} else {
+			response += "Started";
+		}
+		
+		response += "</center></br><table><tbody><tr> <th>Racer</th> <th>Start</th> <th>Finish</th> <th>Elapsed</th> </tr>";
 		
 		t.setEpoch(run.epoch);
 		
@@ -126,8 +158,12 @@ public class WebServer {
 			} else {
 				response += "PlaceHolder ";
 			}
-			response += r.racer + "</td><td>" + t.formatTime(r.start) + "</td><td>" + t.formatTime(r.finish) + "</td><td>" + r.finish + "</td><td>" + r.finish + "</td><td>" + r.finish + "</td>\n";
-			response += "</tr>";
+			response += r.racer + "</td><td>" + t.formatTime(r.start) + "</td><td>" + t.formatTime(r.finish) + "</td><td>";
+			if(r.didNotFinish()) {
+				response += "DNF";
+			} else
+				response += t.formatTime(r.finish-r.start);
+			response += "</td>\n</tr>";
 		}
 
 		response += "</tbody></table>";
@@ -161,20 +197,16 @@ public class WebServer {
 
 			//sharedResponse = sharedResponse.substring(5);
 
-			System.out.println("response: " + sharedResponse);
+			//System.out.println("response: " + sharedResponse);
 
 			GRun newRun = gson.fromJson(sharedResponse, GRun.class);
-			
-			System.out.println("Got json");
 			
 			if(latestRun == null || newRun.id >= latestRun.id) {
 				latestRun = newRun;
 				System.out.println("Latest run is now " + newRun.id);
 			}
 			runs.put(newRun.id, newRun);
-			System.out.println(newRun);
-			
-			System.out.println("Finished looping new runs");
+			System.out.println(runs.size());
 			
 			// assume that stuff works all the time
 			transmission.sendResponseHeaders(300, postResponse.length());
@@ -186,7 +218,7 @@ public class WebServer {
 		}
 	}
 
-	private static class CSSHandler implements HttpHandler {
+	private class CSSHandler implements HttpHandler {
 		@Override
 		public void handle(HttpExchange t) throws IOException {
 			File css = new File("mystyle.css");
@@ -195,7 +227,7 @@ public class WebServer {
 			while(in.hasNextLine()) {
 				res += in.nextLine();
 			}
-			System.out.println(res);
+			in.close();
 			t.sendResponseHeaders(200, res.length());
 			t.getResponseBody().write(res.getBytes());
 			t.getResponseBody().close();
