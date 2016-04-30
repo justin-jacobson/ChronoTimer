@@ -74,7 +74,7 @@ public class WebExporter implements Exporter {
 					System.out.println("Return String: "+ sb);
 	
 				} catch (Exception ex) {
-					ex.printStackTrace();
+					System.out.println("WebExporter failed to send run info.");
 				}
 			}
 		}
