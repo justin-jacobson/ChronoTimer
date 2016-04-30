@@ -86,9 +86,12 @@ public abstract class TRun implements Run {
 	}
 	
 	public boolean trigger(Channel c) {
-		if(!timer.isOn() || c == null || !c.isEnabled() || c.getSensorType().equals(SensorType.NONE) || isFinished()) return false;
-		safeTrigger(c);
-		return true;
+		synchronized(timer) {
+			System.out.println("Calling safe trigger now.");
+			safeTrigger(c);
+			timer.wExporter.export(this);
+			return true;
+		}
 	}
 	
 	protected abstract boolean safeTrigger(Channel c);

@@ -1,6 +1,6 @@
 package team;
 
-public class TChannel implements Channel {
+public class TChannel implements Channel, Runnable {
 	
 	/**
 	 * The channels id.
@@ -20,8 +20,9 @@ public class TChannel implements Channel {
 	/**
 	 * The sensors state, if it is enabled or not.
 	 */
-	private boolean enabled;
+	private volatile boolean enabled;
 	
+	protected Thread thread = new Thread(this);
 	
 	/**
 	 * @param timer - TCronoTimer object
@@ -84,6 +85,11 @@ public class TChannel implements Channel {
 	 */
 	public boolean toggle() {
 		enabled = !enabled;
+		if(enabled == false) thread.interrupt();
+		else {
+			thread =new Thread(this);
+			thread.start();
+		}
 		return true;
 	}
 
@@ -92,7 +98,12 @@ public class TChannel implements Channel {
 	 * @return the result of the call to timer.trigger. Returns true if the trigger is valid, false if not.
 	 */
 	public boolean trigger() {
-		return timer.trigger(this);
+		if(!timer.isOn() || !isEnabled() || getSensorType().equals(SensorType.NONE)) return false;
+		TRun latestRun = timer.getLatestRun();
+		synchronized (this) {
+			notify();
+		}
+		return true;
 	}
 	
 	/**
@@ -123,6 +134,11 @@ public class TChannel implements Channel {
 		if (!timer.isOn()) return false;
 		boolean old = enabled;
 		enabled = e;
+		if(enabled == false) thread.interrupt();
+		else {
+			thread =new Thread(this);
+			thread.start();
+		}
 		return old != enabled;
 	}
 
@@ -135,7 +151,23 @@ public class TChannel implements Channel {
 		if (!timer.isOn()) return;
 		if(s == null) s = SensorType.NONE;
 		t = s;
-		return;
+	}
+	
+	@Override
+	public void run() {
+		while(true) {
+			try {
+				synchronized(this) {
+					wait();
+				}
+				synchronized(timer) {
+					TRun run = timer.getLatestRun();
+					run.trigger(this);
+				}
+			} catch (InterruptedException e) {
+				break;
+			}
+		}
 	}
 	
 }

@@ -2,16 +2,16 @@ package team;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class TChronoTimer implements ChronoTimer {
 	
 	/**
 	 * The current power state of the ChronoTimer.
 	 */
-	private boolean power;
+	private volatile boolean power;
 	/**
 	 * Array holding all the channels that belong to this ChonoTimer.
 	 */
@@ -36,7 +36,7 @@ public class TChronoTimer implements ChronoTimer {
 	/**
 	 * A map that stores all racers that are associated with this ChronoTimer.
 	 */
-	protected final Map<Integer,TRacer> racers = new HashMap<Integer,TRacer>();
+	protected final Map<Integer,TRacer> racers = new ConcurrentHashMap<Integer,TRacer>();
 	/**
 	 * A non-modifiable view of all the racers.
 	 */
@@ -65,7 +65,7 @@ public class TChronoTimer implements ChronoTimer {
 	 * Checks power status of the ChronoTimer
 	 * @return The current status of power
 	 */
-	public boolean isOn() {
+	synchronized public boolean isOn() {
 		return power;
 	}
 	
@@ -73,7 +73,7 @@ public class TChronoTimer implements ChronoTimer {
 	 * Toggles the power of the ChonoTimer
 	 * @return True if power was toggled
 	 */
-	public boolean togglePower(){
+	synchronized public boolean togglePower(){
 		power = !power;
 		return true;
 	}
@@ -81,7 +81,7 @@ public class TChronoTimer implements ChronoTimer {
 	 * @param New power value
 	 * @return True if power status has changed
 	 */
-	public boolean setPower(boolean pow) {
+	synchronized public boolean setPower(boolean pow) {
 		boolean result = power != pow;
 		power = pow;
 		return result;
@@ -90,7 +90,7 @@ public class TChronoTimer implements ChronoTimer {
 	/**
 	 * Resets the ChronoTimer to default settings and clears all runs.
 	 */
-	public boolean reset() {
+	synchronized public boolean reset() {
 		for(int i=0; i<ChronoTimer.MAXIMUM_CHANNELS; i++) {
 			channels[i].setSensorType(SensorType.NONE);
 			channels[i].disable();
@@ -99,7 +99,6 @@ public class TChronoTimer implements ChronoTimer {
 		runs.clear();
 		runs.add(TRun.getDefaultRun(this, 1));
 		current_run = 0;
-		// Reset time?
 		return true;
 	}
 	
@@ -108,7 +107,7 @@ public class TChronoTimer implements ChronoTimer {
 	 * @param ch - The channel.
 	 * @return True if the operation was successful.
 	 */
-	public boolean toggleChannel(int ch){
+	synchronized public boolean toggleChannel(int ch){
 		if(!power || ch < 1 || ch > channels.length-1) return false;
 		return channels[ch-1].toggle();
 	}
@@ -117,7 +116,7 @@ public class TChronoTimer implements ChronoTimer {
 	 * Creates a new run.
 	 * @return True if operation was successful, otherwise false if the chrono timer is off or the current race has not ended.
 	 */
-	public Run newRun(){
+	synchronized public Run newRun(){
 		if(!power || !runs.isEmpty() && !runs.get(current_run).finished) return null;
 		TRun result = TRun.getDefaultRun(this, ++current_run + 1);
 		runs.add(result);
@@ -125,7 +124,7 @@ public class TChronoTimer implements ChronoTimer {
 		return result;
 	}
 	
-	public boolean swap(){
+	synchronized public boolean swap(){
 		if(!getLatestRun().getEventType().equals(EventType.IND)) return false;
 		IndependentRun run = (IndependentRun) getLatestRun();
 		boolean r = run.swap();
@@ -156,9 +155,7 @@ public class TChronoTimer implements ChronoTimer {
 	 */
 	@Override
 	public boolean trigger(Channel c) {
-		boolean r = getLatestRun().trigger(c);
-		wExporter.export(getLatestRun());
-		return r;
+		return c.trigger();
 	}
 	
 	/**
@@ -168,7 +165,7 @@ public class TChronoTimer implements ChronoTimer {
 	 * @return False for no event
 	 */
 	@Override
-	public boolean setEvent(EventType event) {
+	synchronized public boolean setEvent(EventType event) {
 		if(!power || event == null) return false;
 		if(getLatestRun().hasStarted()) return false;
 		runs.set(current_run, event.getNewInstanceFromOld(getLatestRun()));
@@ -204,14 +201,14 @@ public class TChronoTimer implements ChronoTimer {
 	}
 
 	@Override
-	public boolean endRun() {
+	synchronized public boolean endRun() {
 		boolean r = getLatestRun().endRun();
 		wExporter.export(getLatestRun());
 		return r;
 	}
 
 	@Override
-	public boolean doNotFinish() {
+	synchronized public boolean doNotFinish() {
 		boolean r = getLatestRun().doNotFinish();
 		wExporter.export(getLatestRun());
 		return r;
