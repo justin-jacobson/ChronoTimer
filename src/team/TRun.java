@@ -87,7 +87,6 @@ public abstract class TRun implements Run {
 	
 	public boolean trigger(Channel c) {
 		synchronized(timer) {
-			System.out.println("Calling safe trigger now.");
 			safeTrigger(c);
 			timer.wExporter.export(this);
 			return true;
