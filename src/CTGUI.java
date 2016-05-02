@@ -99,7 +99,7 @@ public class CTGUI {
 				"num <number> - Sets <number> as the next competetor to start.\n",
 				"clear <number> - Clear <number> as the next competetor.\n",
 				"dnf - The next competetor to finish will not finish.\n",
-				"event <type> - Sets the current run with the give event type.\n\t(IND:1, PARIND:2, GRP:3)\n",
+				"event <type> - Sets the current run with the give event type.\n\t(IND:1, PARIND:2, GRP:3, PARGRP:4)\n",
 				"newrun - Creates a new run.(Must end a run first)\n",
 				"endrun - Done with the current run.\n",
 				"print <run> - Prints the given run.\n",
@@ -489,6 +489,7 @@ public class CTGUI {
 				if(number == 1){event = EventType.valueOf("IND");}
 				else if(number == 2){event = EventType.valueOf("PARIND");}
 				else if(number == 3){event = EventType.valueOf("GRP");}
+				else if(number == 3){event = EventType.valueOf("PARGRP");}
 				else{screen.append("[!!] Invalid event type!");}
 				if(timer.setEvent(event))
 					screen.append("Successfully set event to " + event + "\n");
