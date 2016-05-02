@@ -330,7 +330,7 @@ public class CTGUI {
 			screenPanel.add(screen);
 			
 		//add to window and display
-			window.setSize(1500, 800);
+			window.setSize(1500, 1000);
 			window.add(functionPanel);
 			window.add(signalPanel);
 			window.add(printerPanel);
@@ -439,121 +439,126 @@ public class CTGUI {
 		}
 	}
 	public void processCmd(){
-		inputCmd=inputCmd.substring(1);
-		System.out.println(inputCmd);
-		int number;
-		switch(selectedCmd){
-			case 0:
-				// time - Sets the current time.
-				screen.setText("\nExecuting : TIME <hh*mm*ss> \n");
-				String[] t=inputCmd.split("\\*");
-				timer.getTimeManager().setTime(t[0]+":"+t[1]+":"+t[2]);
-				screen.append("Set time to " + t[0]+":"+t[1]+":"+t[2] + "\n");
-				break;
-			case 1:
-				// reset - Resets the chrono timer back to initial state.
-				screen.setText("\nExecuting : RESET \n");
-				timer.reset();
-				screen.append("Reset done\n");
-				break;
-			case 2:
-				// num <number> - Sets <number> as the next competetor to start.
-				screen.setText("\nExecuting : NUMBER <num> \n");
-				number = Integer.parseInt(inputCmd);
-				if(timer.getLatestRun().addRacer(number) != null)
-					screen.append("Successfully added racer " + number+"\n");
-				else
-					screen.append("[!!]Failed to add racer " + number+"\n");
-				break;
-			case 3:
-				// clear <number> - Clear <number> as the next competetor.
-				screen.setText("\nExecuting : CLEAR <num> \n");
-				number = Integer.parseInt(inputCmd);
-				if(timer.getLatestRun().removeRacer(number))
-					screen.append("Successfully removed racer " + number+"\n");
-				else
-					screen.append("Failed to remove racer " + number+"\n");
-				break;
-			case 4:
-				// dnf - The next competetor to finish will not finish.
-				screen.setText("\nExecuting : DNF \n");
-				timer.doNotFinish();
-				screen.append("DNF done\n");
-				break;
-			case 5:
-				// event <type> - Sets the current run with the give event type.
-				// (EYE:1, GATE:2,PAD:3,NONE:4)
-				screen.setText("\nExecuting : EVENT <type> (IND:1, PARIND:2, GRP:3) \n");
-				number = Integer.parseInt(inputCmd);
-				EventType event = EventType.valueOf("IND");
-				if(number == 1){event = EventType.valueOf("IND");}
-				else if(number == 2){event = EventType.valueOf("PARIND");}
-				else if(number == 3){event = EventType.valueOf("GRP");}
-				else if(number == 3){event = EventType.valueOf("PARGRP");}
-				else{screen.append("[!!] Invalid event type!");}
-				if(timer.setEvent(event))
-					screen.append("Successfully set event to " + event + "\n");
-				else
-					screen.append("Failed to set event to " + event + "\n");
-				break;
-			case 6:
-				// newrun - Creates a new run.(Must end a run first)
-				screen.setText("\nExecuting : NEWRUN \n");
-				timer.newRun();
-				screen.append("add new run done\n");
-				break;
-			case 7:
-				// endrun - Done with the current run.
-				screen.setText("\nExecuting : ENDRUN \n");
-				timer.endRun();
-				screen.append("end run done\n");
-				break;
-			case 8:
-				// print <run> - Prints the given run.
-				screen.setText("\nExecuting : PRINT <runID> \n");
-				int rid = Integer.parseInt(inputCmd)-1;
-				if(rid < 0 || rid >= timer.getRuns().size()) {
-					screen.append("[!!]No run found.\n");
+		try{
+			inputCmd=inputCmd.substring(1);
+			System.out.println(inputCmd);
+			int number;
+			switch(selectedCmd){
+				case 0:
+					// time - Sets the current time.
+					screen.setText("\nExecuting : TIME <hh*mm*ss> \n");
+					String[] t=inputCmd.split("\\*");
+					timer.getTimeManager().setTime(t[0]+":"+t[1]+":"+t[2]);
+					screen.append("Set time to " + t[0]+":"+t[1]+":"+t[2] + "\n");
 					break;
-				}
-				Run run = timer.getRuns().get(rid);
-				if(run == null) {
-					screen.append("No run found with id of " + rid+"\n");
+				case 1:
+					// reset - Resets the chrono timer back to initial state.
+					screen.setText("\nExecuting : RESET \n");
+					timer.reset();
+					screen.append("Reset done\n");
 					break;
-				}
-				screen.append("Run " + run.getID()+"\n");
-				screen.append("===== ID : START - FINISH =====\n");
-				for(Record r : run.getRecords()) {
-					if(r instanceof RacerRecord) {
-						RacerRecord rec = (RacerRecord) r;
-						screen.append("Racer " + rec.getRacer().getID() + ": ");
-					} else if(r instanceof PlaceHolderRecord) {
-						PlaceHolderRecord rec = (PlaceHolderRecord) r;
-						screen.append("PlaceHolder " + rec.getPlaceHolder() + ": ");
+				case 2:
+					// num <number> - Sets <number> as the next competetor to start.
+					screen.setText("\nExecuting : NUMBER <num> \n");
+					number = Integer.parseInt(inputCmd);
+					if(timer.getLatestRun().addRacer(number) != null)
+						screen.append("Successfully added racer " + number+"\n");
+					else
+						screen.append("[!!]Failed to add racer " + number+"\n");
+					break;
+				case 3:
+					// clear <number> - Clear <number> as the next competetor.
+					screen.setText("\nExecuting : CLEAR <num> \n");
+					number = Integer.parseInt(inputCmd);
+					if(timer.getLatestRun().removeRacer(number))
+						screen.append("Successfully removed racer " + number+"\n");
+					else
+						screen.append("Failed to remove racer " + number+"\n");
+					break;
+				case 4:
+					// dnf - The next competetor to finish will not finish.
+					screen.setText("\nExecuting : DNF \n");
+					timer.doNotFinish();
+					screen.append("DNF done\n");
+					break;
+				case 5:
+					// event <type> - Sets the current run with the give event type.
+					// (EYE:1, GATE:2,PAD:3,NONE:4)
+					screen.setText("\nExecuting : EVENT <type> (IND:1, PARIND:2, GRP:3) \n");
+					number = Integer.parseInt(inputCmd);
+					EventType event = EventType.valueOf("IND");
+					if(number == 1){event = EventType.valueOf("IND");}
+					else if(number == 2){event = EventType.valueOf("PARIND");}
+					else if(number == 3){event = EventType.valueOf("GRP");}
+					else if(number == 3){event = EventType.valueOf("PARGRP");}
+					else{screen.append("[!!] Invalid event type!");}
+					if(timer.setEvent(event))
+						screen.append("Successfully set event to " + event + "\n");
+					else
+						screen.append("Failed to set event to " + event + "\n");
+					break;
+				case 6:
+					// newrun - Creates a new run.(Must end a run first)
+					screen.setText("\nExecuting : NEWRUN \n");
+					timer.newRun();
+					screen.append("add new run done\n");
+					break;
+				case 7:
+					// endrun - Done with the current run.
+					screen.setText("\nExecuting : ENDRUN \n");
+					timer.endRun();
+					screen.append("end run done\n");
+					break;
+				case 8:
+					// print <run> - Prints the given run.
+					screen.setText("\nExecuting : PRINT <runID> \n");
+					int rid = Integer.parseInt(inputCmd)-1;
+					if(rid < 0 || rid >= timer.getRuns().size()) {
+						screen.append("[!!]No run found.\n");
+						break;
 					}
-					if(r.didNotFinish()) {
-						screen.append(timer.getTimeManager().formatTime(r.getStartTime()) + " - DNF\n");
-					} else {
-						screen.append(timer.getTimeManager().formatTime(r.getStartTime()) + " - " + timer.getTimeManager().formatTime(r.getFinishTime())+"\n");
+					Run run = timer.getRuns().get(rid);
+					if(run == null) {
+						screen.append("No run found with id of " + rid+"\n");
+						break;
 					}
-				}
-				break;
-			case 9:
-				// export <run> - Exports the given run.
-				screen.setText("\nExecuting : EXPORT <runID> \n");
-				number = Integer.parseInt(inputCmd);
-				if(number < 1 || number > timer.getRuns().size()) {
-					screen.append("No run found with that id.\n");
+					screen.append("Run " + run.getID()+"\n");
+					screen.append("===== ID : START - FINISH =====\n");
+					for(Record r : run.getRecords()) {
+						if(r instanceof RacerRecord) {
+							RacerRecord rec = (RacerRecord) r;
+							screen.append("Racer " + rec.getRacer().getID() + ": ");
+						} else if(r instanceof PlaceHolderRecord) {
+							PlaceHolderRecord rec = (PlaceHolderRecord) r;
+							screen.append("PlaceHolder " + rec.getPlaceHolder() + ": ");
+						}
+						if(r.didNotFinish()) {
+							screen.append(timer.getTimeManager().formatTime(r.getStartTime()) + " - DNF\n");
+						} else {
+							screen.append(timer.getTimeManager().formatTime(r.getStartTime()) + " - " + timer.getTimeManager().formatTime(r.getFinishTime())+"\n");
+						}
+					}
 					break;
-				}
-				timer.getExporter().export((TRun) timer.getRuns().get(number-1));
-				screen.append("export run done\n");
-				break;
-			default:
-				screen.append("\n[!!]Invalid command number!");
-				break;
+				case 9:
+					// export <run> - Exports the given run.
+					screen.setText("\nExecuting : EXPORT <runID> \n");
+					number = Integer.parseInt(inputCmd);
+					if(number < 1 || number > timer.getRuns().size()) {
+						screen.append("No run found with that id.\n");
+						break;
+					}
+					timer.getExporter().export((TRun) timer.getRuns().get(number-1));
+					screen.append("export run done\n");
+					break;
+				default:
+					screen.append("\n[!!]Invalid command number!");
+					break;
+			}
+			inputCmd="";
+		}catch(Exception e){
+			//!!
 		}
-		inputCmd="";
+		
 	}
 	public static void main(String[] args){
 		CTGUI gui = new CTGUI();
