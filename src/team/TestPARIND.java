@@ -41,8 +41,8 @@ public class TestPARIND {
 		assertEquals(race.ended.getFirst().records.get((Integer)1).finish,-1);
 		assertFalse(race.doNotFinish());
 		race.finished=false;
-		race.toStart1.clear();
-		race.toStart2.clear();
+		race.track1S.clear();
+		race.track2S.clear();
 		assertFalse(race.doNotFinish());
 	}
 	@Test
@@ -53,39 +53,24 @@ public class TestPARIND {
 		TRacer r2 = race.addRacer(2);
 		//start testing
 		assertEquals(2,race.allRacers.size());
-		assertEquals(2,race.toStart1.size() + race.toStart2.size());
+		assertEquals(2,race.toStart.size());
 		assertTrue(race.allRacers.contains(r1));
-		assertTrue(race.toStart1.contains(r1) || race.toStart2.contains(r1));
 		assertTrue(race.allRacers.contains(r2));
-		assertTrue(race.toStart1.contains(r2) || race.toStart2.contains(r2));
 		
 		assertTrue(race.removeRacer(1));
 		assertEquals(1,race.allRacers.size());
-		assertEquals(1,race.toStart1.size() + race.toStart2.size());
 		assertFalse(race.allRacers.contains(r1));
-		assertFalse(race.toStart1.contains(r1));
-		assertFalse(race.toStart2.contains(r1));
 		assertTrue(race.allRacers.contains(r2));
-		assertTrue(race.toStart1.contains(r2) || race.toStart2.contains(r2));
 		
 		assertFalse(race.removeRacer(1));
 		assertEquals(1,race.allRacers.size());
-		assertEquals(1,race.toStart1.size() + race.toStart2.size());
 		assertFalse(race.allRacers.contains(r1));
-		assertFalse(race.toStart1.contains(r1));
-		assertFalse(race.toStart2.contains(r1));
 		assertTrue(race.allRacers.contains(r2));
-		assertTrue(race.toStart1.contains(r2) || race.toStart2.contains(r2));
 		
 		assertTrue(race.removeRacer(2));
 		assertEquals(0,race.allRacers.size());
-		assertEquals(0,race.toStart1.size() + race.toStart2.size());
 		assertFalse(race.allRacers.contains(r1));
-		assertFalse(race.toStart1.contains(r1));
-		assertFalse(race.toStart2.contains(r1));
 		assertFalse(race.allRacers.contains(r2));
-		assertFalse(race.toStart1.contains(r2));
-		assertFalse(race.toStart2.contains(r2));
 	}
 	@Test
 	public void test_Trigger() {
