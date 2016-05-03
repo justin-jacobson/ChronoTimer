@@ -24,7 +24,27 @@ public class WebServer {
 	protected GRun latestRun;
 	
 	static Map<Integer, String> racerNames = new HashMap<Integer, String>();
-
+	
+	private static final Map<Integer,String> racerNames = new HashMap<Integer,String>();
+	
+	public String getRecordName(Record r) {
+		if(r.isRacer) {
+			String name = racerNames.get(r.racer);
+			if(name != null) return name;
+			return "Racer " + r.racer;
+		}
+		return "PlaceHolder " + r.racer;
+	}
+	
+	static {
+		racerNames.put(217,"Ed Snowden");
+		racerNames.put(314,"Bob Smith");
+		racerNames.put(211,"Carol OConnor");
+		racerNames.put(17,"Prince");
+		racerNames.put(310,"Peekaboo Street");
+		racerNames.put(500,"Lindsey Vonn");
+	}
+	
 	public WebServer() {
 		// set up a simple HTTP server on our local host
 		try{
@@ -153,12 +173,7 @@ public class WebServer {
 		for(GRecord r : run.records) {
 			response += "<tr>";
 			response += "<td>";
-			if(r.isRacer) {
-				response += "Racer ";
-			} else {
-				response += "PlaceHolder ";
-			}
-			response += r.racer + "</td><td>" + t.formatTime(r.start) + "</td><td>" + t.formatTime(r.finish) + "</td><td>";
+			response += getRecordName(r) + "</td><td>" + t.formatTime(r.start) + "</td><td>" + t.formatTime(r.finish) + "</td><td>";
 			if(r.didNotFinish()) {
 				response += "DNF";
 			} else
