@@ -23,11 +23,11 @@ public class WebServer {
 	protected TimeManager t = new TimeManager();
 	protected GRun latestRun;
 	
-	static Map<Integer, String> racerNames = new HashMap<Integer, String>();
+	//static Map<Integer, String> racerNames = new HashMap<Integer, String>();
 	
 	private static final Map<Integer,String> racerNames = new HashMap<Integer,String>();
 	
-	public String getRecordName(Record r) {
+	public String getRecordName(GRecord r) {
 		if(r.isRacer) {
 			String name = racerNames.get(r.racer);
 			if(name != null) return name;
