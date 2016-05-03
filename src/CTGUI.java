@@ -326,8 +326,11 @@ public class CTGUI {
 			screen = new JTextArea(300,300);
 			screen.setEditable(false);
 		//add components to screenPanel
+			
+		//add scrollbar to screen
+			JScrollPane screenScroll = new JScrollPane(screen, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 			screenPanel.add(screenLabel);
-			screenPanel.add(screen);
+			screenPanel.add(screenScroll);
 			
 		//add to window and display
 			window.setSize(1500, 1000);
