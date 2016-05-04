@@ -168,7 +168,9 @@ public class TChronoTimer implements ChronoTimer {
 	synchronized public boolean setEvent(EventType event) {
 		if(!power || event == null) return false;
 		if(getLatestRun().hasStarted()) return false;
-		runs.set(current_run, event.getNewInstanceFromOld(getLatestRun()));
+		TRun newRun = event.getNewInstanceFromOld(getLatestRun());
+		if(newRun == null) return false;
+		runs.set(current_run, newRun);
 		return true;
 	}
 	/**

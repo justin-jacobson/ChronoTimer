@@ -19,10 +19,11 @@ public class ParallelGroupRun extends TRun {
 			throw new UnsupportedOperationException("Not enough lanes for all racers.");
 		}
 		int i = 0;
+		int racersSize = run.getRacers().size();
 		for(Racer r: run.getRacers()){
 			TRacer tr = (TRacer)r;
 			racers.add(tr);
-			lanes[i++] = tr;
+			lanes[(racersSize-1) - i++] = tr;
 		}
 		emptyLane = i;
 		safeRacers = Collections.unmodifiableList(racers);
@@ -117,6 +118,9 @@ public class ParallelGroupRun extends TRun {
 		if(!hasStarted()){
 			if(id == 1){
 				start = time;
+				for(TRecord r : recordList) {
+					r.start = start;
+				}
 				return true;
 			}
 			return false;
