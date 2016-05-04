@@ -449,8 +449,8 @@ public class CTGUI {
 			switch(selectedCmd){
 				case 0:
 					// time - Sets the current time.
-					screen.setText("\nExecuting : TIME <hh*mm*ss> \n");
 					String[] t=inputCmd.split("\\*");
+					screen.setText("\nExecuting : TIME <"+t[0]+"*"+t[1]+"*"+t[2]+"> \n");
 					timer.getTimeManager().setTime(t[0]+":"+t[1]+":"+t[2]);
 					screen.append("Set time to " + t[0]+":"+t[1]+":"+t[2] + "\n");
 					break;
@@ -462,8 +462,8 @@ public class CTGUI {
 					break;
 				case 2:
 					// num <number> - Sets <number> as the next competetor to start.
-					screen.setText("\nExecuting : NUMBER <num> \n");
 					number = Integer.parseInt(inputCmd);
+					screen.setText("\nExecuting : NUMBER "+number+" \n");
 					if(timer.getLatestRun().addRacer(number) != null)
 						screen.append("Successfully added racer " + number+"\n");
 					else
@@ -471,8 +471,8 @@ public class CTGUI {
 					break;
 				case 3:
 					// clear <number> - Clear <number> as the next competetor.
-					screen.setText("\nExecuting : CLEAR <num> \n");
 					number = Integer.parseInt(inputCmd);
+					screen.setText("\nExecuting : CLEAR "+number+" \n");
 					if(timer.getLatestRun().removeRacer(number))
 						screen.append("Successfully removed racer " + number+"\n");
 					else
@@ -487,14 +487,14 @@ public class CTGUI {
 				case 5:
 					// event <type> - Sets the current run with the give event type.
 					// (EYE:1, GATE:2,PAD:3,NONE:4)
-					screen.setText("\nExecuting : EVENT <type> (IND:1, PARIND:2, GRP:3) \n");
 					number = Integer.parseInt(inputCmd);
-					EventType event = EventType.valueOf("IND");
-					if(number == 1){event = EventType.valueOf("IND");}
-					else if(number == 2){event = EventType.valueOf("PARIND");}
-					else if(number == 3){event = EventType.valueOf("GRP");}
-					else if(number == 3){event = EventType.valueOf("PARGRP");}
-					else{screen.append("[!!] Invalid event type!");}
+					screen.setText("\nExecuting : EVENT "+number+" - ( ");
+					for(int i=0; i<EventType.values().length;i++){
+						screen.append((i+1)+":"+EventType.values()[i]+" ");
+					}
+					screen.append(")\n");
+					if(number<1 || number>EventType.values().length){System.out.println("[!!]Invalid event number!");break;}
+					EventType event = EventType.values()[number-1];
 					if(timer.setEvent(event))
 						screen.append("Successfully set event to " + event + "\n");
 					else
@@ -514,8 +514,8 @@ public class CTGUI {
 					break;
 				case 8:
 					// print <run> - Prints the given run.
-					screen.setText("\nExecuting : PRINT <runID> \n");
 					int rid = Integer.parseInt(inputCmd)-1;
+					screen.setText("\nExecuting : PRINT "+rid+" \n");
 					if(rid < 0 || rid >= timer.getRuns().size()) {
 						screen.append("[!!]No run found.\n");
 						break;
@@ -544,8 +544,8 @@ public class CTGUI {
 					break;
 				case 9:
 					// export <run> - Exports the given run.
-					screen.setText("\nExecuting : EXPORT <runID> \n");
 					number = Integer.parseInt(inputCmd);
+					screen.setText("\nExecuting : EXPORT "+number+" \n");
 					if(number < 1 || number > timer.getRuns().size()) {
 						screen.append("No run found with that id.\n");
 						break;
