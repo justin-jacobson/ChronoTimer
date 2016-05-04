@@ -89,9 +89,9 @@ public class ParallelGroupRun extends TRun {
 
 	@Override
 	protected boolean safeAddRacer(TRacer r) {
-		if(racers.size() < lanes.length){
-			lanes[racers.size()-1] = r;
+		if(racers.size() < lanes.length) {
 			racers.add(r);
+			lanes[racers.size()-1] = r;
 			return true;
 		}
 		return false;
