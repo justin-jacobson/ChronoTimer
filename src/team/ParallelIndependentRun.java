@@ -90,11 +90,14 @@ public class ParallelIndependentRun extends TRun {
 		started = true;
 		if(toStart.size() == 0) return;
 		int firstHalf = toStart.size()/2;
+		int secondHalf = toStart.size() - firstHalf;
 		for(int e = 0; e<firstHalf; ++e) {
 			track1S.addLast(toStart.removeLast());
 		}
-		track2S.addAll(toStart);
-		toStart.clear();
+		for(int i = 0; i< secondHalf; i++)
+		{
+			track2S.addLast(toStart.removeLast());
+		}
 		
 	}
 	
@@ -102,7 +105,7 @@ public class ParallelIndependentRun extends TRun {
 	public boolean safeTrigger(Channel c) {
 		long time = timer.getTimeManager().getTime();
 		TRacer r = null;
-		LinkedList<TRacer> track = getTrackFromChannel(c.getID());
+//		LinkedList<TRacer> track = getTrackFromChannel(c.getID());
 		switch (c.getID()) {
 			case 1:
 				start();
@@ -118,13 +121,13 @@ public class ParallelIndependentRun extends TRun {
 				}
 				lastStarted.addLast(r);
 				records.get(r.id).start = time;
-				track.add(r);
+//				track.add(r);
 				break;
 			case 2:
 				r = track1E.poll();
+				if(r == null) break;
 			case 4:
-				if(r == null)
-					r = track2E.poll();
+				if(r == null) r = track2E.poll();
 				if(r == null) break;
 				TRecord rec = records.get(r.id);
 				rec.finish = time;
@@ -181,6 +184,7 @@ public class ParallelIndependentRun extends TRun {
 			if(r instanceof TRacerRecord){
 				TRacerRecord rec = (TRacerRecord) r;
 				allRacers.add(rec.racer);
+				toStart.add(rec.racer);
 			}
 		}
 	}
